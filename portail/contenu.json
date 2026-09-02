@@ -1,0 +1,6253 @@
+{
+ "version": 1,
+ "genere": "2026-08-30",
+ "editeur": {
+  "nom": "Alphabet Digital",
+  "produit": "AfriKfables",
+  "version": "1.0",
+  "build": "2026-08-30-a",
+  "courriel": "contact@alphabet-digital.com",
+  "tel": "+225 07 00 00 00",
+  "ville": "Cocody, Abidjan, Côte d’Ivoire",
+  "operateur": "",
+  "motStop": "STOP CONTES",
+  "courtCode": "4444",
+  "whatsapp": "+225 07 00 00 00",
+  "mode": "libre",
+  "forme": "société par actions simplifiée",
+  "slogan": "Écoute, joue et découvre l'Afrique",
+  "siege": "Cocody, Abidjan, Côte d’Ivoire",
+  "site": "afrikfables.com"
+ },
+ "pass": [
+  {
+   "id": "jour",
+   "n": "Pass jour",
+   "d": "Un soir complet, tous les contes.",
+   "p": 50,
+   "u": "F CFA / jour",
+   "j": 1
+  },
+  {
+   "id": "semaine",
+   "n": "Pass semaine",
+   "d": "Sept soirs, sept contes. Le rythme de la veillée.",
+   "p": 200,
+   "u": "F CFA / semaine",
+   "j": 7,
+   "ruban": "LE PLUS PRIS"
+  },
+  {
+   "id": "mois",
+   "n": "Pass mois",
+   "d": "Tout le mois, et les nouveaux contes dès leur sortie.",
+   "p": 500,
+   "u": "F CFA / mois",
+   "j": 30
+  }
+ ],
+ "conteurs": [
+  {
+   "id": "sanou",
+   "nom": "Le vieux Sanou",
+   "role": "CONTEUR DE LA BROUSSE",
+   "region": "Ouagadougou",
+   "desc": "Il a passé sa vie sous le karité du quartier, à raconter aux enfants qui rentraient de l'école. Il connaît toutes les ruses du lièvre, et il en a inventé quelques-unes.",
+   "voix": "Voix grave, un peu rocailleuse. Il prend son temps et laisse venir la suite."
+  },
+  {
+   "id": "poko",
+   "nom": "Mama Poko",
+   "role": "CONTEUSE DE LA COUR",
+   "region": "Kombissiri",
+   "desc": "Grand-mère de onze petits-enfants, elle raconte après le repas, à voix basse, pour ne pas réveiller la maison. Ses contes finissent toujours par une question.",
+   "voix": "Voix chaude et ronde, presque confidentielle. Plus de douceur que d'autorité."
+  },
+  {
+   "id": "drissa",
+   "nom": "Drissa",
+   "role": "CONTEUR DU MARCHÉ",
+   "region": "Bobo-Dioulasso",
+   "desc": "Il a appris le balafon avant de savoir lire. Il raconte vite, il imite les bêtes, il fait rire. Les enfants le réclament, les vieux lèvent les yeux au ciel.",
+   "voix": "Voix jeune et vive, rythmée. Il joue avec les silences."
+  },
+  {
+   "id": "awa",
+   "nom": "Tantie Awa",
+   "role": "CONTEUSE DU FLEUVE",
+   "region": "Banfora",
+   "desc": "Tisserande, elle raconte en travaillant. Ses histoires suivent le rythme du métier, et elle s'arrête toujours au moment où l'on voudrait qu'elle continue.",
+   "voix": "Voix claire et malicieuse. Elle appuie les fins de phrase."
+  }
+ ],
+ "attribution": {
+  "lievre": "sanou",
+  "tortue": "sanou",
+  "cameleon": "sanou",
+  "conseils": "sanou",
+  "puits": "sanou",
+  "zombre": "sanou",
+  "etoiles": "sanou",
+  "bazoule": "sanou",
+  "balafon": "sanou"
+ },
+ "voixDispo": {
+  "lievre": 1,
+  "tortue": 1,
+  "cameleon": 1,
+  "conseils": 1,
+  "puits": 1,
+  "zombre": 1,
+  "etoiles": 1,
+  "bazoule": 1,
+  "balafon": 1
+ },
+ "descriptions": {
+  "lievre": "Saison sèche, greniers vides, et deux animaux que tout oppose : l'un a la force, l'autre a la tête. Un conte de ruse où le plus malin n'est pas forcément celui qui gagne le plus.",
+  "tortue": "Un festin dans le ciel, des plumes empruntées et un nom choisi avec soin. L'un des contes les plus connus d'Afrique de l'Ouest, qui explique pourquoi la carapace de la tortue est craquelée.",
+  "cameleon": "Le plus rapide de la forêt défie le plus lent. Un conte court sur l'orgueil, où l'on découvre que celui qui ne regarde jamais derrière lui ne sait pas ce qu'il transporte.",
+  "conseils": "Trois ans de travail contre trois phrases. Un jeune homme rentre chez lui avec pour seul salaire les paroles d'un vieil homme — et chacune va lui servir sur la route.",
+  "puits": "Un village en pleine sécheresse, un seul puits, et une règle que personne ne croit vraiment : il ne donne son eau qu'à celui qui dit vrai.",
+  "zombre": "Un roi mossi qui n'entend jamais la vérité décide d'aller la chercher lui-même, déguisé en mendiant. Ce qu'il découvre en frappant aux portes vaut tous les rapports.",
+  "etoiles": "Un enfant décide de compter toutes les étoiles du ciel. Il recommence chaque soir, une saison entière, jusqu'à la nuit où il compte autre chose.",
+  "bazoule": "Une femme suit un crocodile en pleine brousse, loin de toute eau. Ce qu'elle trouve au bout du chemin a scellé un pacte qui tient encore aujourd'hui, à trente kilomètres de Ouagadougou.",
+  "balafon": "À Bobo-Dioulasso, un instrument très ancien que nul n'a le droit de toucher. Un garçon y touche quand même, et le son qui en sort n'est pas celui qu'il attendait."
+ },
+ "faq": [
+  {
+   "q": "Comment fonctionne l'essai gratuit ?",
+   "r": "Le premier conte est offert, sans abonnement et sans donner ton numéro. Tu choisis lequel. Une fois écouté ou lu, il reste accessible pour toujours, même sans pass."
+  },
+  {
+   "q": "Comment m'abonner, et combien ça coûte ?",
+   "r": "Trois formules : 50 F CFA la journée, 200 F la semaine, 500 F le mois. Tu entres ton numéro, tu reçois un code par SMS, et le montant est prélevé sur ton crédit téléphonique."
+  },
+  {
+   "q": "Comment arrêter mon abonnement ?",
+   "r": "Deux façons, aussi simples l'une que l'autre : envoyer {{motStop}} au {{courtCode}}, ou aller dans le menu, rubrique Mon abonnement, et toucher « Résilier ». L'arrêt prend effet à la fin de la période payée."
+  },
+  {
+   "q": "Puis-je écouter sans connexion ?",
+   "r": "Pas encore. Les enregistrements du conteur se chargent au fur et à mesure. Une fois un conte écouté, ton téléphone le garde un moment en mémoire et le rejoue plus vite."
+  },
+  {
+   "q": "Pourquoi certains contes ont une voix bizarre ?",
+   "r": "Tous les contes ne sont pas encore enregistrés par un vrai conteur. En attendant, c'est la voix de ton téléphone qui lit le texte. Les enregistrements arrivent conte par conte."
+  },
+  {
+   "q": "Combien de personnes peuvent utiliser le même abonnement ?",
+   "r": "Autant que tu veux. Chaque enfant a son profil, son animal, ses contes écoutés et ses points. Un seul pass pour toute la famille."
+  },
+  {
+   "q": "J'ai perdu mes profils et ma progression.",
+   "r": "Tout est enregistré sur le téléphone, pas sur un serveur. Si tu as effacé les données du navigateur ou changé d'appareil, la progression est perdue. Ton abonnement, lui, reste rattaché à ton numéro."
+  },
+  {
+   "q": "Le son ne se lance pas.",
+   "r": "Touche une fois l'écran : certains téléphones exigent un contact avant d'autoriser le son. Vérifie aussi que le bouton haut-parleur, au-dessus du texte, est bien allumé."
+  },
+  {
+   "q": "Mes données sont-elles partagées ?",
+   "r": "Non. Les prénoms, les contes écoutés et les points ne quittent jamais le téléphone. Seul le numéro sert à l'abonnement. Rien n'est vendu à personne."
+  },
+  {
+   "q": "Je veux proposer un conte de chez moi.",
+   "r": "Écris-nous. Les contes du patrimoine appartiennent à tout le monde, et les meilleurs nous viennent souvent des auditeurs."
+  }
+ ],
+ "aide": {
+  "lievre": {
+   "resume": "C'est la saison sèche et tout le monde a faim. Hyène surprend Lièvre en train de manger et le menace. Lièvre lui indique le champ d'arachides du vieux Sanou, en lui conseillant de creuser un trou sous la clôture et de ne pas trop manger. Hyène se gave, son ventre gonfle, elle reste coincée dans le trou et le village la trouve au matin. Pendant ce temps, Lièvre se sert par une autre brèche.",
+   "persos": {
+    "lievre": "Lièvre est le rusé de la brousse. Il n'a ni force ni crocs, alors il se sert de sa tête. Mais à force de tromper tout le monde, il finit sans amis.",
+    "hyene": "Hyène est forte et affamée, mais elle croit tout ce qu'on lui dit. C'est sa gourmandise qui la perd, pas sa bêtise.",
+    "sanou": "Le vieux Sanou est le paysan à qui appartient le champ d'arachides. C'est lui qui trouve Hyène coincée au matin."
+   },
+   "faq": [
+    {
+     "k": [
+      "coince",
+      "coincee",
+      "trou",
+      "ventre",
+      "sortir"
+     ],
+     "r": "Parce qu'elle a trop mangé. Le trou faisait la taille d'une hyène à jeun, pas d'une hyène pleine d'arachides. Lièvre l'avait prévenue, en sachant très bien qu'elle n'écouterait pas."
+    },
+    {
+     "k": [
+      "pourquoi",
+      "ment",
+      "menti",
+      "trompe",
+      "ruse"
+     ],
+     "r": "Lièvre ment parce que dire la vérité l'aurait privé de tout : Hyène aurait mangé les arachides et ne lui en aurait rien laissé. Sa ruse lui sert à garder sa part."
+    },
+    {
+     "k": [
+      "dos",
+      "courbe",
+      "courbee"
+     ],
+     "r": "Les anciens disent que c'est le bâton du vieux Sanou qui a courbé le dos de l'hyène. C'est une façon d'expliquer par le conte pourquoi l'animal marche ainsi."
+    },
+    {
+     "k": [
+      "gagne",
+      "gagnant",
+      "vainqueur"
+     ],
+     "r": "Lièvre gagne le ventre plein, mais il perd la confiance de tous. Le conte ne le récompense pas vraiment : il montre les deux côtés."
+    }
+   ]
+  },
+  "tortue": {
+   "resume": "Les oiseaux sont invités à un festin dans le ciel. Tortue, qui parle bien, les convainc de lui prêter chacun une plume. En chemin elle se fait appeler Vous-Tous, si bien qu'au festin elle mange tout ce que les hôtes offrent « à vous tous ». Les oiseaux, furieux, reprennent leurs plumes au retour. Tortue tombe du ciel sur des pierres et sa carapace se brise en morceaux qu'on recolle.",
+   "persos": {
+    "tortue": "Tortue est lente mais elle a la langue la plus habile de la brousse. C'est par la parole qu'elle obtient tout — et qu'elle perd tout.",
+    "oiseaux": "Les oiseaux sont généreux au début et rancuniers à la fin. Ce sont eux qui donnent les plumes, et eux qui les reprennent."
+   },
+   "faq": [
+    {
+     "k": [
+      "vous-tous",
+      "nom",
+      "appelle"
+     ],
+     "r": "Elle choisit ce nom parce qu'elle sait que les hôtes diront « ce repas est pour vous tous » en apportant les plats. Elle prépare son piège avant même d'arriver."
+    },
+    {
+     "k": [
+      "carapace",
+      "craquel",
+      "fissure",
+      "cass",
+      "brise"
+     ],
+     "r": "Parce qu'elle est tombée du ciel sur des pierres. Un guérisseur a recollé les morceaux un par un, et c'est pour ça que la carapace de la tortue est couverte de coutures encore aujourd'hui."
+    },
+    {
+     "k": [
+      "pourquoi",
+      "oiseau",
+      "aide",
+      "message"
+     ],
+     "r": "L'oiseau était encore fâché. Au lieu de dire aux villageois d'étaler les pagnes pour amortir la chute, il leur a dit de sortir les pierres et les pilons."
+    }
+   ]
+  },
+  "cameleon": {
+   "resume": "Serpent se vante d'être le plus rapide de la forêt. Caméléon le défie à la course, du fromager jusqu'au fleuve. Au signal, Caméléon pose discrètement une patte sur la queue de Serpent et se laisse emporter sans bouger. Arrivé au fleuve, il lâche prise, fait deux pas et annonce qu'il attendait. Depuis, il avance en balançant la tête et change de couleur.",
+   "persos": {
+    "cameleon": "Caméléon est lent, sans crocs et sans force. Sa force à lui, c'est la patience et l'art de se fondre dans le décor.",
+    "serpent": "Serpent est le plus rapide, et il ne l'oublie jamais. C'est son orgueil qui le rend aveugle à ce qu'il transporte."
+   },
+   "faq": [
+    {
+     "k": [
+      "triche",
+      "tricherie",
+      "juste",
+      "honnete"
+     ],
+     "r": "Serpent a crié à la tricherie. Mais les anciens du fleuve ont répondu autrement : celui qui ne regarde jamais derrière lui ne sait pas ce qu'il transporte. L'orgueil aussi a sa part de faute."
+    },
+    {
+     "k": [
+      "balance",
+      "tete",
+      "hesite"
+     ],
+     "r": "Il balance la tête à chaque pas non pas parce qu'il hésite, mais parce qu'il regarde partout à la fois. C'est sa manière de ne jamais être surpris."
+    },
+    {
+     "k": [
+      "couleur",
+      "change"
+     ],
+     "r": "Le conte l'explique par sa nature : celui qui n'a ni vitesse ni crocs apprend à se fondre dans ce qui l'entoure. C'est une force, pas une faiblesse."
+    }
+   ]
+  },
+  "conseils": {
+   "resume": "Boureima travaille trois ans chez un vieil homme. Au départ, il choisit trois conseils plutôt qu'un salaire : ne jamais quitter la grande route, ne pas se mêler de ce qui ne le regarde pas, ne jamais décider le soir d'une colère. Chacun lui sauve la vie ou son foyer sur le chemin du retour. Le troisième pain que le vieux lui avait donné contenait tout son salaire.",
+   "persos": {
+    "boureima": "Boureima est un homme simple qui fait confiance à la parole d'un ancien. C'est cette confiance qui le ramène vivant chez lui.",
+    "vieux": "Le vieil homme n'a jamais eu l'intention de voler Boureima. Il voulait qu'il rentre entier, et sans avoir rien détruit."
+   },
+   "faq": [
+    {
+     "k": [
+      "argent",
+      "salaire",
+      "pain",
+      "paye"
+     ],
+     "r": "Le vieux avait caché tout le salaire dans le troisième pain, celui que Boureima ne devait ouvrir qu'une fois chez lui. Les conseils et l'argent : il a eu les deux."
+    },
+    {
+     "k": [
+      "jeune homme",
+      "femme",
+      "fils",
+      "colere"
+     ],
+     "r": "Le jeune homme assis près de sa femme était son propre fils, né après son départ. S'il était entré en colère cette nuit-là, il aurait tout détruit pour une image mal comprise."
+    },
+    {
+     "k": [
+      "raccourci",
+      "sentier",
+      "route"
+     ],
+     "r": "Les voyageurs qui ont pris le raccourci sont tombés sur des bandits. Boureima a croisé leurs affaires abandonnées le lendemain sur la piste."
+    }
+   ]
+  },
+  "puits": {
+   "resume": "À Tanghin, en pleine saison sèche, il ne reste qu'un puits, et l'on dit qu'il ne donne son eau qu'à celui qui dit vrai. Salif, qui a volé du mil, ment et remonte trois fois un seau vide devant tout le village. Awa, qui avoue un vol vieux de quarante ans, remonte un seau plein. Salif revient le soir, avoue à voix haute, obtient son eau, et rapporte le mil le lendemain.",
+   "persos": {
+    "salif": "Salif est le fils du forgeron. Il n'est pas mauvais : il a honte devant les autres, et c'est la honte qui le fait mentir.",
+    "awa": "Awa est la vieille tisserande. Elle avoue sans détour un vol de quarante ans, et le puits lui donne son eau."
+   },
+   "faq": [
+    {
+     "k": [
+      "awa",
+      "vieille",
+      "vole",
+      "pourquoi",
+      "eau"
+     ],
+     "r": "Parce que le puits ne juge pas le passé, il écoute la bouche du jour. Awa a volé, mais elle a dit la vérité. Ce n'est pas la faute qui est punie, c'est le mensonge."
+    },
+    {
+     "k": [
+      "salif",
+      "sec",
+      "vide",
+      "seau"
+     ],
+     "r": "Le seau de Salif remonte sec parce qu'il a menti sur les trois épis de mil. Le soir, quand il avoue à voix haute, le seau remonte plein."
+    },
+    {
+     "k": [
+      "bonjour",
+      "dit-on",
+      "tanghin"
+     ],
+     "r": "On raconte qu'à Tanghin, près du puits, on ne dit pas bonjour. On dit : aujourd'hui, je n'ai rien à cacher."
+    }
+   ]
+  },
+  "zombre": {
+   "resume": "Naba Zombré règne avec justice mais personne ne lui dit la vérité. Il se déguise en mendiant et arrive à Kombissiri. Toutes les grandes concessions lui ferment la porte. Seule Poko, la plus pauvre, lui donne sa part entière en prétendant avoir déjà mangé. Trois jours plus tard, le Naba revient en roi, s'assied chez Poko devant tout le village, la nomme gardienne des greniers, et ordonne qu'une mesure de mil soit posée devant chaque porte pour celui qui passe.",
+   "persos": {
+    "zombre": "Naba Zombré est un roi mossi. Plutôt que de croire ce qu'on lui rapporte, il va voir lui-même, déguisé.",
+    "poko": "Poko est la plus pauvre du village. Elle donne tout ce qu'elle a et ment pour que l'étranger n'ait pas honte."
+   },
+   "faq": [
+    {
+     "k": [
+      "deguise",
+      "mendiant",
+      "pourquoi"
+     ],
+     "r": "Parce que les chefs de village ne lui parlaient que de greniers pleins et de belles récoltes. Un roi n'entend jamais la vérité tant qu'il reste roi."
+    },
+    {
+     "k": [
+      "poko",
+      "deja mange",
+      "ment",
+      "mensonge"
+     ],
+     "r": "Poko ment en disant qu'elle a déjà mangé, pour que l'étranger accepte sa part sans se sentir en dette. Ce mensonge-là est une forme de délicatesse."
+    },
+    {
+     "k": [
+      "punir",
+      "chefs",
+      "portes",
+      "punition"
+     ],
+     "r": "Le Naba ne les punit pas : il montre leurs portes une à une devant tout le village. Devant les siens, c'est plus dur qu'une amende."
+    }
+   ]
+  },
+  "bazoule": {
+   "resume": "Une sécheresse terrible frappe le village de Bazoulé : les mares sont sèches et le village va devoir partir. Une femme aperçoit un crocodile marchant en pleine brousse, loin de toute eau, et décide de le suivre. Il la mène jusqu'à une mare inconnue, pleine et claire, occupée par des crocodiles qui ne l'attaquent pas. Elle ramène le village. Depuis, un pacte tient : les habitants ne tuent jamais un crocodile, et les crocodiles ne touchent jamais un habitant.",
+   "persos": {
+    "crocodile": "Le crocodile n'est pas un monstre dans ce conte. Il est le guide, celui qui connaît le chemin de l'eau quand les hommes l'ont perdu.",
+    "femme": "La femme qui suit le crocodile n'a pas de nom dans le conte. C'est sa curiosité, plus forte que sa peur, qui sauve tout le village."
+   },
+   "faq": [
+    {
+     "k": [
+      "suit",
+      "suivre",
+      "pourquoi"
+     ],
+     "r": "Elle se dit qu'une bête d'eau qui marche en pleine saison sèche sait forcément où trouver de l'eau. C'est un raisonnement, pas de la chance."
+    },
+    {
+     "k": [
+      "pacte",
+      "tuer",
+      "tue",
+      "accord"
+     ],
+     "r": "Le pacte est simple : aucun habitant de Bazoulé ne tue de crocodile, et aucun crocodile ne touche un habitant. Il tient depuis des siècles."
+    },
+    {
+     "k": [
+      "vrai",
+      "existe",
+      "aujourd",
+      "encore",
+      "verifier"
+     ],
+     "r": "Oui. Bazoulé se trouve à une trentaine de kilomètres de Ouagadougou, et les crocodiles y vivent toujours parmi les habitants. Quand l'un d'eux meurt, le village lui fait des funérailles."
+    },
+    {
+     "k": [
+      "funerailles",
+      "mort",
+      "meurt"
+     ],
+     "r": "Quand un crocodile meurt, on l'enterre avec des funérailles, comme un parent. C'est la logique du pacte : celui qui a sauvé ta vie fait partie de ta famille."
+    }
+   ]
+  },
+  "balafon": {
+   "resume": "À Sya, l'ancienne Bobo-Dioulasso, la famille Sanou garde un balafon très ancien qui sert à annoncer les naissances, appeler au travail et pleurer les morts. Nul ne peut y toucher sans être initié. Drissa, un garçon du quartier, y touche une nuit : le son sort faux et réveille tout le quartier. Le vieux Sanou refuse de le punir et décide de lui apprendre. Drissa passe sept ans à porter les calebasses et à écouter. La huitième année, le son sort juste.",
+   "persos": {
+    "drissa": "Drissa est un garçon du quartier qui rêve du balafon depuis des années. Il n'est pas voleur : il est impatient, ce qui n'est pas la même faute.",
+    "sanou": "Le vieux Sanou garde l'instrument. Sa décision est la clé du conte : plutôt que de punir, il transmet."
+   },
+   "faq": [
+    {
+     "k": [
+      "faux",
+      "sonne",
+      "son"
+     ],
+     "r": "Le son sort faux parce que Drissa n'a pas été initié. Le conte ne dit pas que l'instrument est magique : il dit qu'un balafon ne sonne juste que dans des mains qui savent."
+    },
+    {
+     "k": [
+      "punir",
+      "punition",
+      "chasse",
+      "decide"
+     ],
+     "r": "Le vieux Sanou refuse de le chasser. Il dit : il a volé un son, rendons-lui les autres, et il ne volera plus rien. C'est le cœur du conte."
+    },
+    {
+     "k": [
+      "sept",
+      "annees",
+      "ans",
+      "attend",
+      "apprend"
+     ],
+     "r": "Sept années à porter les calebasses, tailler les lames et écouter sans jouer. La huitième, on lui met les baguettes dans les mains."
+    },
+    {
+     "k": [
+      "balafon",
+      "instrument",
+      "quoi"
+     ],
+     "r": "Le balafon est fait de lames de bois posées sur des calebasses qui font résonner chaque note. Celui de Sya ne sert pas à amuser : il parle, il annonce et il pleure les morts."
+    }
+   ]
+  },
+  "etoiles": {
+   "resume": "Bakary, dix ans, veut compter toutes les étoiles du ciel. Il recommence chaque soir pendant une saison entière, sans jamais y arriver. Une nuit, sa mère tombe malade ; il reste près d'elle et compte ses respirations jusqu'au matin. Il n'a jamais repris le compte des étoiles. Devenu grand, il tient les comptes du plus grand marché de la ville, et lève les yeux chaque soir sans compter.",
+   "persos": {
+    "bakary": "Bakary est un enfant qui compte tout : les cauris, les pas, les grains. C'est sa façon de comprendre le monde.",
+    "mere": "Sa mère ne l'empêche pas de compter les étoiles. Elle sait ce qu'il finira par découvrir tout seul."
+   },
+   "faq": [
+    {
+     "k": [
+      "arrete",
+      "arrêté",
+      "pourquoi",
+      "abandonne"
+     ],
+     "r": "Il n'a pas arrêté parce que c'était trop difficile. Il a compris cette nuit-là ce qui valait la peine d'être compté : les étoiles ne manquent jamais à l'appel, une mère si."
+    },
+    {
+     "k": [
+      "respiration",
+      "nuit",
+      "malade"
+     ],
+     "r": "Cette nuit-là, il a compté les respirations de sa mère jusqu'au matin. Quand le jour s'est levé, elle respirait encore, et il avait perdu le compte depuis longtemps."
+    },
+    {
+     "k": [
+      "metier",
+      "grand",
+      "marche",
+      "devenu"
+     ],
+     "r": "Devenu grand, il est devenu celui qui tient les comptes du plus grand marché de la ville. On disait qu'il ne se trompait jamais d'un seul cauri."
+    }
+   ]
+  }
+ },
+ "cats": [
+  [
+   "tous",
+   "Tous les contes"
+  ],
+  [
+   "animaux",
+   "Contes d'animaux"
+  ],
+  [
+   "sagesse",
+   "Contes de sagesse"
+  ],
+  [
+   "mossi",
+   "Contes mossi"
+  ],
+  [
+   "dioula",
+   "Contes dioula"
+  ],
+  [
+   "legendes",
+   "Légendes du pays"
+  ]
+ ],
+ "pays": [
+  {
+   "c": "bf",
+   "n": "Burkina Faso",
+   "z": "ouest"
+  },
+  {
+   "c": "ml",
+   "n": "Mali",
+   "z": "ouest"
+  },
+  {
+   "c": "sn",
+   "n": "Sénégal",
+   "z": "ouest"
+  },
+  {
+   "c": "ci",
+   "n": "Côte d'Ivoire",
+   "z": "ouest"
+  },
+  {
+   "c": "ne",
+   "n": "Niger",
+   "z": "ouest"
+  },
+  {
+   "c": "gn",
+   "n": "Guinée",
+   "z": "ouest"
+  },
+  {
+   "c": "bj",
+   "n": "Bénin",
+   "z": "ouest"
+  },
+  {
+   "c": "tg",
+   "n": "Togo",
+   "z": "ouest"
+  },
+  {
+   "c": "cm",
+   "n": "Cameroun",
+   "z": "centre"
+  },
+  {
+   "c": "cd",
+   "n": "RD Congo",
+   "z": "centre"
+  },
+  {
+   "c": "cg",
+   "n": "Congo",
+   "z": "centre"
+  },
+  {
+   "c": "ga",
+   "n": "Gabon",
+   "z": "centre"
+  },
+  {
+   "c": "td",
+   "n": "Tchad",
+   "z": "centre"
+  },
+  {
+   "c": "cf",
+   "n": "Centrafrique",
+   "z": "centre"
+  }
+ ],
+ "lexique": {
+  "karite": "Le karité est un arbre de la savane. Ses noix donnent un beurre qu'on utilise pour cuisiner et pour la peau. Son ombre est la plus fraîche de la brousse.",
+  "baobab": "Le baobab est l'arbre au tronc énorme, qu'on appelle parfois l'arbre à l'envers parce que ses branches ressemblent à des racines. Il peut vivre mille ans.",
+  "bogolan": "Le bogolan est un tissu teint avec de la boue fermentée, couvert de motifs géométriques noirs et blancs. C'est un art très ancien au Burkina et au Mali.",
+  "naba": "Le Naba est le roi, chez les Mossi. Le plus grand de tous s'appelle le Mogho Naba, et il siège à Ouagadougou.",
+  "mossi": "Les Mossi sont le peuple le plus nombreux du Burkina Faso. Leurs royaumes existent depuis plus de cinq cents ans.",
+  "dioula": "Le dioula est une langue de commerce parlée dans l'ouest du Burkina et dans les pays voisins. Les Dioula sont réputés marchands et voyageurs.",
+  "griot": "Le griot est celui qui garde la mémoire : il connaît les histoires, les généalogies, les chansons. Il raconte, et sans lui on oublierait.",
+  "cauri": "Les cauris sont de petits coquillages blancs. Autrefois ils servaient de monnaie, aujourd'hui ils servent à décorer et à lire l'avenir.",
+  "banco": "Le banco est un mélange de terre et de paille avec lequel on bâtit les maisons. Il garde le frais en saison chaude.",
+  "concession": "Une concession, c'est l'ensemble des cases d'une même famille, réunies autour d'une cour.",
+  "to": "Le tô est le plat de tous les jours : une pâte de mil ou de maïs qu'on mange avec une sauce.",
+  "arachide": "L'arachide, c'est la cacahuète. On la cultive partout au Burkina, et on en fait de la pâte pour les sauces.",
+  "brousse": "La brousse, c'est la savane : de l'herbe sèche, des arbres épars, et beaucoup d'animaux qu'on ne voit pas.",
+  "calebasse": "La calebasse est une grosse courge séchée et vidée. On s'en sert comme récipient, comme louche, ou comme instrument de musique.",
+  "fromager": "Le fromager est un arbre géant aux racines en forme d'ailes. On dit que les esprits s'y reposent.",
+  "pagne": "Le pagne est une pièce de tissu qu'on noue autour de la taille. Chaque motif a un nom et parfois un message.",
+  "balafon": "Le balafon est fait de lames de bois posées sur des calebasses qui font résonner chaque note. C'est l'un des plus vieux instruments d'Afrique de l'Ouest.",
+  "sya": "Sya est l'ancien nom de Bobo-Dioulasso, la deuxième ville du Burkina Faso. Son vieux quartier porte encore ce nom.",
+  "bazoule": "Bazoulé est un village à une trentaine de kilomètres de Ouagadougou, connu pour ses crocodiles qui vivent parmi les habitants.",
+  "crocodile": "Le crocodile est craint partout, sauf à Bazoulé où il est traité comme un parent, en souvenir d'un pacte très ancien.",
+  "yennenga": "Yennenga est la princesse fondatrice du peuple mossi. Cavalière et guerrière, elle reste un symbole du Burkina Faso."
+ },
+ "docs": {
+  "cgu": {
+   "titre": "Conditions générales",
+   "sections": [
+    {
+     "n": "ARTICLE 1",
+     "h": "Objet",
+     "p": [
+      "Les présentes conditions générales régissent l'accès et l'utilisation du service {{produit}}, service à valeur ajoutée accessible depuis un téléphone mobile, ainsi que les conditions de souscription aux formules d'abonnement proposées.",
+      "Toute utilisation du service vaut acceptation pleine et entière des présentes conditions."
+     ]
+    },
+    {
+     "n": "ARTICLE 2",
+     "h": "Éditeur du service",
+     "p": [
+      "Le service est édité par {{nom}}, société par actions simplifiée de droit ivoirien, dont le siège social est situé à <span class=\"trou\">adresse complète à compléter</span>, Cocody, Abidjan, Côte d’Ivoire.",
+      "Registre du commerce et du crédit mobilier : <span class=\"trou\">RCCM à compléter</span> — Compte contribuable : <span class=\"trou\">numéro à compléter</span>.",
+      "Directeur de la publication : <span class=\"trou\">nom à compléter</span>.",
+      "Le service est distribué dans ce pays en partenariat avec {{operateur}}."
+     ]
+    },
+    {
+     "n": "ARTICLE 3",
+     "h": "Description du service",
+     "p": [
+      "{{produit}} donne accès à une bibliothèque de contes d'Afrique de l'Ouest, adaptés et illustrés, consultables sous deux formes : une version racontée et interactive, et une version lue page par page.",
+      "Le service comprend également la création de profils, le suivi de progression, des quiz et un espace de questions sur le contenu des contes.",
+      "L'éditeur enrichit le catalogue de nouveaux contes à intervalles réguliers, sans que cela ouvre droit à modification du prix de l'abonnement en cours."
+     ]
+    },
+    {
+     "n": "ARTICLE 4",
+     "h": "Accès et essai gratuit",
+     "p": [
+      "Le service est accessible depuis un navigateur mobile ou un ordinateur, sous réserve de disposer d'une connexion internet. Les frais de connexion restent à la charge de l'utilisateur, selon les tarifs de son opérateur.",
+      "Un premier conte est accessible gratuitement, sans souscription ni communication du numéro de téléphone. Au-delà, l'accès à la bibliothèque nécessite un abonnement."
+     ]
+    },
+    {
+     "n": "ARTICLE 5",
+     "h": "Souscription",
+     "p": [
+      "La souscription s'effectue en renseignant un numéro de téléphone mobile burkinabè, puis en saisissant un code de confirmation reçu par SMS. Cette double étape vaut consentement exprès de l'utilisateur à la souscription et au prélèvement correspondant.",
+      "L'utilisateur choisit ensuite un pseudonyme. Il garantit disposer du pouvoir de souscrire, ou de l'autorisation du titulaire de la ligne s'il n'en est pas lui-même titulaire."
+     ]
+    },
+    {
+     "n": "ARTICLE 6",
+     "h": "Tarifs et paiement",
+     "p": [
+      "Les formules proposées sont les suivantes : pass jour à 50 F CFA, pass semaine à 200 F CFA, pass mois à 500 F CFA. Ces montants s'entendent toutes taxes comprises.",
+      "Le montant est prélevé sur le crédit téléphonique de la ligne renseignée, par l'intermédiaire de {{operateur}}. En cas de crédit insuffisant, l'abonnement est suspendu jusqu'au prochain prélèvement réussi, sans que cela constitue une résiliation.",
+      "L'éditeur peut modifier ses tarifs. Toute modification est notifiée par SMS au moins <span class=\"trou\">délai à confirmer avec l’opérateur</span> avant son entrée en vigueur, et ne s'applique pas à la période déjà payée."
+     ]
+    },
+    {
+     "n": "ARTICLE 7",
+     "h": "Reconduction et résiliation",
+     "p": [
+      "L'abonnement est reconduit automatiquement à échéance, pour une durée identique, jusqu'à résiliation par l'utilisateur.",
+      "La résiliation est possible à tout moment et sans motif, par l'un des deux moyens suivants : envoi du mot-clé {{motStop}} au {{courtCode}}, ou bouton « Résilier mon abonnement » dans la rubrique Mon abonnement du service.",
+      "La résiliation prend effet à la fin de la période en cours. Les sommes déjà prélevées ne sont pas remboursées, sauf en cas de prélèvement erroné imputable à l'éditeur.",
+      "L'éditeur peut suspendre ou résilier l'accès en cas d'usage frauduleux, après notification."
+     ]
+    },
+    {
+     "n": "ARTICLE 8",
+     "h": "Utilisateurs mineurs",
+     "p": [
+      "Le service est conçu pour un usage familial et destiné en premier lieu aux enfants. La souscription est réservée aux personnes majeures ou aux mineurs disposant de l'autorisation de leur représentant légal.",
+      "Les profils créés dans le service n'exigent qu'un prénom ou un pseudonyme, à l'exclusion de toute autre donnée personnelle. L'éditeur recommande aux parents de ne pas y saisir de nom complet.",
+      "Aucune fonctionnalité ne permet à un utilisateur d'entrer en contact avec un autre utilisateur."
+     ]
+    },
+    {
+     "n": "ARTICLE 9",
+     "h": "Propriété intellectuelle",
+     "p": [
+      "Les contes proposés sont issus du patrimoine oral d'Afrique de l'Ouest et relèvent du domaine public. Leur adaptation, leur mise en forme, les illustrations, les textes, l'interface et les éléments graphiques du service sont la propriété exclusive de {{nom}} ou de ses ayants droit.",
+      "L'utilisateur bénéficie d'un droit d'usage personnel et non exclusif, pour la durée de son abonnement. Toute reproduction, diffusion ou exploitation commerciale est interdite sans autorisation écrite préalable."
+     ]
+    },
+    {
+     "n": "ARTICLE 10",
+     "h": "Disponibilité et responsabilité",
+     "p": [
+      "L'éditeur met en œuvre les moyens raisonnables pour assurer la disponibilité du service, sans garantir une continuité absolue. Des interruptions peuvent survenir pour maintenance, ou du fait du réseau de l'opérateur.",
+      "L'éditeur ne saurait être tenu responsable des dommages résultant d'une interruption du réseau, d'un dysfonctionnement du terminal de l'utilisateur, ou d'un usage non conforme du service.",
+      "La progression, les profils et les points étant enregistrés sur le terminal, l'éditeur n'est pas responsable de leur perte en cas de suppression des données du navigateur ou de changement d'appareil."
+     ]
+    },
+    {
+     "n": "ARTICLE 11",
+     "h": "Service client",
+     "p": [
+      "Toute réclamation peut être adressée à {{courriel}} ou au {{tel}}.",
+      "L'éditeur s'engage à répondre dans un délai de <span class=\"trou\">délai à définir</span> jours ouvrés."
+     ]
+    },
+    {
+     "n": "ARTICLE 12",
+     "h": "Modification des conditions",
+     "p": [
+      "L'éditeur peut modifier les présentes conditions. Les utilisateurs abonnés en sont informés par SMS ou par notification dans le service. La poursuite de l'utilisation après notification vaut acceptation. À défaut, l'utilisateur peut résilier sans frais."
+     ]
+    },
+    {
+     "n": "ARTICLE 13",
+     "h": "Droit applicable et litiges",
+     "p": [
+      "Les présentes conditions sont soumises au droit ivoirien.",
+      "En cas de litige, les parties rechercheront une solution amiable. À défaut, compétence est attribuée aux juridictions compétentes d’Abidjan.",
+      "Les dispositions d’ordre public protectrices du consommateur du pays de résidence de l’utilisateur demeurent applicables."
+     ]
+    }
+   ]
+  },
+  "confidentialite": {
+   "titre": "Confidentialité",
+   "sections": [
+    {
+     "n": "",
+     "h": "Notre principe",
+     "p": [
+      "{{produit}} collecte le strict minimum. Le service fonctionne presque entièrement sur votre téléphone : ce que vous écoutez, les prénoms des profils et vos points ne quittent pas l'appareil.",
+      "Seul le numéro de téléphone est nécessaire, et uniquement pour gérer l'abonnement."
+     ]
+    },
+    {
+     "n": "1",
+     "h": "Qui traite vos données",
+     "p": [
+      "{{nom}}, {{ville}}, est responsable du traitement.",
+      "Contact pour toute question relative aux données : {{courriel}}. Délégué à la protection des données : <span class=\"trou\">à désigner si requis</span>."
+     ]
+    },
+    {
+     "n": "2",
+     "h": "Ce que nous collectons",
+     "p": [
+      "<b>Sur nos serveurs et ceux de l'opérateur</b> — le numéro de téléphone de la ligne abonnée, le pseudonyme choisi, la formule souscrite, les dates de souscription et d'échéance, et l'historique des prélèvements.",
+      "<b>Sur votre téléphone uniquement</b> — les prénoms et avatars des profils, les contes écoutés ou lus, les points, les badges et la série de soirs. Ces informations ne nous sont jamais transmises.",
+      "Nous ne collectons ni adresse, ni localisation, ni carnet de contacts, ni photo, ni enregistrement sonore. Lorsque vous utilisez le micro pour répondre au conteur, la reconnaissance vocale est effectuée par votre navigateur et le son n'est pas envoyé à l'éditeur."
+     ]
+    },
+    {
+     "n": "3",
+     "h": "Pourquoi nous les collectons",
+     "p": [
+      "Identifier l'abonné et gérer l'abonnement ; effectuer les prélèvements et les renouvellements ; envoyer les SMS de confirmation, d'échéance et de résiliation ; répondre aux réclamations ; établir des statistiques d'usage anonymes."
+     ]
+    },
+    {
+     "n": "4",
+     "h": "Sur quel fondement",
+     "p": [
+      "L'exécution du contrat d'abonnement, pour la gestion du service et la facturation.",
+      "Votre consentement, matérialisé par la saisie du code reçu par SMS.",
+      "Le respect d'obligations légales et comptables, pour la conservation des preuves de transaction."
+     ]
+    },
+    {
+     "n": "5",
+     "h": "Qui y a accès",
+     "p": [
+      "{{operateur}}, en tant qu'opérateur assurant la facturation et l'acheminement des SMS.",
+      "L'hébergeur du service, <span class=\"trou\">hébergeur à préciser</span>.",
+      "Les autorités compétentes, sur réquisition légale.",
+      "Vos données ne sont ni vendues, ni louées, ni cédées à des fins publicitaires."
+     ]
+    },
+    {
+     "n": "6",
+     "h": "Combien de temps",
+     "p": [
+      "Numéro et données d'abonnement : pendant toute la durée de l'abonnement, puis <span class=\"trou\">durée à confirmer</span> mois après la résiliation.",
+      "Données de facturation : pendant la durée légale de conservation comptable.",
+      "Données stockées sur le téléphone : jusqu'à ce que vous les supprimiez, depuis le menu du service ou en effaçant les données du navigateur."
+     ]
+    },
+    {
+     "n": "7",
+     "h": "Les enfants",
+     "p": [
+      "Le service s'adresse aux familles. Aucune donnée d'identification d'enfant n'est collectée : les profils n'exigent qu'un prénom, conservé sur le téléphone.",
+      "Aucun profilage publicitaire, aucune mise en relation entre utilisateurs, aucune collecte de contenu produit par l'enfant."
+     ]
+    },
+    {
+     "n": "8",
+     "h": "Vos droits",
+     "p": [
+      "Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité sur les données vous concernant. Vous pouvez retirer votre consentement à tout moment en résiliant votre abonnement.",
+      "Pour exercer ces droits, écrivez à {{courriel}} depuis la ligne concernée, ou appelez le {{tel}}.",
+      "Vous pouvez également saisir l'autorité burkinabè de protection des données à caractère personnel."
+     ]
+    },
+    {
+     "n": "9",
+     "h": "Sécurité",
+     "p": [
+      "Les échanges avec le service sont chiffrés. L'accès aux données d'abonnement est restreint aux personnes habilitées. En cas de violation de données susceptible d'engendrer un risque, les personnes concernées et l'autorité compétente sont informées dans les délais prévus par la loi."
+     ]
+    }
+   ]
+  },
+  "cookies": {
+   "titre": "Cookies",
+   "sections": [
+    {
+     "n": "",
+     "h": "En résumé",
+     "p": [
+      "{{produit}} n'utilise <b>aucun cookie publicitaire</b>, aucun traceur tiers, aucun outil de mesure d'audience externe. Rien de ce que vous faites dans le service n'est transmis à un annonceur.",
+      "Le service utilise en revanche le <b>stockage local</b> de votre navigateur, qui est une technologie voisine mais différente. Voici précisément à quoi il sert."
+     ]
+    },
+    {
+     "n": "1",
+     "h": "Ce que nous stockons sur votre appareil",
+     "p": [
+      "<b>Vos profils</b> — prénoms, avatars choisis, et pour chacun : les contes découverts, les points, les badges et la série de soirs.",
+      "<b>Votre abonnement</b> — la formule en cours, le numéro associé et la date d'échéance, afin que le service sache que vous y avez accès sans redemander le code à chaque ouverture.",
+      "<b>Vos préférences</b> — notamment l'activation de la lecture à voix haute."
+     ]
+    },
+    {
+     "n": "2",
+     "h": "Ce que nous ne faisons pas",
+     "p": [
+      "Nous ne déposons pas de cookie tiers, ne suivons pas votre navigation en dehors du service, n'établissons pas de profil publicitaire et ne partageons ces informations avec personne.",
+      "Le stockage local, contrairement à un cookie, n'est jamais envoyé automatiquement au serveur."
+     ]
+    },
+    {
+     "n": "3",
+     "h": "Combien de temps",
+     "p": [
+      "Ces informations restent sur votre appareil jusqu'à ce que vous les effaciez. Elles ne sont soumises à aucune expiration automatique."
+     ]
+    },
+    {
+     "n": "4",
+     "h": "Comment les supprimer",
+     "p": [
+      "Depuis le service : menu, puis « Remettre ma progression à zéro » pour effacer la progression du profil en cours.",
+      "Depuis votre navigateur : effacer les données de navigation pour ce site. Attention, cela supprime aussi les profils et la progression, qui ne pourront pas être récupérés.",
+      "La suppression du stockage local n'interrompt pas l'abonnement, qui reste rattaché à votre numéro."
+     ]
+    }
+   ]
+  },
+  "contact": {
+   "titre": "Contact",
+   "sections": [
+    {
+     "n": "",
+     "h": "Nous écrire",
+     "p": [
+      "Pour une question sur un abonnement, un prélèvement, un contenu, ou pour signaler un problème technique, l'équipe de {{nom}} est joignable :",
+      "<b>Courriel</b> — {{courriel}}",
+      "<b>Téléphone</b> — {{tel}}",
+      "<b>Adresse</b> — <span class=\"trou\">adresse complète à compléter</span>, {{ville}}"
+     ]
+    },
+    {
+     "n": "",
+     "h": "Résilier",
+     "p": [
+      "La résiliation ne nécessite aucune démarche auprès du service client. Envoyez {{motStop}} au {{courtCode}}, ou utilisez le bouton prévu dans la rubrique Mon abonnement."
+     ]
+    },
+    {
+     "n": "",
+     "h": "Proposer un conte",
+     "p": [
+      "Vous connaissez une histoire de chez vous que vous aimeriez voir figurer dans la bibliothèque ? Écrivez-nous. Les contes du patrimoine oral appartiennent à tout le monde, et les meilleurs nous viennent souvent des auditeurs."
+     ]
+    }
+   ]
+  }
+ },
+ "jaquettes": {},
+ "contes": [
+  {
+   "id": "lievre",
+   "titre": "Le Lièvre et l'Hyène",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "karite",
+   "accroche": "La ruse du petit contre la faim du grand.",
+   "morale": "La ruse du faible vaut mieux que la force de l'orgueilleux. Mais celui qui trompe trop souvent finit par manger seul.",
+   "etapes": [
+    {
+     "d": "savane",
+     "t": "<b>Conte, conte !</b> C'est ainsi qu'on commence, chez nous. À toi de répondre."
+    },
+    {
+     "d": "savane",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Voilà une belle voix ! Approche du feu, petit."
+       },
+       {
+        "t": "Raconte, grand-père.",
+        "bon": true,
+        "s": "Ha ! Poli, en plus. Assieds-toi, l'histoire commence."
+       }
+      ]
+     }
+    },
+    {
+     "d": "savane",
+     "t": "Il y a très longtemps, la saison sèche s'était installée sur la brousse. Les puits étaient à sec, l'herbe jaunie, et tous les animaux avaient faim.",
+     "effet": "poussiere"
+    },
+    {
+     "d": "karite",
+     "t": "<b>Hyène</b> se traînait sous le soleil, le ventre creux. Elle croisa <b>Lièvre</b>, tranquille à l'ombre d'un karité, en train de croquer quelque chose de bon.",
+     "scene": [
+      {
+       "p": "lievre-mange",
+       "x": 8,
+       "t": 42,
+       "a": "mache"
+      },
+      {
+       "p": "hyene",
+       "x": 44,
+       "t": 56,
+       "a": "arrive",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "karite",
+     "t": "— Lièvre ! gronda Hyène. Où as-tu trouvé à manger ? Dis-le-moi, ou je te croque.",
+     "scene": [
+      {
+       "p": "lievre",
+       "x": 6,
+       "t": 50,
+       "a": "respire"
+      },
+      {
+       "p": "hyene-menace",
+       "x": 38,
+       "t": 56,
+       "a": "menace",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "karite",
+     "choix": {
+      "q": "Que devrait répondre Lièvre ?",
+      "o": [
+       {
+        "t": "Dire la vérité tout de suite",
+        "bon": false,
+        "s": "Hmm… Lièvre est bien trop malin. S'il dit tout, Hyène mange tout et il ne reste rien."
+       },
+       {
+        "t": "Inventer une ruse",
+        "bon": true,
+        "s": "Ah ! Tu connais déjà Lièvre, toi. C'est exactement ce qu'il fit."
+       },
+       {
+        "t": "S'enfuir en courant",
+        "bon": false,
+        "s": "Il aurait pu ! Mais Lièvre préfère sa tête à ses pattes. Écoute plutôt."
+       }
+      ]
+     }
+    },
+    {
+     "d": "champ",
+     "t": "— Grande Hyène, dit Lièvre en s'inclinant, j'ai trouvé le champ d'arachides du vieux Sanou. Mais il le garde jour et nuit.",
+     "scene": [
+      {
+       "p": "lievre-incline",
+       "x": 8,
+       "t": 46,
+       "a": "respire"
+      },
+      {
+       "p": "hyene",
+       "x": 42,
+       "t": 56,
+       "a": "halete",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "champ",
+     "t": "— Il dort à partir de minuit, ajouta Lièvre. Va-y à ce moment-là. Il faudra <b>creuser un trou sous la clôture</b>. Et surtout… ne mange pas trop.",
+     "scene": [
+      {
+       "p": "lievre-incline",
+       "x": 8,
+       "t": 46,
+       "a": "sautille"
+      },
+      {
+       "p": "hyene",
+       "x": 42,
+       "t": 56,
+       "a": "halete",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "champ",
+     "choix": {
+      "q": "Pourquoi Lièvre dit-il « ne mange pas trop » ?",
+      "o": [
+       {
+        "t": "Pour protéger le champ du vieux Sanou",
+        "bon": false,
+        "s": "Oh non ! Lièvre se moque bien du champ. Il a une autre idée derrière la tête."
+       },
+       {
+        "t": "Parce qu'un ventre trop plein ne repasse pas par le trou",
+        "bon": true,
+        "s": "Exactement ! Tu es aussi rusé que Lièvre. C'était tout son plan."
+       },
+       {
+        "t": "Pour en garder pour lui",
+        "bon": false,
+        "s": "Pas tout à fait. Lièvre pense à quelque chose de plus malin encore."
+       }
+      ]
+     }
+    },
+    {
+     "d": "nuit",
+     "t": "À minuit, Hyène creusa son trou et se glissa dans le champ. Les arachides étaient grasses et sucrées. Elle mangea… et mangea… et mangea encore.",
+     "scene": [
+      {
+       "p": "hyene-creuse",
+       "x": 26,
+       "t": 46,
+       "a": "creuse"
+      }
+     ]
+    },
+    {
+     "d": "nuit",
+     "t": "Quand le coq chanta, Hyène voulut ressortir. Mais son ventre était devenu si gros qu'il <b>resta coincé dans le trou</b> !",
+     "scene": [
+      {
+       "p": "hyene-coince",
+       "x": 30,
+       "t": 56,
+       "a": "debat"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "Au lever du jour, le vieux Sanou trouva Hyène plantée là, moitié dedans, moitié dehors. Il alla chercher son bâton, et le village entier vint rire.",
+     "effet": "oiseaux",
+     "scene": [
+      {
+       "p": "hyene-coince",
+       "x": 30,
+       "t": 52,
+       "a": "debat"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "choix": {
+      "q": "Et Lièvre, pendant ce temps ?",
+      "o": [
+       {
+        "t": "Il dormait tranquillement",
+        "bon": false,
+        "s": "Presque ! Mais un lièvre ne dort jamais quand il y a mieux à faire."
+       },
+       {
+        "t": "Il mangeait dans le champ, par l'autre côté",
+        "bon": true,
+        "s": "Voilà ! Il connaissait une brèche que personne ne voyait. Il s'est servi pendant que tout le monde regardait Hyène."
+       }
+      ]
+     }
+    },
+    {
+     "d": "savane",
+     "t": "Depuis ce jour, Hyène porte le dos courbé — c'est le bâton du vieux Sanou, disent les anciens. Et elle ne fait plus confiance à Lièvre.",
+     "scene": [
+      {
+       "p": "hyene-courbee",
+       "x": 0,
+       "t": 46,
+       "a": "traverse",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "savane",
+     "t": "Mais Lièvre, lui, a fini par n'avoir plus un seul ami dans la brousse. Voilà où mène la ruse quand on en abuse.",
+     "scene": [
+      {
+       "p": "lievre-part",
+       "x": 24,
+       "t": 52,
+       "a": "part"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Pourquoi Lièvre conseille-t-il à Hyène de ne pas trop manger ?",
+     "r": [
+      "Pour qu'elle puisse ressortir par le trou",
+      "Pour lui laisser sa part",
+      "Pour ne pas réveiller le vieux Sanou"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Comment Hyène entre-t-elle dans le champ ?",
+     "r": [
+      "Par la porte",
+      "En creusant un trou sous la clôture",
+      "En sautant par-dessus"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que fait Lièvre pendant qu'Hyène est coincée ?",
+     "r": [
+      "Il prévient le village",
+      "Il dort",
+      "Il se sert dans le champ par une autre brèche"
+     ],
+     "b": 2
+    },
+    {
+     "q": "Quelle est la leçon du conte ?",
+     "r": [
+      "Il faut toujours manger vite",
+      "La ruse vaut mieux que la force, mais trop ruser isole",
+      "Il ne faut jamais avoir faim"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "tortue",
+   "titre": "La Tortue et l'Oiseau",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "ciel",
+   "accroche": "Une carapace fêlée, et on sait pourquoi.",
+   "morale": "Qui emprunte les plumes des autres finit par tomber de haut. La confiance se rend, elle ne se prend pas.",
+   "etapes": [
+    {
+     "d": "savane",
+     "t": "<b>Conte, conte !</b> Réponds-moi, sinon les mots ne sortiront pas."
+    },
+    {
+     "d": "savane",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute alors pourquoi la tortue porte une carapace fendue."
+       },
+       {
+        "t": "Je t'écoute, conteur.",
+        "bon": true,
+        "s": "Alors ouvre grand tes oreilles."
+       }
+      ]
+     }
+    },
+    {
+     "d": "savane",
+     "t": "Autrefois, <b>Tortue</b> avait une carapace lisse et brillante comme un canari neuf. Et elle avait la langue la plus douce de toute la brousse.",
+     "scene": [
+      {
+       "p": "tortue",
+       "x": 32,
+       "t": 44,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "t": "Un jour, les oiseaux furent invités à un grand festin dans le ciel. Tortue les entendit s'organiser et vint les trouver.",
+     "effet": "oiseaux",
+     "scene": [
+      {
+       "p": "calao",
+       "x": 12,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "tortue",
+       "x": 52,
+       "t": 44,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "t": "— Emmenez-moi, dit-elle. Je saurai parler pour vous là-haut, moi qui connais les belles paroles.",
+     "scene": [
+      {
+       "p": "tortue-parle",
+       "x": 14,
+       "t": 40,
+       "a": "sautille"
+      },
+      {
+       "p": "calao",
+       "x": 56,
+       "t": 52,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "choix": {
+      "q": "Que devraient faire les oiseaux ?",
+      "o": [
+       {
+        "t": "Refuser, elle n'a pas d'ailes",
+        "bon": true,
+        "s": "C'était la sagesse même. Mais Tortue parlait si bien qu'ils se laissèrent attendrir."
+       },
+       {
+        "t": "Accepter, chacun lui prête une plume",
+        "bon": false,
+        "s": "C'est bien ce qu'ils firent… et tu vas voir ce qu'il leur en coûta."
+       }
+      ]
+     }
+    },
+    {
+     "d": "ciel",
+     "t": "Chaque oiseau donna une plume. Tortue s'en fit deux ailes, et la voilà qui monta avec eux dans le ciel.",
+     "effet": "oiseaux",
+     "scene": [
+      {
+       "p": "tortue-vole",
+       "x": 26,
+       "t": 46,
+       "a": "flotte"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "t": "En chemin, elle proposa : — Là-haut, il est d'usage de prendre un nouveau nom. Moi, je m'appellerai <b>Vous-Tous</b>.",
+     "scene": [
+      {
+       "p": "tortue-vole",
+       "x": 26,
+       "t": 46,
+       "a": "flotte"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "choix": {
+      "q": "Pourquoi choisit-elle ce nom-là ?",
+      "o": [
+       {
+        "t": "Pour faire honneur à ses amis",
+        "bon": false,
+        "s": "Elle le leur dit ! Mais Tortue avait déjà calculé son affaire."
+       },
+       {
+        "t": "Parce que les hôtes diront « ceci est pour vous tous »",
+        "bon": true,
+        "s": "Ha ! Tu as l'esprit vif ce soir. C'était exactement le piège."
+       }
+      ]
+     }
+    },
+    {
+     "d": "palais",
+     "t": "Au festin, les hôtes déposèrent les plats en disant : — Ce repas est pour vous tous ! Et Tortue répondit : — C'est mon nom. Tout est donc pour moi.",
+     "scene": [
+      {
+       "p": "tortue-parle",
+       "x": 14,
+       "t": 40,
+       "a": "sautille"
+      },
+      {
+       "p": "calao",
+       "x": 54,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "palais",
+     "t": "Elle mangea le mil, la viande, le miel, jusqu'à ce que son ventre touche le sol. Les oiseaux, eux, regardèrent les plats vides.",
+     "scene": [
+      {
+       "p": "tortue-gavee",
+       "x": 24,
+       "t": 44,
+       "a": "halete"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "t": "Au retour, chaque oiseau reprit sa plume. Un par un. Tortue se retrouva nue au bord du ciel.",
+     "scene": [
+      {
+       "p": "tortue",
+       "x": 20,
+       "t": 42,
+       "a": "respire"
+      },
+      {
+       "p": "calao-vexe",
+       "x": 56,
+       "t": 48,
+       "a": "menace",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "choix": {
+      "q": "Un seul oiseau accepte de l'aider. Que lui demande Tortue ?",
+      "o": [
+       {
+        "t": "De prévenir sa femme d'étaler les pagnes au sol",
+        "bon": true,
+        "s": "Oui. Mais l'oiseau, encore fâché, dit autre chose…"
+       },
+       {
+        "t": "De la redescendre sur son dos",
+        "bon": false,
+        "s": "Aucun oiseau n'aurait porté ce ventre-là ! Elle demanda autre chose."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "L'oiseau vola jusqu'au village et annonça : — Sortez les pilons, les houes et les pierres, votre mère arrive !",
+     "scene": [
+      {
+       "p": "calao-vole",
+       "x": 30,
+       "t": 50,
+       "a": "sautille"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Tortue sauta. Elle tomba sur les pierres, et sa belle carapace <b>éclata en mille morceaux</b>.",
+     "effet": "secousse",
+     "scene": [
+      {
+       "p": "tortue-tombe",
+       "x": 28,
+       "t": 46,
+       "a": "chute"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Un guérisseur les recolla un à un. C'est pour cela qu'aujourd'hui encore, la carapace de la tortue est couverte de coutures.",
+     "scene": [
+      {
+       "p": "tortue-fissuree",
+       "x": 26,
+       "t": 46,
+       "a": "respire"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Comment Tortue parvient-elle à voler ?",
+     "r": [
+      "Elle grimpe à un baobab",
+      "Chaque oiseau lui prête une plume",
+      "Elle se cache dans un panier"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quel nom se donne-t-elle dans le ciel ?",
+     "r": [
+      "Vous-Tous",
+      "Grand-Ventre",
+      "Personne"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Pourquoi sa carapace est-elle craquelée ?",
+     "r": [
+      "Le soleil l'a séchée",
+      "Hyène l'a mordue",
+      "Elle est tombée du ciel sur des pierres"
+     ],
+     "b": 2
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il faut savoir voler",
+      "Emprunter aux autres pour les tromper finit mal",
+      "Les oiseaux sont rancuniers"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "cameleon",
+   "titre": "Le Caméléon et le Serpent",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Le plus lent connaît le chemin.",
+   "morale": "La vitesse fait gagner la course d'un jour. La patience gagne celle d'une vie.",
+   "etapes": [
+    {
+     "d": "foret",
+     "t": "<b>Conte, conte !</b> Ce soir, l'histoire est courte mais elle marche lentement. Comme son héros."
+    },
+    {
+     "d": "foret",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute la brousse."
+       },
+       {
+        "t": "Vas-y doucement, conteur.",
+        "bon": true,
+        "s": "Ha ! Tu as compris avant même que je commence."
+       }
+      ]
+     }
+    },
+    {
+     "d": "foret",
+     "t": "<b>Serpent</b> était le plus rapide de la forêt et il ne laissait personne l'oublier. Il glissait entre les racines en sifflant : — Qui donc ira plus vite que moi ?",
+     "scene": [
+      {
+       "p": "serpent-fier",
+       "x": 34,
+       "t": 50,
+       "a": "menace"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "<b>Caméléon</b>, accroché à sa branche, leva une patte. Puis l'autre. Puis la troisième. — Moi, dit-il enfin.",
+     "scene": [
+      {
+       "p": "cameleon",
+       "x": 16,
+       "t": 44,
+       "a": "respire"
+      },
+      {
+       "p": "serpent-fier",
+       "x": 56,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "La forêt entière éclata de rire. On décida d'une course : du fromager jusqu'au fleuve, avant la tombée du jour.",
+     "scene": [
+      {
+       "p": "cameleon",
+       "x": 14,
+       "t": 42,
+       "a": "respire"
+      },
+      {
+       "p": "serpent-fier",
+       "x": 54,
+       "t": 48,
+       "a": "menace",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "choix": {
+      "q": "Comment Caméléon compte-t-il s'y prendre ?",
+      "o": [
+       {
+        "t": "Courir plus vite qu'il ne l'a jamais fait",
+        "bon": false,
+        "s": "Il ne le pourrait pas, même en y laissant ses pattes. Il a mieux."
+       },
+       {
+        "t": "S'accrocher à la queue de Serpent",
+        "bon": true,
+        "s": "Voilà. Et il l'a fait si doucement que Serpent n'a rien senti."
+       },
+       {
+        "t": "Prendre un raccourci",
+        "bon": false,
+        "s": "Il n'y a pas de raccourci vers le fleuve. Mais son idée était plus fine encore."
+       }
+      ]
+     }
+    },
+    {
+     "d": "foret",
+     "t": "Au signal, Serpent partit comme une flèche. Caméléon, lui, avait posé une patte sur le bout de sa queue et se laissa emporter, immobile.",
+     "effet": "poussiere",
+     "scene": [
+      {
+       "p": "serpent-file",
+       "x": 14,
+       "t": 20,
+       "b": 8,
+       "a": "traverse"
+      },
+      {
+       "p": "cameleon-accroche",
+       "x": 16,
+       "t": 44,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "t": "Arrivé au fleuve, Serpent se retourna, triomphant. Caméléon lâcha prise, fit deux pas devant lui et dit : — Je t'attendais.",
+     "scene": [
+      {
+       "p": "cameleon",
+       "x": 16,
+       "t": 44,
+       "a": "sautille"
+      },
+      {
+       "p": "serpent-fier",
+       "x": 56,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "choix": {
+      "q": "Serpent a-t-il été trompé ?",
+      "o": [
+       {
+        "t": "Oui, c'est une tricherie",
+        "bon": false,
+        "s": "C'est ce qu'il cria ! Mais les anciens du fleuve virent les choses autrement."
+       },
+       {
+        "t": "Il a été rattrapé par son orgueil",
+        "bon": true,
+        "s": "Voilà ce que dirent les anciens : celui qui ne regarde jamais derrière lui ne sait pas ce qu'il transporte."
+       }
+      ]
+     }
+    },
+    {
+     "d": "fleuve",
+     "t": "Depuis ce jour, Caméléon avance en balançant la tête à chaque pas, comme s'il hésitait. Ne t'y trompe pas : il regarde partout à la fois.",
+     "scene": [
+      {
+       "p": "cameleon-marche",
+       "x": 30,
+       "t": 42,
+       "a": "penche"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "Et il change de couleur selon la branche. Car celui qui n'a ni vitesse ni crocs apprend une autre force : savoir attendre, et savoir se fondre.",
+     "scene": [
+      {
+       "p": "cameleon-couleur",
+       "x": 30,
+       "t": 42,
+       "a": "penche"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Comment Caméléon suit-il Serpent ?",
+     "r": [
+      "Il s'accroche à sa queue",
+      "Il court dans son sillage",
+      "Il passe par les arbres"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Où se termine la course ?",
+     "r": [
+      "Au village",
+      "Au fleuve",
+      "Au fromager"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Pourquoi Caméléon balance-t-il la tête en marchant ?",
+     "r": [
+      "Il a peur",
+      "Il compte ses pas",
+      "Il regarde partout à la fois"
+     ],
+     "b": 2
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il faut tricher pour gagner",
+      "La patience vaut la vitesse",
+      "Les serpents sont méchants"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "conseils",
+   "titre": "Les Trois Conseils du Vieux",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "aube",
+   "accroche": "Trois phrases valaient trois ans de travail.",
+   "morale": "On paie cher une bonne parole, et on la trouve toujours bon marché le jour où elle nous sauve.",
+   "etapes": [
+    {
+     "d": "aube",
+     "t": "<b>Conte, conte !</b> Ce soir, l'histoire d'un homme qui travailla trois ans pour trois phrases."
+    },
+    {
+     "d": "aube",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Assieds-toi, la route est longue."
+       },
+       {
+        "t": "Trois phrases seulement ?",
+        "bon": true,
+        "s": "Attends la fin avant de juger, petit."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "<b>Boureima</b> quitta son village pour chercher du travail au loin. Il en trouva chez un vieil homme, et y resta trois ans sans jamais toucher un franc.",
+     "effet": "poussiere",
+     "scene": [
+      {
+       "p": "jeune-pret",
+       "x": 30,
+       "t": 56,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Le jour du départ, le vieux lui dit : — Je peux te payer en argent, ou te donner trois conseils. Choisis.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 10,
+       "t": 54,
+       "a": "respire"
+      },
+      {
+       "p": "jeune-pret",
+       "x": 56,
+       "t": 56,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "À la place de Boureima, tu prends quoi ?",
+      "o": [
+       {
+        "t": "L'argent, j'ai une famille à nourrir",
+        "bon": false,
+        "s": "C'est ce que dirait la plupart des gens. Et ce serait raisonnable. Mais Boureima connaissait la valeur d'un vieux."
+       },
+       {
+        "t": "Les trois conseils",
+        "bon": true,
+        "s": "Ha ! Tu as confiance dans la parole des anciens. Boureima aussi."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "— Premier conseil : <b>ne quitte jamais la grande route pour un raccourci</b>. Deuxième : <b>ne te mêle pas de ce qui ne te regarde pas</b>. Troisième : <b>ne décide jamais le soir d'une colère</b>.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 10,
+       "t": 54,
+       "a": "menace"
+      },
+      {
+       "p": "jeune-pret",
+       "x": 56,
+       "t": 56,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Puis le vieux lui donna trois pains. — Un pour la route, un pour ton arrivée, et un que tu ouvriras seulement chez toi.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 10,
+       "t": 54,
+       "a": "respire"
+      },
+      {
+       "p": "jeune-pret",
+       "x": 56,
+       "t": 56,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "En chemin, Boureima rencontra des voyageurs. — Viens, dirent-ils, ce sentier coupe deux jours de marche ! Il se souvint du premier conseil et resta sur la grande route.",
+     "scene": [
+      {
+       "p": "jeune-marche",
+       "x": 20,
+       "t": 56,
+       "a": "marche"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "choix": {
+      "q": "Qu'arriva-t-il aux voyageurs du raccourci ?",
+      "o": [
+       {
+        "t": "Ils arrivèrent bien avant lui",
+        "bon": false,
+        "s": "Ils ne sont jamais arrivés. Le sentier était tenu par des bandits."
+       },
+       {
+        "t": "Ils tombèrent sur des bandits",
+        "bon": true,
+        "s": "Exactement. Le lendemain, Boureima croisa leurs affaires abandonnées sur le bord de la piste."
+       }
+      ]
+     }
+    },
+    {
+     "d": "case",
+     "t": "Le soir, il logea dans une auberge. Au milieu de la nuit, il entendit des cris terribles dans la cour, et des coups.",
+     "scene": [
+      {
+       "p": "jeune-pret",
+       "x": 34,
+       "t": 56,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "case",
+     "choix": {
+      "q": "Il se lève pour voir ?",
+      "o": [
+       {
+        "t": "Oui, il faut aider",
+        "bon": false,
+        "s": "Le cœur dit oui. Mais souviens-toi du deuxième conseil… Les autres voyageurs qui sortirent ne revinrent pas."
+       },
+       {
+        "t": "Non, il reste couché",
+        "bon": true,
+        "s": "Voilà. C'était l'aubergiste qui dépouillait ceux qui sortaient. Boureima repartit vivant au matin."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Il arriva enfin chez lui, la nuit tombée. Par la fenêtre, il vit sa femme assise près d'un jeune homme, la main dans la sienne.",
+     "scene": [
+      {
+       "p": "jeune-marche",
+       "x": 12,
+       "t": 54,
+       "a": "respire"
+      },
+      {
+       "p": "epouse",
+       "x": 56,
+       "t": 52,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "Trois ans d'absence, et cette image. Que fait-il ?",
+      "o": [
+       {
+        "t": "Il entre en colère",
+        "bon": false,
+        "s": "Beaucoup l'auraient fait. Et beaucoup l'auraient regretté toute leur vie."
+       },
+       {
+        "t": "Il attend le matin, comme le vieux l'a dit",
+        "bon": true,
+        "s": "Il dormit dehors, sous le manguier. Et le matin lui donna raison."
+       }
+      ]
+     }
+    },
+    {
+     "d": "aube",
+     "t": "Au lever du jour, sa femme le vit et courut vers lui : — Voici ton fils ! Il est né après ton départ. Il t'a attendu trois ans.",
+     "effet": "oiseaux",
+     "scene": [
+      {
+       "p": "epouse",
+       "x": 10,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "fils",
+       "x": 54,
+       "t": 54,
+       "a": "sautille",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "Boureima ouvrit alors le troisième pain. À l'intérieur, il trouva <b>tout son salaire de trois ans</b>, pièce par pièce.",
+     "scene": [
+      {
+       "p": "jeune-pain",
+       "x": 32,
+       "t": 56,
+       "a": "sautille"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "Le vieux n'avait jamais eu l'intention de le voler. Il voulait seulement que Boureima rentre vivant, et sans avoir rien détruit.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 32,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Quel est le premier conseil du vieux ?",
+     "r": [
+      "Ne pas quitter la grande route",
+      "Ne pas parler aux inconnus",
+      "Ne jamais dormir dehors"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Pourquoi Boureima ne sort-il pas dans la nuit à l'auberge ?",
+     "r": [
+      "Il avait peur",
+      "Le conseil : ne pas se mêler de ce qui ne le regarde pas",
+      "Il dormait profondément"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Qui était le jeune homme près de sa femme ?",
+     "r": [
+      "Un voisin",
+      "Un voleur",
+      "Son propre fils"
+     ],
+     "b": 2
+    },
+    {
+     "q": "Que contenait le troisième pain ?",
+     "r": [
+      "Une lettre",
+      "Son salaire de trois ans",
+      "Rien du tout"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "puits",
+   "titre": "Le Puits de la Vérité",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "puits",
+   "accroche": "Un puits qui ne donne à boire qu'aux honnêtes.",
+   "morale": "Le mensonge remplit la bouche mais vide le canari. La vérité coûte un moment, la honte dure une saison.",
+   "etapes": [
+    {
+     "d": "puits",
+     "t": "<b>Conte, conte !</b> Il était une fois un puits qui savait écouter."
+    },
+    {
+     "d": "puits",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Approche du bord, mais ne te penche pas trop."
+       },
+       {
+        "t": "Un puits qui écoute ?",
+        "bon": true,
+        "s": "Tu verras. Certains puits en savent plus que les hommes."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "À <b>Tanghin</b>, la saison sèche était rude. Il ne restait qu'un seul puits, au milieu du village, et il était très ancien.",
+     "effet": "poussiere",
+     "scene": [
+      {
+       "p": "vieille-seau",
+       "x": 30,
+       "t": 50,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "puits",
+     "t": "Les anciens disaient : — Ce puits ne donne son eau qu'à celui qui dit vrai. Les jeunes en riaient.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 12,
+       "t": 52,
+       "a": "menace"
+      },
+      {
+       "p": "salif-tire",
+       "x": 52,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "puits",
+     "t": "<b>Salif</b>, le fils du forgeron, vint puiser. Le gardien lui demanda, comme à tous : — As-tu pris quelque chose qui ne t'appartient pas ?",
+     "scene": [
+      {
+       "p": "salif-tire",
+       "x": 28,
+       "t": 52,
+       "a": "creuse"
+      }
+     ]
+    },
+    {
+     "d": "puits",
+     "choix": {
+      "q": "Salif avait volé trois épis de mil. Que dit-il ?",
+      "o": [
+       {
+        "t": "Il avoue",
+        "bon": true,
+        "s": "Ce serait la sagesse. Mais Salif avait honte devant les autres."
+       },
+       {
+        "t": "Il ment",
+        "bon": false,
+        "s": "C'est ce qu'il fit. Et le seau remonta… vide."
+       }
+      ]
+     }
+    },
+    {
+     "d": "puits",
+     "t": "Le seau descendit, racla le fond et remonta <b>sec</b>. Salif le redescendit trois fois. Trois fois il remonta sec, devant tout le village.",
+     "scene": [
+      {
+       "p": "salif-tire",
+       "x": 28,
+       "t": 52,
+       "a": "creuse"
+      }
+     ]
+    },
+    {
+     "d": "puits",
+     "t": "Vint <b>Awa</b>, la vieille tisserande. — As-tu pris quelque chose qui ne t'appartient pas ? — Oui, dit-elle. Un pagne, il y a quarante ans, chez ma voisine.",
+     "scene": [
+      {
+       "p": "vieille-seau",
+       "x": 30,
+       "t": 54,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "puits",
+     "choix": {
+      "q": "Le puits va-t-il lui donner de l'eau ?",
+      "o": [
+       {
+        "t": "Non, elle a volé",
+        "bon": false,
+        "s": "Le puits ne juge pas le passé. Il écoute la bouche du jour."
+       },
+       {
+        "t": "Oui, elle a dit la vérité",
+        "bon": true,
+        "s": "Le seau remonta plein à ras bord. Et l'eau était fraîche."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Alors chacun comprit. Le puits ne punissait pas la faute : il refusait le mensonge.",
+     "scene": [
+      {
+       "p": "vieille-seau",
+       "x": 10,
+       "t": 50,
+       "a": "respire"
+      },
+      {
+       "p": "salif-tete-baissee",
+       "x": 56,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "puits",
+     "t": "Salif revint le soir, seul, et dit à voix haute : — J'ai pris trois épis de mil chez le vieux Kaboré.",
+     "scene": [
+      {
+       "p": "salif-tete-baissee",
+       "x": 34,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "nuit",
+     "t": "Le seau remonta plein. Et le lendemain, il porta lui-même trois épis à Kaboré, sans qu'on le lui demande.",
+     "effet": "braises",
+     "scene": [
+      {
+       "p": "salif-tire",
+       "x": 28,
+       "t": 52,
+       "a": "sautille"
+      }
+     ]
+    },
+    {
+     "d": "puits",
+     "t": "On dit qu'aujourd'hui encore, à Tanghin, on ne dit pas « bonjour » près du puits. On dit : « Aujourd'hui, je n'ai rien à cacher. »",
+     "scene": [
+      {
+       "p": "vieille-seau",
+       "x": 32,
+       "t": 50,
+       "a": "respire"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Que demande le gardien à chacun ?",
+     "r": [
+      "S'il a de l'argent",
+      "S'il a pris quelque chose qui ne lui appartient pas",
+      "S'il sait nager"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Pourquoi le seau de Salif remonte-t-il sec ?",
+     "r": [
+      "Le puits est à sec",
+      "Il a menti",
+      "Il tire trop vite"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Pourquoi Awa obtient-elle de l'eau alors qu'elle a volé ?",
+     "r": [
+      "Parce qu'elle a dit la vérité",
+      "Parce qu'elle est âgée",
+      "Parce que c'était il y a longtemps"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il ne faut jamais boire",
+      "Le puits punit les voleurs",
+      "Ce n'est pas la faute qui condamne, c'est le mensonge"
+     ],
+     "b": 2
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "zombre",
+   "titre": "Naba Zombré et le mendiant",
+   "cat": "mossi",
+   "catLbl": "MOSSI",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "Un roi sous des haillons, et un village mis à nu.",
+   "morale": "On ne reconnaît pas un homme à son pagne. Ce que tu refuses au pauvre, c'est à toi-même que tu le refuses.",
+   "etapes": [
+    {
+     "d": "palais",
+     "t": "<b>Conte, conte !</b> Ce soir, une histoire du pays mossi, du temps où les Naba parcouraient leurs terres."
+    },
+    {
+     "d": "palais",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute ce qu'un roi apprit en une seule nuit."
+       },
+       {
+        "t": "Raconte, vieux père.",
+        "bon": true,
+        "s": "Ha ! Voilà comment on parle à un conteur."
+       }
+      ]
+     }
+    },
+    {
+     "d": "palais",
+     "t": "<b>Naba Zombré</b> régnait avec justice, mais on ne lui disait jamais rien de vrai. Les chefs de village lui parlaient de récoltes abondantes et de greniers pleins.",
+     "scene": [
+      {
+       "p": "roi",
+       "x": 32,
+       "t": 56,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "palais",
+     "choix": {
+      "q": "Comment savoir ce qui se passe vraiment ?",
+      "o": [
+       {
+        "t": "Envoyer des espions",
+        "bon": false,
+        "s": "Ils lui auraient rapporté ce qu'ils croyaient lui plaire. C'est le sort des rois."
+       },
+       {
+        "t": "Y aller lui-même, méconnaissable",
+        "bon": true,
+        "s": "Voilà. Il quitta le palais un soir, vêtu de haillons, une calebasse fêlée à la main."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Il arriva au village de <b>Kombissiri</b> à la tombée du jour. Il frappa à la première concession, la plus grande, celle du chef.",
+     "effet": "poussiere",
+     "scene": [
+      {
+       "p": "roi-mendiant",
+       "x": 24,
+       "t": 52,
+       "a": "marche"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "— Passe ton chemin, mendiant. On ne nourrit pas les inconnus ici. La porte se referma.",
+     "scene": [
+      {
+       "p": "roi-mendiant",
+       "x": 34,
+       "t": 52,
+       "a": "penche"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Il frappa à la deuxième, puis à la troisième. Partout la même réponse. Le mil était rentré, pourtant, et les greniers pleins.",
+     "scene": [
+      {
+       "p": "roi-mendiant",
+       "x": 32,
+       "t": 50,
+       "a": "penche"
+      }
+     ]
+    },
+    {
+     "d": "case",
+     "t": "À la dernière case du village, une vieille femme, <b>Poko</b>, ouvrit. Elle n'avait qu'un peu de tô et une sauce claire.",
+     "scene": [
+      {
+       "p": "roi-mendiant",
+       "x": 12,
+       "t": 50,
+       "a": "respire"
+      },
+      {
+       "p": "vieille-donne",
+       "x": 52,
+       "t": 52,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "case",
+     "choix": {
+      "q": "Que fait Poko ?",
+      "o": [
+       {
+        "t": "Elle partage en deux",
+        "bon": false,
+        "s": "Mieux que ça. Elle lui donna sa part entière et dit qu'elle avait déjà mangé — ce qui était faux."
+       },
+       {
+        "t": "Elle lui donne toute sa part",
+        "bon": true,
+        "s": "Oui. Et elle mentit en disant qu'elle avait déjà mangé, pour qu'il n'ait pas honte."
+       }
+      ]
+     }
+    },
+    {
+     "d": "case",
+     "t": "Elle lui donna aussi une natte, et de l'eau pour ses pieds. Au matin, le mendiant était parti sans un mot.",
+     "scene": [
+      {
+       "p": "vieille-donne",
+       "x": 32,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "palais",
+     "t": "Trois jours plus tard, les tambours annoncèrent la visite du Naba. Tout Kombissiri se prépara : les chefs sortirent leurs plus beaux boubous.",
+     "scene": [
+      {
+       "p": "roi",
+       "x": 30,
+       "t": 56,
+       "a": "arrive"
+      }
+     ]
+    },
+    {
+     "d": "palais",
+     "choix": {
+      "q": "Que va faire le Naba en arrivant ?",
+      "o": [
+       {
+        "t": "Punir les chefs et brûler leurs greniers",
+        "bon": false,
+        "s": "Un roi en colère aurait pu. Zombré fit quelque chose de plus dur pour eux."
+       },
+       {
+        "t": "S'asseoir chez Poko",
+        "bon": true,
+        "s": "Il traversa le village sans un regard pour les notables et s'assit sur la natte de la vieille."
+       }
+      ]
+     }
+    },
+    {
+     "d": "case",
+     "t": "— Voici la maison où j'ai mangé, dit-il. Et voici les portes qui se sont fermées. Il montra chacune d'elles, une par une, devant tout le monde.",
+     "scene": [
+      {
+       "p": "roi-montre",
+       "x": 26,
+       "t": 56,
+       "a": "menace"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Il nomma Poko gardienne des greniers du village. — Celle qui donne quand elle n'a rien saura garder quand il y aura tout.",
+     "scene": [
+      {
+       "p": "roi",
+       "x": 10,
+       "t": 56,
+       "a": "respire"
+      },
+      {
+       "p": "vieille",
+       "x": 54,
+       "t": 52,
+       "a": "sautille",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Et il ordonna qu'à chaque saison sèche, la première mesure de mil de chaque grenier soit posée devant la porte, pour celui qui passe.",
+     "scene": [
+      {
+       "p": "roi-montre",
+       "x": 26,
+       "t": 56,
+       "a": "respire"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Pourquoi Naba Zombré se déguise-t-il ?",
+     "r": [
+      "Pour fuir un ennemi",
+      "Pour voir la vérité de son royaume",
+      "Pour ne pas payer l'impôt"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Qui accueille le mendiant ?",
+     "r": [
+      "Le chef du village",
+      "Un jeune forgeron",
+      "Poko, la vieille femme de la dernière case"
+     ],
+     "b": 2
+    },
+    {
+     "q": "Pourquoi Poko dit-elle avoir déjà mangé ?",
+     "r": [
+      "Pour que l'étranger n'ait pas honte",
+      "Parce que c'était vrai",
+      "Pour se débarrasser de lui"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Quelle récompense reçoit-elle ?",
+     "r": [
+      "De l'or",
+      "La garde des greniers du village",
+      "Une nouvelle case"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "etoiles",
+   "titre": "L'Enfant qui comptait les étoiles",
+   "cat": "dioula",
+   "catLbl": "DIOULA",
+   "duree": "5 min",
+   "decor": "ciel",
+   "accroche": "Compter le ciel pour apprendre à voir la terre.",
+   "morale": "Compte d'abord ce que tu peux perdre. Le reste du ciel t'attendra.",
+   "etapes": [
+    {
+     "d": "ciel",
+     "t": "<b>Conte, conte !</b> Une histoire dioula, pour finir la soirée le nez en l'air."
+    },
+    {
+     "d": "ciel",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Lève les yeux, alors."
+       },
+       {
+        "t": "J'écoute, conteur.",
+        "bon": true,
+        "s": "Alors regarde le ciel pendant que je parle."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "<b>Bakary</b> avait dix ans et une seule passion : compter. Il comptait les cauris, les pas jusqu'au marché, les grains dans la calebasse.",
+     "scene": [
+      {
+       "p": "garcon",
+       "x": 34,
+       "t": 50,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "t": "Un soir, allongé sur la terrasse, il annonça à sa mère : — Cette nuit, je vais compter toutes les étoiles.",
+     "effet": "etoiles",
+     "scene": [
+      {
+       "p": "garcon-allonge",
+       "x": 28,
+       "t": 22,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "choix": {
+      "q": "Que répond sa mère ?",
+      "o": [
+       {
+        "t": "C'est impossible, dors",
+        "bon": false,
+        "s": "Elle aurait pu. Mais les mères dioula savent qu'on n'arrête pas un enfant qui veut apprendre."
+       },
+       {
+        "t": "Compte, mais dis-moi le nombre demain",
+        "bon": true,
+        "s": "Voilà. Elle le laissa faire, sachant très bien ce qui arriverait."
+       }
+      ]
+     }
+    },
+    {
+     "d": "ciel",
+     "t": "Il commença. Une, deux, dix, cent. À trois cents, il perdit le fil. Il recommença. À quatre cents, un nuage passa et emporta son compte.",
+     "effet": "etoiles",
+     "scene": [
+      {
+       "p": "garcon-compte",
+       "x": 32,
+       "t": 32,
+       "a": "sautille"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "t": "Il recommença chaque soir pendant une saison entière. Le village finit par l'appeler <b>Bakary-des-étoiles</b>, moitié moqueur, moitié admiratif.",
+     "effet": "etoiles",
+     "scene": [
+      {
+       "p": "garcon-compte",
+       "x": 32,
+       "t": 32,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "nuit",
+     "choix": {
+      "q": "Une nuit, il ne compte pas. Pourquoi ?",
+      "o": [
+       {
+        "t": "Il s'est endormi",
+        "bon": false,
+        "s": "Non. Cette nuit-là, quelque chose de plus urgent l'attendait."
+       },
+       {
+        "t": "Sa mère était malade",
+        "bon": true,
+        "s": "Oui. Il resta près d'elle et compta autre chose : ses respirations, jusqu'au matin."
+       }
+      ]
+     }
+    },
+    {
+     "d": "nuit",
+     "t": "Il compta ses respirations toute la nuit. Quand le jour se leva, elle respirait encore, et il avait perdu le compte depuis longtemps.",
+     "effet": "etoiles",
+     "scene": [
+      {
+       "p": "garcon",
+       "x": 14,
+       "t": 50,
+       "a": "respire"
+      },
+      {
+       "p": "vieille",
+       "x": 52,
+       "t": 52,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "— Alors, demanda-t-elle plus tard en riant, combien d'étoiles ? — Je ne sais pas, dit Bakary. J'ai arrêté.",
+     "scene": [
+      {
+       "p": "garcon-compte",
+       "x": 14,
+       "t": 32,
+       "a": "respire"
+      },
+      {
+       "p": "mere",
+       "x": 54,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "choix": {
+      "q": "Pourquoi a-t-il arrêté, à ton avis ?",
+      "o": [
+       {
+        "t": "C'était trop difficile",
+        "bon": false,
+        "s": "Bakary n'a jamais reculé devant un compte difficile. C'est autre chose."
+       },
+       {
+        "t": "Il a compris ce qui valait la peine d'être compté",
+        "bon": true,
+        "s": "Voilà. Les étoiles ne manquent jamais à l'appel. Une mère, si."
+       }
+      ]
+     }
+    },
+    {
+     "d": "aube",
+     "t": "Devenu grand, Bakary tint les comptes du plus grand marché de la ville. On disait qu'il ne se trompait jamais d'un seul cauri.",
+     "scene": [
+      {
+       "p": "homme-cahier",
+       "x": 32,
+       "t": 60,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "ciel",
+     "t": "Et chaque soir, en fermant son cahier, il levait les yeux un instant. Sans compter.",
+     "scene": [
+      {
+       "p": "homme-cahier",
+       "x": 32,
+       "t": 58,
+       "a": "respire"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Que veut compter Bakary ?",
+     "r": [
+      "Les cauris du marché",
+      "Toutes les étoiles du ciel",
+      "Les jours de la saison sèche"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Pourquoi arrête-t-il une nuit ?",
+     "r": [
+      "Sa mère est malade",
+      "Il pleut",
+      "Il a trouvé le nombre"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Que compte-t-il cette nuit-là ?",
+     "r": [
+      "Les nuages",
+      "Les respirations de sa mère",
+      "Les heures"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il ne faut pas compter",
+      "Compter d'abord ce qu'on peut perdre",
+      "Le ciel est infini"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "bazoule",
+   "titre": "Les Crocodiles de Bazoulé",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Le pacte entre un village et des bêtes qu'on ne tue pas.",
+   "morale": "Qui sauve ta vie devient ton parent. On ne mange pas son parent, on le nourrit.",
+   "etapes": [
+    {
+     "d": "savane",
+     "t": "<b>Conte, conte !</b> Ce soir, une histoire qu'on peut encore aller vérifier de ses yeux, à trente kilomètres de Ouagadougou."
+    },
+    {
+     "d": "savane",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute pourquoi, à Bazoulé, on s'assoit à côté des crocodiles."
+       },
+       {
+        "t": "Vérifier ? Comment ?",
+        "bon": true,
+        "s": "Tu verras à la fin. Écoute d'abord."
+       }
+      ]
+     }
+    },
+    {
+     "d": "champ",
+     "t": "Il y a très longtemps, une sécheresse terrible s'abattit sur le pays. Les mares séchèrent, les puits rendirent de la poussière, et le village de <b>Bazoulé</b> commença à mourir de soif.",
+     "effet": "poussiere",
+     "scene": [
+      {
+       "p": "femme-calebasse",
+       "x": 32,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Les femmes marchaient des jours entiers pour rapporter une calebasse d'eau trouble. Les vieux disaient que le village devrait partir.",
+     "scene": [
+      {
+       "p": "femme-calebasse",
+       "x": 26,
+       "t": 50,
+       "a": "marche"
+      }
+     ]
+    },
+    {
+     "d": "savane",
+     "t": "Un matin, une femme partie chercher du bois vit passer un <b>crocodile</b>. En pleine saison sèche, loin de toute eau.",
+     "scene": [
+      {
+       "p": "femme-calebasse",
+       "x": 10,
+       "t": 50,
+       "a": "respire"
+      },
+      {
+       "p": "crocodile-marche",
+       "x": 46,
+       "t": 30,
+       "a": "marche",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "savane",
+     "choix": {
+      "q": "Que fait-elle ?",
+      "o": [
+       {
+        "t": "Elle fuit et prévient le village",
+        "bon": false,
+        "s": "C'est ce que la peur commande. Mais cette femme-là était plus curieuse que peureuse."
+       },
+       {
+        "t": "Elle le suit",
+        "bon": true,
+        "s": "Voilà. Elle s'est dit qu'une bête d'eau qui marche sait forcément où est l'eau."
+       }
+      ]
+     }
+    },
+    {
+     "d": "foret",
+     "t": "Elle le suivit à distance, tout un jour. Le crocodile ne se retournait pas. Il avançait droit, comme s'il connaissait le chemin par cœur.",
+     "scene": [
+      {
+       "p": "crocodile-marche",
+       "x": 14,
+       "t": 30,
+       "a": "marche"
+      },
+      {
+       "p": "femme-calebasse",
+       "x": 54,
+       "t": 50,
+       "a": "marche"
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "t": "Au soir, derrière un rideau d'épineux, elle découvrit une <b>mare</b> que personne n'avait jamais vue. Pleine. Claire. Et pleine de crocodiles.",
+     "effet": "oiseaux",
+     "scene": [
+      {
+       "p": "crocodiles-mare",
+       "x": 16,
+       "t": 22,
+       "b": 6,
+       "a": "respire"
+      },
+      {
+       "p": "femme-calebasse",
+       "x": 60,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "choix": {
+      "q": "Les crocodiles l'attaquent-ils ?",
+      "o": [
+       {
+        "t": "Oui, elle s'échappe de justesse",
+        "bon": false,
+        "s": "Pas un seul ne bougea. C'est ce qui a rendu l'histoire inoubliable."
+       },
+       {
+        "t": "Non, ils la laissent boire",
+        "bon": true,
+        "s": "Aucun ne bougea. Elle but, remplit sa calebasse, et repartit vivante."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Elle ramena le village entier jusqu'à la mare. Les crocodiles s'écartèrent. Bazoulé fut sauvé, et ne bougea plus jamais de là.",
+     "scene": [
+      {
+       "p": "crocodile",
+       "x": 20,
+       "t": 16,
+       "b": 6,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Les anciens scellèrent alors un pacte : <b>jamais un habitant de Bazoulé ne tuerait un crocodile</b>. En échange, jamais un crocodile ne toucherait un habitant.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 12,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "crocodile",
+       "x": 52,
+       "t": 16,
+       "b": 6,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "t": "Le pacte tient depuis. Les crocodiles de Bazoulé sortent de l'eau, se chauffent au soleil au milieu des enfants, et acceptent un poulet des mains du gardien.",
+     "scene": [
+      {
+       "p": "crocodiles-mare",
+       "x": 22,
+       "t": 22,
+       "b": 6,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "t": "Quand l'un d'eux meurt, le village lui fait des funérailles, comme à un parent. Voilà ce que tu peux aller vérifier : c'est encore vrai aujourd'hui.",
+     "scene": [
+      {
+       "p": "crocodile",
+       "x": 20,
+       "t": 16,
+       "b": 6,
+       "a": "respire"
+      },
+      {
+       "p": "femme-calebasse",
+       "x": 60,
+       "t": 48,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Pourquoi la femme suit-elle le crocodile ?",
+     "r": [
+      "Pour le chasser",
+      "Parce qu'une bête d'eau sait où trouver l'eau",
+      "Pour le vendre au marché"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que découvre-t-elle au bout du chemin ?",
+     "r": [
+      "Un fleuve",
+      "Un village voisin",
+      "Une mare inconnue, pleine d'eau"
+     ],
+     "b": 2
+    },
+    {
+     "q": "En quoi consiste le pacte de Bazoulé ?",
+     "r": [
+      "Les habitants ne tuent pas les crocodiles, et inversement",
+      "Les crocodiles gardent la mare la nuit",
+      "Le village paie un tribut chaque année"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il faut se méfier des crocodiles",
+      "Qui sauve ta vie devient ton parent",
+      "L'eau est plus précieuse que l'or"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "balafon",
+   "titre": "Le Balafon de Sya",
+   "cat": "dioula",
+   "catLbl": "DIOULA",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Un instrument qu'on n'a pas le droit de toucher.",
+   "morale": "On ne prend pas la musique : on l'apprend. Ce qui se vole ne sonne jamais juste.",
+   "etapes": [
+    {
+     "d": "village",
+     "t": "<b>Conte, conte !</b> Une histoire de Sya, la vieille cité qu'on appelle aujourd'hui Bobo-Dioulasso."
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute le bois chanter."
+       },
+       {
+        "t": "Je connais Bobo !",
+        "bon": true,
+        "s": "Alors tu connais le bruit du balafon. Voici d'où il vient."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "À Sya vivait la famille <b>Sanou</b>, gardienne d'un balafon très ancien. Un instrument de lames de bois, posé sur des calebasses qui font résonner chaque note.",
+     "scene": [
+      {
+       "p": "balafon",
+       "x": 32,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Ce balafon-là ne servait pas à amuser. Il parlait. Il annonçait les naissances, appelait au travail, pleurait les morts, et disait la généalogie des familles.",
+     "scene": [
+      {
+       "p": "balafon",
+       "x": 32,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "case",
+     "t": "<b>Drissa</b>, un garçon du quartier, en rêvait la nuit. Mais nul n'avait le droit d'y toucher sans être de la famille et sans avoir été initié.",
+     "scene": [
+      {
+       "p": "drissa-enfant",
+       "x": 14,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "balafon",
+       "x": 52,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "case",
+     "choix": {
+      "q": "Une nuit, il entre dans la case où repose l'instrument. Que fait-il ?",
+      "o": [
+       {
+        "t": "Il y touche",
+        "bon": false,
+        "s": "Il l'a fait. Une seule lame. Et le son qui sortit n'était pas celui qu'il attendait."
+       },
+       {
+        "t": "Il repart sans oser",
+        "bon": false,
+        "s": "Il aurait mieux fait. Mais un enfant qui rêve depuis trois ans ne repart pas."
+       },
+       {
+        "t": "Il écoute seulement",
+        "bon": true,
+        "s": "C'est ce qu'il crut faire. Puis sa main est partie toute seule."
+       }
+      ]
+     }
+    },
+    {
+     "d": "nuit",
+     "t": "Il frappa une lame. Le son sortit <b>faux</b>, sourd, comme un bois mort. Tout le quartier se réveilla, car un balafon qui sonne faux, chez nous, annonce un malheur.",
+     "effet": "secousse",
+     "scene": [
+      {
+       "p": "drissa-enfant",
+       "x": 14,
+       "t": 52,
+       "a": "sautille"
+      },
+      {
+       "p": "balafon",
+       "x": 52,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Le vieux Sanou le trouva là, la main encore sur la baguette. Le village voulait le punir. Le vieux dit : — Attendez.",
+     "scene": [
+      {
+       "p": "drissa-enfant",
+       "x": 34,
+       "t": 52,
+       "a": "penche"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "Que décide le vieux Sanou ?",
+      "o": [
+       {
+        "t": "Le chasser du quartier",
+        "bon": false,
+        "s": "Facile, et inutile. Le vieux voyait plus loin."
+       },
+       {
+        "t": "Lui apprendre à en jouer",
+        "bon": true,
+        "s": "Voilà. — Il a volé un son, dit-il. Rendons-lui les autres, et il ne volera plus rien."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Drissa passa sept années à porter les calebasses, tailler les lames, écouter sans jouer. La huitième, on lui mit les baguettes dans les mains.",
+     "scene": [
+      {
+       "p": "drissa-joue",
+       "x": 30,
+       "t": 56,
+       "a": "mache"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Cette fois, le son sortit juste. Les vieux dirent que ce n'était pas le bois qui avait changé, mais le garçon.",
+     "scene": [
+      {
+       "p": "drissa-joue",
+       "x": 30,
+       "t": 56,
+       "a": "sautille"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "On raconte que le balafon de Sya se transmet encore, de main en main, dans la même famille. Et qu'il ne sonne jamais pour celui qui n'a pas attendu."
+    }
+   ],
+   "quiz": [
+    {
+     "q": "À quoi sert le balafon de Sya ?",
+     "r": [
+      "À amuser les enfants",
+      "À parler : annoncer, appeler, pleurer les morts",
+      "À appeler la pluie"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que se passe-t-il quand Drissa y touche ?",
+     "r": [
+      "Le son sort faux",
+      "Une lame se casse",
+      "Rien du tout"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Que décide le vieux Sanou ?",
+     "r": [
+      "De le chasser",
+      "De prévenir ses parents",
+      "De lui apprendre à en jouer"
+     ],
+     "b": 2
+    },
+    {
+     "q": "Combien de temps Drissa attend-il avant de jouer ?",
+     "r": [
+      "Une saison",
+      "Sept ans",
+      "Trois jours"
+     ],
+     "b": 1
+    }
+   ],
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "id": "gbepleu",
+   "titre": "La Forêt sacrée de Gbêpleu",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "foret",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "dan (yacouba)",
+   "accroche": "Manlé, l'enfant du puits, et la pluie du vendredi.",
+   "morale": "Une ville se souvient de ce qu'elle a coûté. C'est pour cela qu'on la respecte.",
+   "etapes": [
+    {
+     "d": "foret",
+     "t": "<b>Conte, conte !</b> Ce soir, une histoire de l'Ouest ivoirien. Elle explique le nom d'une ville, et pourquoi la pluie y tombe certains jours."
+    },
+    {
+     "d": "foret",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute l'histoire de Manlé."
+       },
+       {
+        "t": "Quelle ville ?",
+        "bon": true,
+        "s": "Man, au pied des montagnes du Tonkpi. Écoute d'où lui vient son nom."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Il y a longtemps, au pied des montagnes, il y avait un petit village nommé <b>Gbêpleu</b>. Des cases de terre, des champs d'ignames, des veillées autour du feu.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 30,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Gbêpleu voulait grandir. Les villages voisins s'étendaient ; lui restait petit, comme retenu par une main invisible.",
+     "effet": "poussiere"
+    },
+    {
+     "d": "nuit",
+     "t": "Une nuit, un <b>voyant</b> traversa le village. Personne ne sut d'où il venait. Il réunit les anciens autour du feu.",
+     "scene": [
+      {
+       "p": "voyant",
+       "x": 30,
+       "t": 52,
+       "a": "menace"
+      }
+     ]
+    },
+    {
+     "d": "nuit",
+     "choix": {
+      "q": "Que va-t-il demander, à ton avis ?",
+      "o": [
+       {
+        "t": "De l'or",
+        "s": "Non. Ce qu'il demande ne s'achète pas."
+       },
+       {
+        "t": "Quelque chose de très précieux",
+        "bon": true,
+        "s": "Oui. Et c'était plus précieux que tout l'or du pays."
+       }
+      ]
+     }
+    },
+    {
+     "d": "nuit",
+     "t": "— Votre village restera petit, dit-il, tant que la terre n'aura pas reçu son dû. Offrez-lui une fille unique, née de parents qui n'en ont pas d'autre. Puis il disparut avant l'aube.",
+     "scene": [
+      {
+       "p": "voyant",
+       "x": 30,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Les anciens se turent longtemps. Pendant des saisons, ils cherchèrent ailleurs, dans les villages voisins. Partout, les portes se refermaient. Aucune mère ne donne son enfant unique.",
+     "scene": [
+      {
+       "p": "vieille-donne",
+       "x": 14,
+       "t": 50,
+       "a": "respire"
+      },
+      {
+       "p": "vieux-conseils",
+       "x": 54,
+       "t": 52,
+       "a": "penche",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Le chef du village, lui, avait une fille. Une seule. Elle s'appelait <b>Manlé</b>. Elle grandissait entre les cases, aimée de tous, sans rien savoir du poids que portait son père.",
+     "scene": [
+      {
+       "p": "fille-calebasse",
+       "x": 30,
+       "t": 44,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "Le chef va-t-il chercher encore ailleurs ?",
+      "o": [
+       {
+        "t": "Oui, il continuera",
+        "s": "Il a cherché des saisons entières. Il n'a plus la patience."
+       },
+       {
+        "t": "Non, il a pris sa décision",
+        "bon": true,
+        "s": "Oui. Et il n'a pas eu le courage de le dire en face."
+       }
+      ]
+     }
+    },
+    {
+     "d": "champ",
+     "t": "Un matin, il partit seul aux champs. Là, en bordure de la forêt, il creusa un trou profond comme un puits, et le recouvrit d'une natte, cachée sous un peu de terre et de feuilles.",
+     "scene": [
+      {
+       "p": "jeune-marche",
+       "x": 28,
+       "t": 54,
+       "a": "creuse"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Puis il rentra et dit à sa fille, comme souvent : — Quand le soleil sera haut, apporte-moi mon repas. Il lui montra l'endroit exact où le déposer.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 14,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "fille-calebasse",
+       "x": 54,
+       "t": 44,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "champ",
+     "t": "Manlé partit, la calebasse sur la tête, et marcha jusqu'à l'endroit indiqué. La natte céda sous son poids.",
+     "scene": [
+      {
+       "p": "fille-calebasse",
+       "x": 28,
+       "t": 46,
+       "a": "marche"
+      }
+     ],
+     "effet": "poussiere"
+    },
+    {
+     "d": "champ",
+     "choix": {
+      "q": "Son père l'entend crier. Que fait-il ?",
+      "o": [
+       {
+        "t": "Il court la sauver",
+        "s": "C'est ce qu'un père devrait faire. Ce n'est pas ce qu'il a fait."
+       },
+       {
+        "t": "Il appelle les villageois",
+        "bon": true,
+        "s": "Oui. Mais pas pour la sortir de là."
+       }
+      ]
+     }
+    },
+    {
+     "d": "champ",
+     "t": "Il appela ses gens et leur fit combler le trou. La terre se referma sur Manlé. On dit qu'on entendit encore sa voix longtemps, sous le sable.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 30,
+       "t": 52,
+       "a": "penche"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Ce qui devait arriver arriva. Gbêpleu s'étendit. Les familles affluèrent, les cases se multiplièrent, et le petit village devint une grande cité.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 14,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "jeune-pret",
+       "x": 54,
+       "t": 54,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "On lui donna un nouveau nom, en souvenir de celle qui l'avait payé : <b>Man</b>."
+    },
+    {
+     "d": "foret",
+     "t": "À l'endroit du trou, il y a aujourd'hui un puits. Et tout autour, la brousse est redevenue forêt. Une <b>forêt sacrée</b>, que personne ne défriche.",
+     "scene": [
+      {
+       "p": "singe",
+       "x": 26,
+       "t": 34,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "choix": {
+      "q": "Que se passe-t-il à ce puits ?",
+      "o": [
+       {
+        "t": "On y puise de l'eau",
+        "s": "Personne n'y puise. Écoute."
+       },
+       {
+        "t": "On y entend quelque chose",
+        "bon": true,
+        "s": "Oui. Et toujours le même jour."
+       }
+      ]
+     }
+    },
+    {
+     "d": "foret",
+     "t": "Chaque <b>vendredi</b>, c'est le grand marché de Man. Tous les villages d'alentour descendent des montagnes : on vient vendre, acheter, se marier, régler les palabres.",
+     "scene": [
+      {
+       "p": "singe",
+       "x": 26,
+       "t": 34,
+       "a": "respire"
+      }
+     ],
+     "effet": "pluie"
+    },
+    {
+     "d": "foret",
+     "t": "Et c'est ce jour-là, quand la ville est pleine et que les chemins sont couverts de monde, qu'un cri monte du fond du puits. Aussitôt le ciel s'assombrit, et la pluie tombe.",
+     "effet": "pluie",
+     "scene": [
+      {
+       "p": "singe",
+       "x": 26,
+       "t": 34,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Ce ne sont pas des gouttes ordinaires, disent les anciens. Ce sont <b>les pleurs de Manlé</b>. Elle a choisi le seul jour où toute la région est là pour les recevoir.",
+     "scene": [
+      {
+       "p": "vieille-donne",
+       "x": 30,
+       "t": 50,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Certains y voient une plainte : l'enfant qui ne trouve pas le repos. D'autres y voient un don : l'eau qu'elle envoie aux récoltes de la ville qu'elle a payée.",
+     "scene": [
+      {
+       "p": "vieille-donne",
+       "x": 30,
+       "t": 50,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "Dans cette forêt vivent aujourd'hui des <b>singes</b> que nul ne chasse. On les traite comme des parents. Car là où une enfant a été donnée à la terre, plus rien ne se prend.",
+     "scene": [
+      {
+       "p": "singe",
+       "x": 20,
+       "t": 34,
+       "a": "penche"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Que demande le voyant au village ?",
+     "r": [
+      "De l'or et du bétail",
+      "Une fille unique",
+      "Sept jours de jeûne"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Comment le chef attire-t-il sa fille au trou ?",
+     "r": [
+      "Il l'y envoie porter son repas",
+      "Il l'y conduit lui-même",
+      "Il lui demande d'y puiser de l'eau"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Quel nom la ville a-t-elle reçu ?",
+     "r": [
+      "Gbêpleu",
+      "Man",
+      "Tonkpi"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que se passe-t-il chaque vendredi, jour de marché ?",
+     "r": [
+      "Un cri monte du puits et la pluie tombe",
+      "Les singes descendent au village",
+      "On ferme la forêt"
+     ],
+     "b": 0
+    }
+   ]
+  },
+  {
+   "id": "ananze",
+   "titre": "Kacou Ananzè et le champ d'ignames",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "champ",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "akan",
+   "accroche": "L'araignée veut la récolte sans avoir semé.",
+   "morale": "Celui qui récolte sans semer mange une fois. Celui qui sème mange toute l'année.",
+   "etapes": [
+    {
+     "d": "champ",
+     "t": "<b>Conte, conte !</b> Ce soir, l'araignée. Chez les Akan, on l'appelle <b>Kacou Ananzè</b>, et elle a toujours une idée."
+    },
+    {
+     "d": "champ",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute ce qu'elle a inventé cette année-là."
+       },
+       {
+        "t": "Une araignée qui parle ?",
+        "bon": true,
+        "s": "Celle-là parle, mange, et surtout ment. Écoute."
+       }
+      ]
+     }
+    },
+    {
+     "d": "champ",
+     "t": "La saison des pluies arriva. Chacun prit sa daba et partit défricher. Ananzè, elle, resta couchée à l'ombre.",
+     "scene": [
+      {
+       "p": "araignee-creuse",
+       "x": 30,
+       "t": 36,
+       "a": "respire"
+      }
+     ],
+     "effet": "poussiere"
+    },
+    {
+     "d": "village",
+     "t": "Son voisin <b>Kouassi</b> travailla trois lunes. Son champ d'ignames devint le plus beau du village.",
+     "scene": [
+      {
+       "p": "jeune-marche",
+       "x": 28,
+       "t": 54,
+       "a": "marche"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "Que va tenter Ananzè ?",
+      "o": [
+       {
+        "t": "Travailler enfin",
+        "s": "Ananzè ? Jamais de la vie."
+       },
+       {
+        "t": "Se faire inviter à la récolte",
+        "bon": true,
+        "s": "Exactement. Et elle a trouvé mieux que ça."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Ananzè alla voir Kouassi. — Frère, dit-elle, j'ai rêvé de ton champ. Un rêve mauvais. Il faut que j'y dorme une nuit pour le protéger.",
+     "scene": [
+      {
+       "p": "araignee",
+       "x": 14,
+       "t": 40,
+       "a": "respire"
+      },
+      {
+       "p": "jeune-pret",
+       "x": 54,
+       "t": 54,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "champ",
+     "t": "Kouassi accepta. La nuit, Ananzè déterra les plus grosses ignames et les cacha dans un trou, au bord du champ.",
+     "scene": [
+      {
+       "p": "araignee-creuse",
+       "x": 30,
+       "t": 36,
+       "a": "creuse"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "Au matin, elle cria : — Un voleur ! Un voleur est passé ! Heureusement que j'étais là, il en reste encore !",
+     "scene": [
+      {
+       "p": "araignee",
+       "x": 30,
+       "t": 40,
+       "a": "sautille"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "choix": {
+      "q": "Kouassi va-t-il la croire ?",
+      "o": [
+       {
+        "t": "Oui, il la remercie",
+        "bon": true,
+        "s": "Il la remercie, oui. Mais attends la suite."
+       },
+       {
+        "t": "Non, il se méfie",
+        "s": "Pas encore. Kouassi est un homme de confiance."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Kouassi la remercia et lui donna deux ignames pour sa peine. Ananzè rentra chez elle très contente.",
+     "scene": [
+      {
+       "p": "jeune-pret",
+       "x": 14,
+       "t": 54,
+       "a": "respire"
+      },
+      {
+       "p": "araignee",
+       "x": 54,
+       "t": 40,
+       "a": "sautille",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "champ",
+     "t": "Mais les ignames cachées dans le trou étaient restées dans la terre humide. Quand Ananzè revint les chercher, elles avaient germé.",
+     "scene": [
+      {
+       "p": "araignee-creuse",
+       "x": 30,
+       "t": 36,
+       "a": "creuse"
+      }
+     ]
+    },
+    {
+     "d": "champ",
+     "t": "Elles avaient poussé si fort que les tiges sortaient du sol, en plein milieu du champ de Kouassi. Tout le village vit d'où venait le vol.",
+     "scene": [
+      {
+       "p": "araignee",
+       "x": 20,
+       "t": 38,
+       "a": "respire"
+      },
+      {
+       "p": "jeune-pret",
+       "x": 56,
+       "t": 54,
+       "a": "menace",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Depuis ce jour, quand quelqu'un raconte une histoire de voleur un peu trop belle, on dit chez nous : « Attention, tes ignames vont germer. »",
+     "scene": [
+      {
+       "p": "araignee",
+       "x": 26,
+       "t": 38,
+       "a": "part"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Que fait Ananzè pendant que les autres travaillent ?",
+     "r": [
+      "Elle défriche son champ",
+      "Elle reste couchée à l'ombre",
+      "Elle part au marché"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quel prétexte trouve-t-elle pour dormir dans le champ ?",
+     "r": [
+      "Elle a fait un mauvais rêve",
+      "Elle a perdu sa maison",
+      "Elle veut compter les plants"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Comment le vol est-il découvert ?",
+     "r": [
+      "Un enfant l'a vue",
+      "Les ignames cachées ont germé",
+      "Elle a avoué"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il faut cacher ce qu'on vole plus profond",
+      "Qui récolte sans semer ne mange qu'une fois",
+      "Il ne faut faire confiance à personne"
+     ],
+     "b": 1
+    }
+   ]
+  },
+  {
+   "id": "pokou",
+   "titre": "La Reine Abla Pokou",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "baoulé",
+   "accroche": "Une reine, un fleuve, et le prix d'un passage.",
+   "morale": "Celui qui commande passe le dernier, et paie le premier.",
+   "etapes": [
+    {
+     "d": "village",
+     "t": "<b>Conte, conte !</b> Ce soir, une histoire qui explique le nom d'un peuple entier."
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute d'où vient le nom baoulé."
+       },
+       {
+        "t": "Quel peuple ?",
+        "bon": true,
+        "s": "Les Baoulé, de Côte d'Ivoire. Écoute."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Il y a longtemps, dans un royaume de l'est, une querelle éclata pour la succession. La princesse <b>Abla Pokou</b> dut partir, avec ceux qui la suivaient.",
+     "scene": [
+      {
+       "p": "reine",
+       "x": 32,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "Ils marchèrent des semaines. Derrière eux, les guerriers du nouveau roi. Devant eux, un jour, le fleuve <b>Comoé</b>, gonflé par les pluies.",
+     "scene": [
+      {
+       "p": "reine",
+       "x": 26,
+       "t": 50,
+       "a": "marche"
+      }
+     ],
+     "effet": "oiseaux"
+    },
+    {
+     "d": "aube",
+     "choix": {
+      "q": "Que peuvent-ils faire ?",
+      "o": [
+       {
+        "t": "Construire des pirogues",
+        "s": "Pas le temps. Les guerriers sont à une journée."
+       },
+       {
+        "t": "Demander au fleuve",
+        "bon": true,
+        "s": "C'est ce qu'ils firent. Et le fleuve a demandé quelque chose en retour."
+       }
+      ]
+     }
+    },
+    {
+     "d": "fleuve",
+     "t": "Le devin consulta l'eau. Puis il releva la tête. — Le fleuve s'ouvrira. Mais il veut ce que nous avons de plus précieux.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 14,
+       "t": 52,
+       "a": "menace"
+      },
+      {
+       "p": "reine",
+       "x": 54,
+       "t": 50,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "t": "On lui apporta de l'or, des pagnes, des bœufs. Le fleuve ne bougea pas.",
+     "scene": [
+      {
+       "p": "reine",
+       "x": 30,
+       "t": 50,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "choix": {
+      "q": "Qu'est-ce qui est plus précieux que l'or ?",
+      "o": [
+       {
+        "t": "Le pouvoir",
+        "s": "Elle l'avait déjà perdu, ce pouvoir-là."
+       },
+       {
+        "t": "Un enfant",
+        "bon": true,
+        "s": "Oui. Et c'était le sien."
+       }
+      ]
+     }
+    },
+    {
+     "d": "fleuve",
+     "t": "Alors la reine prit son fils unique et le confia au fleuve. L'eau se retira, et le peuple passa.",
+     "scene": [
+      {
+       "p": "reine-penchee",
+       "x": 30,
+       "t": 50,
+       "a": "penche"
+      }
+     ]
+    },
+    {
+     "d": "fleuve",
+     "t": "Sur l'autre rive, elle ne dit qu'un mot : <b>« Ba ouli »</b> — l'enfant est mort. C'est de ce mot qu'est venu le nom du peuple : les Baoulé.",
+     "scene": [
+      {
+       "p": "reine",
+       "x": 30,
+       "t": 50,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "Ils s'installèrent, cultivèrent, prospérèrent. Et personne, jamais, n'oublia le prix du passage.",
+     "scene": [
+      {
+       "p": "reine",
+       "x": 16,
+       "t": 50,
+       "a": "respire"
+      },
+      {
+       "p": "garcon",
+       "x": 56,
+       "t": 48,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Pourquoi Abla Pokou quitte-t-elle son royaume ?",
+     "r": [
+      "Une querelle de succession",
+      "Une sécheresse",
+      "Un mariage"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Quel obstacle rencontre le peuple ?",
+     "r": [
+      "Une montagne",
+      "Le fleuve Comoé en crue",
+      "Une forêt impénétrable"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que réclame le fleuve ?",
+     "r": [
+      "De l'or",
+      "Des bœufs",
+      "Ce qu'ils ont de plus précieux"
+     ],
+     "b": 2
+    },
+    {
+     "q": "D'où vient le nom « Baoulé » ?",
+     "r": [
+      "Du nom de la reine",
+      "Des mots « Ba ouli », l'enfant est mort",
+      "Du nom du fleuve"
+     ],
+     "b": 1
+    }
+   ]
+  },
+  {
+   "id": "abomey",
+   "titre": "La Tortue et le Roi d'Abomey",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "palais",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon",
+   "accroche": "La plus lente arriva la première à l'audience.",
+   "morale": "Partir tôt vaut mieux que courir vite.",
+   "etapes": [
+    {
+     "d": "palais",
+     "t": "<b>Conte, conte !</b> Ce soir, une histoire du pays fon, à Abomey, là où les rois recevaient assis sur des tabourets sculptés."
+    },
+    {
+     "d": "palais",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute qui est arrivé le premier ce jour-là."
+       },
+       {
+        "t": "Un roi ? Lequel ?",
+        "bon": true,
+        "s": "Peu importe son nom. Ce qui compte, c'est ce qu'il a promis. Écoute."
+       }
+      ]
+     }
+    },
+    {
+     "d": "palais",
+     "t": "Le roi fit annoncer par les tambours : — Celui qui se présentera le premier devant moi au lever du soleil recevra un champ.",
+     "scene": [
+      {
+       "p": "roi-montre",
+       "x": 28,
+       "t": 56,
+       "a": "menace"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Tout le monde entendit. Le lièvre rit. — Un champ ? Il est déjà à moi. Personne ne court plus vite que moi.",
+     "scene": [
+      {
+       "p": "lievre",
+       "x": 14,
+       "t": 48,
+       "a": "sautille"
+      },
+      {
+       "p": "tortue",
+       "x": 52,
+       "t": 40,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "Et la tortue, que fait-elle ?",
+      "o": [
+       {
+        "t": "Elle renonce",
+        "s": "Elle ? Jamais."
+       },
+       {
+        "t": "Elle part tout de suite",
+        "bon": true,
+        "s": "Voilà. Le soleil n'était même pas couché."
+       }
+      ]
+     }
+    },
+    {
+     "d": "aube",
+     "t": "La tortue ne dit rien. Elle prit la route ce soir-là, et marcha toute la nuit.",
+     "scene": [
+      {
+       "p": "tortue",
+       "x": 28,
+       "t": 40,
+       "a": "marche"
+      }
+     ]
+    },
+    {
+     "d": "nuit",
+     "t": "Le lièvre, lui, dormit. — Je partirai au premier chant du coq, dit-il. J'arriverai avant tout le monde.",
+     "scene": [
+      {
+       "p": "lievre-mange",
+       "x": 30,
+       "t": 44,
+       "a": "mache"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "Le coq chanta. Le lièvre bondit, traversa la brousse, franchit le marigot, arriva au palais hors d'haleine.",
+     "scene": [
+      {
+       "p": "lievre-part",
+       "x": 24,
+       "t": 50,
+       "a": "part"
+      }
+     ],
+     "effet": "poussiere"
+    },
+    {
+     "d": "aube",
+     "choix": {
+      "q": "Qui trouve-t-il devant la porte ?",
+      "o": [
+       {
+        "t": "Personne",
+        "s": "Regarde mieux, tout en bas."
+       },
+       {
+        "t": "La tortue, déjà assise",
+        "bon": true,
+        "s": "Assise, et fraîche comme une feuille de matin."
+       }
+      ]
+     }
+    },
+    {
+     "d": "palais",
+     "t": "La tortue était là, assise devant la porte, la carapace couverte de rosée. Elle attendait depuis une heure.",
+     "scene": [
+      {
+       "p": "tortue-parle",
+       "x": 18,
+       "t": 40,
+       "a": "respire"
+      },
+      {
+       "p": "lievre",
+       "x": 56,
+       "t": 48,
+       "a": "halete",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "palais",
+     "t": "Le roi sortit. Il regarda le lièvre essoufflé, puis la tortue tranquille. Il donna le champ à la tortue.",
+     "scene": [
+      {
+       "p": "roi",
+       "x": 14,
+       "t": 56,
+       "a": "respire"
+      },
+      {
+       "p": "tortue",
+       "x": 56,
+       "t": 40,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "palais",
+     "t": "— Mais je suis le plus rapide ! cria le lièvre. — Je n'ai pas promis le champ au plus rapide, dit le roi. Je l'ai promis au premier.",
+     "scene": [
+      {
+       "p": "roi-montre",
+       "x": 28,
+       "t": 56,
+       "a": "menace"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Que promet le roi ?",
+     "r": [
+      "Un champ au plus rapide",
+      "Un champ au premier arrivé",
+      "De l'or à tous"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quand la tortue part-elle ?",
+     "r": [
+      "Au chant du coq",
+      "La veille au soir",
+      "Après le lièvre"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Pourquoi le lièvre perd-il ?",
+     "r": [
+      "Il s'est perdu",
+      "Il a dormi avant de partir",
+      "Il est tombé dans le marigot"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il faut courir plus vite",
+      "Partir tôt vaut mieux que courir vite",
+      "Les rois sont injustes"
+     ],
+     "b": 1
+    }
+   ]
+  },
+  {
+   "id": "messager",
+   "titre": "Le Caméléon messager",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "yoruba",
+   "accroche": "Il portait la bonne nouvelle. Il est arrivé trop tard.",
+   "morale": "Une bonne nouvelle portée trop lentement devient une mauvaise nouvelle.",
+   "etapes": [
+    {
+     "d": "ciel",
+     "t": "<b>Conte, conte !</b> Ce soir, on raconte pourquoi les hommes meurent. C'est une histoire de messagers."
+    },
+    {
+     "d": "ciel",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute qui est parti le premier."
+       },
+       {
+        "t": "C'est triste ?",
+        "bon": true,
+        "s": "C'est un conte. Il explique, il ne pleure pas. Écoute."
+       }
+      ]
+     }
+    },
+    {
+     "d": "ciel",
+     "t": "Au commencement, le Ciel voulut faire un cadeau aux hommes. Il choisit deux messagers pour porter sa parole.",
+     "effet": "etoiles"
+    },
+    {
+     "d": "foret",
+     "t": "Au <b>caméléon</b>, il confia la bonne nouvelle : « Dis-leur qu'ils ne mourront pas. »",
+     "scene": [
+      {
+       "p": "cameleon",
+       "x": 30,
+       "t": 42,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "Au <b>margouillat</b>, il confia l'autre : « Et toi, dis-leur que s'ils désobéissent, ils mourront. »",
+     "scene": [
+      {
+       "p": "margouillat",
+       "x": 30,
+       "t": 46,
+       "a": "menace"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "choix": {
+      "q": "Lequel va arriver le premier ?",
+      "o": [
+       {
+        "t": "Le caméléon",
+        "s": "Regarde comment il marche."
+       },
+       {
+        "t": "Le margouillat",
+        "bon": true,
+        "s": "Bien vu. Et c'est tout le problème."
+       }
+      ]
+     }
+    },
+    {
+     "d": "foret",
+     "t": "Le caméléon partit aussitôt. Mais il marchait comme il marche : une patte, puis l'autre, en balançant, sans jamais se presser.",
+     "scene": [
+      {
+       "p": "cameleon-marche",
+       "x": 28,
+       "t": 40,
+       "a": "penche"
+      }
+     ]
+    },
+    {
+     "d": "savane",
+     "t": "Le margouillat, lui, fila droit. Il traversa la brousse, arriva au village, et cria la mauvaise nouvelle sur la place.",
+     "scene": [
+      {
+       "p": "margouillat-file",
+       "x": 14,
+       "t": 20,
+       "b": 8,
+       "a": "traverse"
+      }
+     ],
+     "effet": "poussiere"
+    },
+    {
+     "d": "village",
+     "t": "Les hommes l'entendirent. Ce qui est dit en premier devient vrai en premier.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 16,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "jeune-pret",
+       "x": 56,
+       "t": 54,
+       "a": "respire",
+       "m": 1
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "Le caméléon peut-il encore changer cela ?",
+      "o": [
+       {
+        "t": "Oui, il suffit de parler",
+        "s": "Trop tard. La parole était posée."
+       },
+       {
+        "t": "Non, c'est déjà dit",
+        "bon": true,
+        "s": "C'est cela. Une parole ne se ramasse pas."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Le caméléon arriva le lendemain. Il dit sa phrase. Personne ne la crut : on avait déjà entendu l'autre.",
+     "scene": [
+      {
+       "p": "cameleon",
+       "x": 30,
+       "t": 42,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "foret",
+     "t": "Depuis, le caméléon change de couleur partout où il passe. On dit qu'il cherche encore à se faire remarquer.",
+     "scene": [
+      {
+       "p": "cameleon-marche",
+       "x": 28,
+       "t": 40,
+       "a": "penche"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Que devait annoncer le caméléon ?",
+     "r": [
+      "Que les hommes ne mourraient pas",
+      "Qu'il allait pleuvoir",
+      "Que le roi arrivait"
+     ],
+     "b": 0
+    },
+    {
+     "q": "Pourquoi arrive-t-il en retard ?",
+     "r": [
+      "Il s'est perdu",
+      "Il marche trop lentement",
+      "Il a oublié le message"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que se passe-t-il quand il arrive ?",
+     "r": [
+      "On le croit",
+      "Personne ne le croit",
+      "Le Ciel le punit"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il faut parler fort",
+      "Une bonne nouvelle portée trop lentement devient mauvaise",
+      "Il ne faut pas croire les messagers"
+     ],
+     "b": 1
+    }
+   ]
+  },
+  {
+   "id": "tamtam",
+   "titre": "Le Tam-tam qui appelait la pluie",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "champ",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon",
+   "accroche": "On l'a battu trop fort.",
+   "morale": "Ce qui vient à l'appel repart si on l'appelle sans respect.",
+   "etapes": [
+    {
+     "d": "champ",
+     "t": "<b>Conte, conte !</b> Ce soir, une histoire de tambour. Et de gens qui ont voulu commander au ciel."
+    },
+    {
+     "d": "champ",
+     "choix": {
+      "q": null,
+      "o": [
+       {
+        "t": "Conte !",
+        "bon": true,
+        "s": "Bien. Écoute ce que ce tambour savait faire."
+       },
+       {
+        "t": "Un tambour magique ?",
+        "bon": true,
+        "s": "Pas magique. Respecté. Ce n'est pas pareil. Écoute."
+       }
+      ]
+     }
+    },
+    {
+     "d": "village",
+     "t": "Dans un village du pays fon, il y avait un tam-tam qu'on ne sortait qu'une fois l'an, à la fin de la saison sèche.",
+     "scene": [
+      {
+       "p": "tamtam",
+       "x": 30,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Le vieux gardien le frappait sept fois, lentement. Et chaque année, dans les trois jours, la pluie venait.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 16,
+       "t": 52,
+       "a": "menace"
+      },
+      {
+       "p": "tamtam",
+       "x": 54,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "choix": {
+      "q": "Pourquoi seulement sept fois ?",
+      "o": [
+       {
+        "t": "C'est la tradition",
+        "bon": true,
+        "s": "Oui. Et une tradition, ça a souvent une raison qu'on a oubliée."
+       },
+       {
+        "t": "Le tambour est fragile",
+        "s": "Il a cent ans et il est solide. Cherche mieux."
+       }
+      ]
+     }
+    },
+    {
+     "d": "champ",
+     "t": "Une année, la sécheresse fut terrible. Les jeunes du village dirent : — Sept coups pour un peu de pluie ? Frappons cent fois, nous aurons cent fois plus d'eau.",
+     "scene": [
+      {
+       "p": "jeune-pret",
+       "x": 14,
+       "t": 54,
+       "a": "sautille"
+      },
+      {
+       "p": "jeune-marche",
+       "x": 54,
+       "t": 54,
+       "a": "respire",
+       "m": 1
+      }
+     ],
+     "effet": "poussiere"
+    },
+    {
+     "d": "village",
+     "t": "Le vieux gardien refusa. Ils prirent le tam-tam pendant qu'il dormait.",
+     "scene": [
+      {
+       "p": "jeune-marche",
+       "x": 28,
+       "t": 54,
+       "a": "marche"
+      }
+     ]
+    },
+    {
+     "d": "nuit",
+     "t": "Ils frappèrent. Vingt fois. Cinquante fois. Cent fois. Le son roulait sur la brousse comme un orage.",
+     "scene": [
+      {
+       "p": "tamtam",
+       "x": 30,
+       "t": 30,
+       "a": "debat"
+      }
+     ],
+     "effet": "braises"
+    },
+    {
+     "d": "nuit",
+     "choix": {
+      "q": "Que va-t-il se passer ?",
+      "o": [
+       {
+        "t": "Il va pleuvoir très fort",
+        "s": "Ce serait trop simple."
+       },
+       {
+        "t": "Quelque chose va se casser",
+        "bon": true,
+        "s": "Oui. Et pas seulement le tambour."
+       }
+      ]
+     }
+    },
+    {
+     "d": "nuit",
+     "t": "La peau du tam-tam céda au centième coup. Le son s'arrêta net. Et cette année-là, il ne plut pas du tout.",
+     "scene": [
+      {
+       "p": "tamtam",
+       "x": 30,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "village",
+     "t": "Le vieux ramassa les morceaux sans un mot. — Ce n'était pas le bruit qui appelait la pluie, dit-il enfin. C'était le fait qu'on ne le fasse qu'une fois.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 30,
+       "t": 52,
+       "a": "respire"
+      }
+     ]
+    },
+    {
+     "d": "aube",
+     "t": "On refit une peau. On refrappa sept coups l'année suivante. La pluie revint. Personne n'a plus jamais compté au-delà de sept.",
+     "scene": [
+      {
+       "p": "vieux-conseils",
+       "x": 16,
+       "t": 52,
+       "a": "respire"
+      },
+      {
+       "p": "tamtam",
+       "x": 54,
+       "t": 30,
+       "a": "respire"
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Combien de coups le gardien frappe-t-il ?",
+     "r": [
+      "Trois",
+      "Sept",
+      "Cent"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que font les jeunes du village ?",
+     "r": [
+      "Ils cachent le tambour",
+      "Ils frappent cent fois",
+      "Ils achètent un autre tambour"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Que se passe-t-il au centième coup ?",
+     "r": [
+      "Il pleut",
+      "La peau du tambour se déchire",
+      "Le gardien se réveille"
+     ],
+     "b": 1
+    },
+    {
+     "q": "Quelle est la leçon ?",
+     "r": [
+      "Il faut frapper plus fort",
+      "Ce qui vient à l'appel repart si on appelle sans respect",
+      "Les jeunes ont raison"
+     ],
+     "b": 1
+    }
+   ]
+  }
+ ],
+ "bientot": [
+  {
+   "titre": "Le Python et la Pintade",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "savane",
+   "accroche": "Pourquoi la pintade crie avant tout le monde.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "L'Araignée et le Champ de Mil",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "champ",
+   "accroche": "La plus petite bête et la plus grosse récolte.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Chien et le Chacal",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "nuit",
+   "accroche": "Deux frères, un feu, et un choix pour toujours.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "L'Éléphant et la Fourmi",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "4 min",
+   "decor": "foret",
+   "accroche": "La force ne sert à rien dans une oreille.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Bœuf qui refusait de labourer",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "champ",
+   "accroche": "On ne force pas ce qui doit se convaincre.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "La Marmite qui parlait",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "case",
+   "accroche": "Ce qu'on dit devant le feu ne s'oublie pas.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Les Deux Frères et le Champ",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "champ",
+   "accroche": "Un héritage partagé, et ce qui reste à partager.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Vieux et la Rivière",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "fleuve",
+   "accroche": "On ne traverse jamais deux fois le même gué.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Mogho Naba et le Tisserand",
+   "cat": "mossi",
+   "catLbl": "MOSSI",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "Un roi qui voulait un pagne sans couture.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "La Fille du Chef de Tenkodogo",
+   "cat": "mossi",
+   "catLbl": "MOSSI",
+   "duree": "7 min",
+   "decor": "palais",
+   "accroche": "Yennenga, la princesse qui ne voulait pas se marier.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Forgeron de Ouahigouya",
+   "cat": "mossi",
+   "catLbl": "MOSSI",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Celui qui travaille le fer connaît les secrets.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Tambour du Naba",
+   "cat": "mossi",
+   "catLbl": "MOSSI",
+   "duree": "5 min",
+   "decor": "palais",
+   "accroche": "Un tambour qui bat tout seul annonce quoi ?",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Marchand de Bobo",
+   "cat": "dioula",
+   "catLbl": "DIOULA",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Il vendait tout, sauf ce qu'on lui demandait.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "La Route de Kong",
+   "cat": "dioula",
+   "catLbl": "DIOULA",
+   "duree": "7 min",
+   "decor": "savane",
+   "accroche": "Trois caravanes, une seule qui arrive.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Puits de Sindou",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Les pics de Sindou n'ont pas toujours été de pierre.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "La Mare aux Poissons Sacrés",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "On y jette du mil, jamais un hameçon.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Le Masque de Boni",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "nuit",
+   "accroche": "Ce que le masque voit, l'homme ne le voit pas.",
+   "pays": "bf",
+   "zone": "ouest"
+  },
+  {
+   "titre": "Kacou Ananzè et la marmite de sagesse",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "Vouloir toute la sagesse pour soi, c'est n'en garder aucune.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "akan"
+  },
+  {
+   "titre": "Le Tambour parleur de Bété",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Un tambour qui répète ce qu'on lui confie.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "bété"
+  },
+  {
+   "titre": "Le Chasseur et le Buffle",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "On ne tue pas ce qui vous a laissé la vie.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "sénoufo"
+  },
+  {
+   "titre": "Pourquoi le Margouillat hoche la tête",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "savane",
+   "accroche": "Une promesse tenue trop tard.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "akan"
+  },
+  {
+   "titre": "Le Poro et le jeune impatient",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "foret",
+   "accroche": "L'initiation ne se force pas.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "sénoufo"
+  },
+  {
+   "titre": "Le Masque Goli",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "nuit",
+   "accroche": "Ce que le masque danse, le village l'écoute.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "baoulé"
+  },
+  {
+   "titre": "La Panthère et le Cabri",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Le petit qui négocie survit au grand qui ordonne.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Pêcheur de la lagune",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "L'eau donne à celui qui sait attendre.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "ébrié"
+  },
+  {
+   "titre": "Soundiata et le buffle de Dô",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "8 min",
+   "decor": "savane",
+   "accroche": "Avant le roi, il y eut l'enfant qui ne marchait pas.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Lièvre et l'Hyène au puits",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "puits",
+   "accroche": "Deux seaux, un puits, et une ruse de trop.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "bambara"
+  },
+  {
+   "titre": "La Vache de Bandiagara",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "champ",
+   "accroche": "Ce qu'on prête revient rarement seul.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "dogon"
+  },
+  {
+   "titre": "Le Berger peul et le Serpent",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "savane",
+   "accroche": "Sauver une bête ne la rend pas reconnaissante.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "peul"
+  },
+  {
+   "titre": "Le Forgeron et le Génie du fleuve",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "fleuve",
+   "accroche": "Le fer se plie, le fleuve non.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "bambara"
+  },
+  {
+   "titre": "Les Trois Sœurs de Djenné",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "La plus laide voyait le plus loin.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "songhaï"
+  },
+  {
+   "titre": "Le Renard pâle et le grain",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "nuit",
+   "accroche": "Celui qui vole le grain écrit l'avenir dans le sable.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "dogon"
+  },
+  {
+   "titre": "Le Griot qui avait tout dit",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "Une parole de trop coûte plus qu'un silence.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Caïman du Niger",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "fleuve",
+   "accroche": "Porter quelqu'un ne donne pas le droit de le manger.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "bozo"
+  },
+  {
+   "titre": "La Femme aux mains de mil",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "champ",
+   "accroche": "Le travail partagé nourrit deux fois.",
+   "pays": "ml",
+   "zone": "ouest",
+   "trad": "bambara"
+  },
+  {
+   "titre": "Le Balafon de Sosso",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "palais",
+   "accroche": "L'instrument volé au roi sorcier.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Chasseur du Fouta-Djalon",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "La montagne rend ce qu'on lui prend.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "peul"
+  },
+  {
+   "titre": "Le Crocodile et le Poulet",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "fleuve",
+   "accroche": "Un service rendu n'efface pas la faim.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "soussou"
+  },
+  {
+   "titre": "La Fille qui refusait tous les prétendants",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "village",
+   "accroche": "Le plus beau n'était pas un homme.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Tisserand et l'Araignée",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "case",
+   "accroche": "Qui a appris à tisser à qui ?",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "soussou"
+  },
+  {
+   "titre": "Le Puits des jumeaux",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "puits",
+   "accroche": "Deux enfants, un seau, un secret.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Vieux de Kankan",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Il donnait raison à tout le monde. Et il avait raison.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Chant de la rivière Milo",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Ce que l'eau chante, seuls les enfants l'entendent.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Le Bœuf et le Termite",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "savane",
+   "accroche": "Le plus petit creuse le plus profond.",
+   "pays": "gn",
+   "zone": "ouest",
+   "trad": "peul"
+  },
+  {
+   "titre": "Leuk-le-Lièvre et Bouki-l'Hyène",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "savane",
+   "accroche": "Le lièvre le plus célèbre du pays wolof, et son compère affamé.",
+   "pays": "sn",
+   "zone": "ouest",
+   "trad": "wolof"
+  },
+  {
+   "titre": "Leuk et le champ d'arachides",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "champ",
+   "accroche": "Une récolte, deux voleurs, une seule trace.",
+   "pays": "sn",
+   "zone": "ouest",
+   "trad": "wolof"
+  },
+  {
+   "titre": "La Petite Fille et le Baobab",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "savane",
+   "accroche": "L'arbre qui gardait les orphelins.",
+   "pays": "sn",
+   "zone": "ouest",
+   "trad": "sérère"
+  },
+  {
+   "titre": "Le Pêcheur de Joal",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "La mer donne, la mer reprend, la mer regarde.",
+   "pays": "sn",
+   "zone": "ouest",
+   "trad": "sérère"
+  },
+  {
+   "titre": "Le Marabout et le Voleur de mouton",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "On ne trompe pas celui qui compte ses bêtes.",
+   "pays": "sn",
+   "zone": "ouest",
+   "trad": "wolof"
+  },
+  {
+   "titre": "Le Chameau et l'Aiguille",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "savane",
+   "accroche": "Ce qui ne passe pas se contourne.",
+   "pays": "ne",
+   "zone": "ouest",
+   "trad": "touareg"
+  },
+  {
+   "titre": "Le Fleuve qui changea de lit",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Le Niger n'a pas toujours coulé par ici.",
+   "pays": "ne",
+   "zone": "ouest",
+   "trad": "songhaï"
+  },
+  {
+   "titre": "Gizo l'Araignée et le Roi",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "L'araignée haoussa promet ce qu'elle ne peut pas donner.",
+   "pays": "ne",
+   "zone": "ouest",
+   "trad": "haoussa"
+  },
+  {
+   "titre": "La Jarre de la vieille femme",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "case",
+   "accroche": "Une jarre fêlée arrose quand même le chemin.",
+   "pays": "ne",
+   "zone": "ouest",
+   "trad": "zarma"
+  },
+  {
+   "titre": "Le Puits des Touaregs",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "puits",
+   "accroche": "Dans le désert, on ne refuse pas l'eau.",
+   "pays": "ne",
+   "zone": "ouest",
+   "trad": "touareg"
+  },
+  {
+   "titre": "Les Amazones et le Léopard",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "village",
+   "accroche": "Le courage ne se mesure pas à la taille.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "Le Chasseur bariba et l'Antilope",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "savane",
+   "accroche": "Ce qui parle ne se mange pas.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "bariba"
+  },
+  {
+   "titre": "Yévi l'Araignée et le sac de sel",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "village",
+   "accroche": "L'araignée éwé porte plus qu'elle ne peut.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "éwé"
+  },
+  {
+   "titre": "La Montagne de Kabyè",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "Ceux qui montent ne redescendent pas les mains vides.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "kabyè"
+  },
+  {
+   "titre": "Le Poisson qui parlait",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "fleuve",
+   "accroche": "Une promesse faite à l'eau se tient.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "éwé"
+  },
+  {
+   "titre": "Le Forgeron et les Sept Fils",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "case",
+   "accroche": "Le fer se partage mal.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "tem"
+  },
+  {
+   "titre": "Yévi et le tambour du ciel",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "ciel",
+   "accroche": "L'araignée monta chercher ce que la terre n'avait pas.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "éwé"
+  },
+  {
+   "titre": "La Faille d'Aledjo",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "Pourquoi la montagne s'est ouverte en deux.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "kabyè"
+  },
+  {
+   "titre": "Le Fer de Bassar",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "village",
+   "accroche": "Celui qui connaît le feu ne le vend pas.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "bassar"
+  },
+  {
+   "titre": "La Fille et le Génie du lac",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Sur le lac Togo, on ne rit pas de ce qu'on ne voit pas.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "mina"
+  },
+  {
+   "titre": "Le Chien qui apporta le feu",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "nuit",
+   "accroche": "Il est parti chercher le feu. Il est resté près du foyer.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "moba"
+  },
+  {
+   "titre": "La Chèvre et le Piège",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "champ",
+   "accroche": "Le piège attend, la chèvre réfléchit.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "éwé"
+  },
+  {
+   "titre": "La Tortue et le Roi de la Forêt",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "Chez nous, la lenteur a ses raisons.",
+   "pays": "cm",
+   "zone": "centre",
+   "trad": "beti"
+  },
+  {
+   "titre": "Le Tam-tam d'appel des Bamiléké",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Un tambour qui porte plus loin que la voix.",
+   "pays": "cm",
+   "zone": "centre",
+   "trad": "bamiléké"
+  },
+  {
+   "titre": "Le Chef et le Trône de perles",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "palais",
+   "accroche": "Le siège ne fait pas le chef.",
+   "pays": "cm",
+   "zone": "centre",
+   "trad": "bamiléké"
+  },
+  {
+   "titre": "L'Éléphant et la Fourmi rouge",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "La force ne sert à rien dans une oreille.",
+   "pays": "cm",
+   "zone": "centre",
+   "trad": "beti"
+  },
+  {
+   "titre": "La Sirène du Wouri",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Ce que l'estuaire prend, il le rend autrement.",
+   "pays": "cm",
+   "zone": "centre",
+   "trad": "douala"
+  },
+  {
+   "titre": "L'Enfant et le Fleuve Congo",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Le fleuve donne, le fleuve reprend, le fleuve pardonne.",
+   "pays": "cd",
+   "zone": "centre",
+   "trad": "kongo"
+  },
+  {
+   "titre": "Le Léopard et la Chèvre",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Une invitation à dîner qui se retourne.",
+   "pays": "cd",
+   "zone": "centre",
+   "trad": "luba"
+  },
+  {
+   "titre": "Les Jumeaux et la Forêt",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "foret",
+   "accroche": "Deux enfants nés le même jour, deux destins opposés.",
+   "pays": "cd",
+   "zone": "centre",
+   "trad": "mongo"
+  },
+  {
+   "titre": "Le Chasseur qui comprenait les bêtes",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "Le don se paie toujours.",
+   "pays": "cd",
+   "zone": "centre",
+   "trad": "mangbetu"
+  },
+  {
+   "titre": "La Calebasse de la vieille Nsona",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "case",
+   "accroche": "Ce qu'on garde trop longtemps finit par pourrir.",
+   "pays": "cd",
+   "zone": "centre",
+   "trad": "kongo"
+  },
+  {
+   "titre": "Le Singe et le Crocodile",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "fleuve",
+   "accroche": "Traverser sur le dos d'un affamé.",
+   "pays": "cg",
+   "zone": "centre",
+   "trad": "téké"
+  },
+  {
+   "titre": "Le Chasseur et l'Esprit de la forêt",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "On ne chasse pas plus que sa faim.",
+   "pays": "cg",
+   "zone": "centre",
+   "trad": "mbochi"
+  },
+  {
+   "titre": "La Pirogue trop chargée",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "fleuve",
+   "accroche": "Tout emporter, c'est tout perdre.",
+   "pays": "cg",
+   "zone": "centre",
+   "trad": "kongo"
+  },
+  {
+   "titre": "Le Tambour du village disparu",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "nuit",
+   "accroche": "On l'entend encore, certaines nuits.",
+   "pays": "cg",
+   "zone": "centre",
+   "trad": "téké"
+  },
+  {
+   "titre": "La Perdrix et le Chasseur",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "savane",
+   "accroche": "Elle criait pour prévenir les autres.",
+   "pays": "cg",
+   "zone": "centre",
+   "trad": "mbochi"
+  },
+  {
+   "titre": "Le Tambour du village fang",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Un tambour qui appelle plus loin que la voix.",
+   "pays": "ga",
+   "zone": "centre",
+   "trad": "fang"
+  },
+  {
+   "titre": "Le Masque blanc du Punu",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "nuit",
+   "accroche": "Il danse sur des échasses, entre deux mondes.",
+   "pays": "ga",
+   "zone": "centre",
+   "trad": "punu"
+  },
+  {
+   "titre": "La Tortue et l'Éléphant",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Une corde, deux géants, une petite tête.",
+   "pays": "ga",
+   "zone": "centre",
+   "trad": "fang"
+  },
+  {
+   "titre": "L'Homme qui suivit la panthère",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "La forêt garde ceux qui n'écoutent pas.",
+   "pays": "ga",
+   "zone": "centre",
+   "trad": "myéné"
+  },
+  {
+   "titre": "Le Fromager du carrefour",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "L'arbre sait qui passe et qui revient.",
+   "pays": "ga",
+   "zone": "centre",
+   "trad": "fang"
+  },
+  {
+   "titre": "Le Lac qui reculait",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Le Tchad n'a pas toujours eu ces rives.",
+   "pays": "td",
+   "zone": "centre",
+   "trad": "kanembou"
+  },
+  {
+   "titre": "Le Chasseur sara et la Biche",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "savane",
+   "accroche": "Elle lui parla une fois. Une seule.",
+   "pays": "td",
+   "zone": "centre",
+   "trad": "sara"
+  },
+  {
+   "titre": "Le Puits du désert",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "5 min",
+   "decor": "puits",
+   "accroche": "Trois hommes, une gorgée chacun.",
+   "pays": "td",
+   "zone": "centre",
+   "trad": "toubou"
+  },
+  {
+   "titre": "Le Bœuf blanc",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "champ",
+   "accroche": "Celui qu'on ne devait pas vendre.",
+   "pays": "td",
+   "zone": "centre",
+   "trad": "sara"
+  },
+  {
+   "titre": "La Vieille et les Criquets",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "champ",
+   "accroche": "Elle les a nourris. Ils ont épargné son champ.",
+   "pays": "td",
+   "zone": "centre",
+   "trad": "kanembou"
+  },
+  {
+   "titre": "Tere le Trompeur",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "Le héros farceur des Gbaya, qui gagne toujours mal.",
+   "pays": "cf",
+   "zone": "centre",
+   "trad": "gbaya"
+  },
+  {
+   "titre": "Le Chasseur et les Pygmées Aka",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "Ceux qui connaissent la forêt ne s'y perdent pas.",
+   "pays": "cf",
+   "zone": "centre",
+   "trad": "aka"
+  },
+  {
+   "titre": "La Panthère et le Feu",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "nuit",
+   "accroche": "Comment le feu changea de camp.",
+   "pays": "cf",
+   "zone": "centre",
+   "trad": "banda"
+  },
+  {
+   "titre": "Le Chant du Kponingbo",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Un xylophone qui appelle la danse et la pluie.",
+   "pays": "cf",
+   "zone": "centre",
+   "trad": "banda"
+  },
+  {
+   "titre": "L'Antilope et le Piège",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Elle savait. Elle est passée quand même.",
+   "pays": "cf",
+   "zone": "centre",
+   "trad": "gbaya"
+  },
+  {
+   "titre": "Kacou Ananzè et le partage du gibier",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "L'araignée compte les parts, et se compte deux fois.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "akan"
+  },
+  {
+   "titre": "Le Chasseur et la Femme-Antilope",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "foret",
+   "accroche": "Il promit de ne rien dire. Il a parlé.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "gouro"
+  },
+  {
+   "titre": "Le Tambour de Sakassou",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "On ne bat pas le tambour du roi pour s'amuser.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "baoulé"
+  },
+  {
+   "titre": "Le Vieux et le Champ de riz",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "champ",
+   "accroche": "Trois fils, un champ, et une bêche qui reste au même endroit.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "dan"
+  },
+  {
+   "titre": "La Panthère qui voulait des cornes",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "savane",
+   "accroche": "Ce qu'on n'a pas reçu ne se prend pas.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "sénoufo"
+  },
+  {
+   "titre": "Le Poro et le Silence",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "foret",
+   "accroche": "Le garçon qui répétait tout ce qu'il entendait.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "sénoufo"
+  },
+  {
+   "titre": "Le Pêcheur d'Abouré et la Lagune",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "La lagune donne à qui sait ne pas tout prendre.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "abouré"
+  },
+  {
+   "titre": "La Tortue et le Fromager",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "L'arbre qui n'a pas voulu se pencher.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "bété"
+  },
+  {
+   "titre": "Le Bracelet de la Reine",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "Ce qu'on jette au fleuve revient par une autre main.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "baoulé"
+  },
+  {
+   "titre": "Le Forgeron et le Génie du Bandama",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "fleuve",
+   "accroche": "Le fer se plie, le fleuve non.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "malinké"
+  },
+  {
+   "titre": "Les Deux Chasseurs et le Buffle",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "savane",
+   "accroche": "Une bête, deux flèches, une seule vérité.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "gouro"
+  },
+  {
+   "titre": "Le Chien et la Poule",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "village",
+   "accroche": "Pourquoi la poule gratte toujours le sol.",
+   "pays": "ci",
+   "zone": "ouest",
+   "trad": "attié"
+  },
+  {
+   "titre": "Le Cavalier de Ouahigouya",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "savane",
+   "accroche": "Un cheval, un serment, et une frontière qui tient encore.",
+   "pays": "bf",
+   "zone": "ouest",
+   "trad": "mossi"
+  },
+  {
+   "titre": "La Fille du Marché de Gorom",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Elle vendait ce que personne ne voulait acheter.",
+   "pays": "bf",
+   "zone": "ouest",
+   "trad": "gourmantché"
+  },
+  {
+   "titre": "Le Puits de Tiébélé",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "case",
+   "accroche": "Les murs peints savent qui passe.",
+   "pays": "bf",
+   "zone": "ouest",
+   "trad": "kassena"
+  },
+  {
+   "titre": "Yévi et le champ de maïs",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "champ",
+   "accroche": "L'araignée sème une fois et récolte trois fois. Pour un temps.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "éwé"
+  },
+  {
+   "titre": "La Femme du Mono",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Le fleuve qui sépare deux pays et deux promesses.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "éwé"
+  },
+  {
+   "titre": "Le Chasseur de Fazao",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "foret",
+   "accroche": "La forêt rend ce qu'on lui prend, jamais davantage.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "tem"
+  },
+  {
+   "titre": "Les Greniers de Tamberma",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "case",
+   "accroche": "Des maisons bâties comme des forteresses, et pourquoi.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "batammariba"
+  },
+  {
+   "titre": "Le Serpent et la Calebasse",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "case",
+   "accroche": "Ce qui entre par la bouche ne ressort pas toujours.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "kabyè"
+  },
+  {
+   "titre": "La Danse des Évala",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "village",
+   "accroche": "On ne devient pas homme en un jour, mais en une lutte.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "kabyè"
+  },
+  {
+   "titre": "Le Tisserand de Kpalimé",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Le fil cassé se renoue, le mensonge non.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "éwé"
+  },
+  {
+   "titre": "La Pintade et le Tam-tam",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "savane",
+   "accroche": "Elle criait avant tout le monde. On a cessé de l'écouter.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "tem"
+  },
+  {
+   "titre": "Le Marché d'Assigamé",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Les Nana Benz et la fille qui comptait mal.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "mina"
+  },
+  {
+   "titre": "Le Baobab de Sokodé",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "savane",
+   "accroche": "Un arbre qui a vu passer tous les rois.",
+   "pays": "tg",
+   "zone": "ouest",
+   "trad": "tem"
+  },
+  {
+   "titre": "Yagbo l'Araignée et le sac de mensonges",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Elle portait un sac trop lourd pour ce qu'il contenait.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "Le Roi Guézo et le Pêcheur",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "palais",
+   "accroche": "Le roi voulait savoir qui disait vrai dans son royaume.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "La Panthère d'Abomey",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "L'animal du roi ne se chasse pas.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "Les Cauris de la Vieille",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "Seize cauris, seize réponses, une seule question.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "yoruba"
+  },
+  {
+   "titre": "Le Chasseur et le Caïman du Ouémé",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "fleuve",
+   "accroche": "Traverser sur le dos de celui qu'on a épargné.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "La Cité sur l'Eau",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "fleuve",
+   "accroche": "Pourquoi Ganvié s'est bâtie sur pilotis.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "tofinu"
+  },
+  {
+   "titre": "Le Bœuf de Nikki",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "savane",
+   "accroche": "Ce qu'on offre au chef revient au village.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "bariba"
+  },
+  {
+   "titre": "La Tortue et le Vautour",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "ciel",
+   "accroche": "Un festin en haut, une chute en bas.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "yoruba"
+  },
+  {
+   "titre": "Le Tambour du Roi Ghézo",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "palais",
+   "accroche": "Un tambour qui ne répond qu'à une seule main.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "La Fille sans Nom",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "7 min",
+   "decor": "village",
+   "accroche": "On ne peut pas appeler ce qu'on n'a pas nommé.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "yoruba"
+  },
+  {
+   "titre": "Le Chien et le Léopard",
+   "cat": "animaux",
+   "catLbl": "ANIMAUX",
+   "duree": "5 min",
+   "decor": "foret",
+   "accroche": "Deux amis, un feu, et un choix pour toujours.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "bariba"
+  },
+  {
+   "titre": "Les Trois Calebasses",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "case",
+   "accroche": "Une pleine, une vide, une percée. Choisis.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "Le Serpent Dan",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "6 min",
+   "decor": "ciel",
+   "accroche": "L'arc-en-ciel est un serpent qui boit.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "La Vieille et le Vodun",
+   "cat": "legendes",
+   "catLbl": "LÉGENDE",
+   "duree": "7 min",
+   "decor": "nuit",
+   "accroche": "Elle a nourri ce que tout le monde fuyait.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  },
+  {
+   "titre": "Le Marché de Dantokpa",
+   "cat": "sagesse",
+   "catLbl": "SAGESSE",
+   "duree": "6 min",
+   "decor": "village",
+   "accroche": "On y trouve tout, sauf ce qu'on est venu chercher.",
+   "pays": "bj",
+   "zone": "ouest",
+   "trad": "fon"
+  }
+ ],
+ "marches": [
+  {
+   "pays": "bf",
+   "nom": "Burkina Faso",
+   "ind": "+226",
+   "drapeau": "🇧🇫",
+   "longueur": 8,
+   "debuts": "0257",
+   "operateur": "Orange Burkina Faso",
+   "courtCode": "4444",
+   "motStop": "STOP CONTES",
+   "devise": "F CFA",
+   "courriel": "contact@alphabet-digital.com",
+   "tel": "",
+   "whatsapp": "+225 07 00 00 00",
+   "ville": "Ouagadougou, Burkina Faso",
+   "regulateur": "l'ARCEP du Burkina Faso",
+   "actif": 1,
+   "pass": [
+    {
+     "id": "jour",
+     "p": 50
+    },
+    {
+     "id": "semaine",
+     "p": 200
+    },
+    {
+     "id": "mois",
+     "p": 500
+    }
+   ],
+   "produit": "AfriKfables",
+   "siegeLocal": "Ouagadougou, Burkina Faso"
+  },
+  {
+   "pays": "tg",
+   "nom": "Togo",
+   "ind": "+228",
+   "drapeau": "🇹🇬",
+   "longueur": 8,
+   "debuts": "79",
+   "operateur": "Moov Africa Togo",
+   "courtCode": "5050",
+   "motStop": "STOP CONTES",
+   "devise": "F CFA",
+   "courriel": "contact@alphabet-digital.com",
+   "tel": "+228 90 11 22 33",
+   "whatsapp": "+225 07 00 00 00",
+   "ville": "Lomé, Togo",
+   "regulateur": "l'ARCEP du Togo",
+   "actif": 1,
+   "pass": [
+    {
+     "id": "jour",
+     "p": 50
+    },
+    {
+     "id": "semaine",
+     "p": 200
+    },
+    {
+     "id": "mois",
+     "p": 500
+    }
+   ],
+   "produit": "AfriKfables",
+   "siegeLocal": "Lomé, Togo"
+  }
+ ]
+}

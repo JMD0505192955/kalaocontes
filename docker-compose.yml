@@ -1,0 +1,66 @@
+# ============================================================
+# AfriKfables — assemblage complet
+#   web   : nginx sert le portail et relaie /api vers l'API
+#   api   : Node, contenu et abonnements
+#   base  : PostgreSQL, sur la même machine
+#
+# Une seule entrée publique : le port 80. Tout le reste est interne.
+# ============================================================
+services:
+
+  base:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-afrik}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?definir POSTGRES_PASSWORD dans .env}
+      POSTGRES_DB: ${POSTGRES_DB:-afrikfables}
+    volumes:
+      - donnees:/var/lib/postgresql/data
+      - ./sauvegardes:/sauvegardes
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-afrik} -d ${POSTGRES_DB:-afrikfables}"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    # Jamais exposée à l'extérieur : seule l'API la joint.
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      base:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-afrik}:${POSTGRES_PASSWORD}@base:5432/${POSTGRES_DB:-afrikfables}
+      PORT: 3000
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET:?definir JWT_SECRET dans .env}
+      JWT_DUREE: ${JWT_DUREE:-12h}
+      ORIGINES: ${ORIGINES:-http://localhost}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:?definir WEBHOOK_SECRET dans .env}
+      ORANGE_BF_URL: ${ORANGE_BF_URL:-}
+      ORANGE_BF_CLE: ${ORANGE_BF_CLE:-}
+      ORANGE_BF_SECRET: ${ORANGE_BF_SECRET:-}
+      MOOV_TG_URL: ${MOOV_TG_URL:-}
+      MOOV_TG_CLE: ${MOOV_TG_CLE:-}
+      MOOV_TG_SECRET: ${MOOV_TG_SECRET:-}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/sante').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "${PORT_PUBLIC:-80}:80"
+    volumes:
+      # Le contenu du portail est monté : pour publier, on remplace les fichiers.
+      - ./portail:/usr/share/nginx/html:ro
+
+volumes:
+  donnees:

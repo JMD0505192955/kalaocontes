@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portail Partenaire — AfriKfables</title>
+<style>
+:root{--fond:#141033;--fond2:#0d0a24;--carte:#1e1946;--bord:rgba(255,255,255,.12);
+  --or:#F5C21B;--vert:#3fa565;--rouge:#E3564D;--txt:#EFEAFF;--txt2:#a99ad4;
+  --v1:rgba(255,255,255,.04);--v2:rgba(255,255,255,.07);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--fond2);color:var(--txt);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:14px;line-height:1.5;}
+
+header{background:var(--fond);border-bottom:1px solid var(--bord);padding:14px 26px;
+  display:flex;align-items:center;gap:14px;}
+header .pastille{width:34px;height:34px;border-radius:9px;background:var(--or);color:#241a04;
+  font-weight:800;display:flex;align-items:center;justify-content:center;font-size:16px;}
+header b{display:block;font-size:15px;font-weight:800;}
+header small{display:block;font-size:11.5px;color:var(--txt2);}
+header .qui{margin-left:auto;background:var(--v2);border:1px solid var(--bord);
+  border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;}
+
+nav{display:flex;gap:4px;padding:0 26px;background:var(--fond);border-bottom:1px solid var(--bord);}
+nav button{background:none;border:none;border-bottom:2px solid transparent;color:var(--txt2);
+  font-family:inherit;font-size:14px;font-weight:700;padding:13px 18px;cursor:pointer;}
+nav button.on{color:var(--or);border-bottom-color:var(--or);}
+
+main{padding:20px 26px 60px;max-width:1200px;}
+.perimetre{background:var(--v1);border:1px solid var(--bord);border-radius:10px;
+  padding:12px 16px;font-size:13px;color:var(--txt2);margin-bottom:18px;}
+.vue{display:none;} .vue.on{display:block;}
+
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px;}
+.chiffre{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:16px 18px;}
+.chiffre small{display:block;font-size:12px;color:var(--txt2);margin-bottom:6px;}
+.chiffre b{font-size:26px;font-weight:800;line-height:1.1;}
+.chiffre .var{font-size:12px;color:var(--txt2);margin-top:4px;}
+
+.bloc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;
+  padding:18px 20px;margin-bottom:18px;}
+.bloc h3{font-size:15px;font-weight:800;color:var(--or);margin-bottom:12px;}
+.sous{font-size:13px;color:var(--txt2);margin-bottom:12px;}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{text-align:left;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--txt2);padding:8px 10px;border-bottom:1px solid var(--bord);font-weight:800;}
+td{padding:11px 10px;border-bottom:1px solid var(--v1);}
+tr:last-child td{border-bottom:none;}
+
+.jauge{height:8px;background:var(--v2);border-radius:999px;overflow:hidden;margin-top:6px;}
+.jauge i{display:block;height:100%;background:var(--or);}
+.ligneJ{margin-bottom:14px;}
+.ligneJ .h{display:flex;font-size:13.5px;}
+.ligneJ .h b{margin-left:auto;font-weight:700;}
+
+.pastilleE{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;}
+.pastilleE.ok{background:rgba(63,165,101,.18);color:var(--vert);}
+.pastilleE.att{background:rgba(245,194,27,.16);color:var(--or);}
+.pastilleE.ko{background:rgba(227,86,77,.16);color:var(--rouge);}
+
+.avert{background:rgba(245,194,27,.10);border:1px solid rgba(245,194,27,.35);
+  border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.6;}
+.avert b{color:var(--or);}
+code{background:var(--v2);padding:2px 6px;border-radius:5px;font-size:12.5px;}
+
+select,input,textarea{background:var(--v2);border:1px solid var(--bord);color:var(--txt);
+  font-family:inherit;font-size:13.5px;padding:9px 12px;border-radius:9px;outline:none;}
+button.act{background:var(--or);border:none;color:#241a04;font-family:inherit;
+  font-weight:800;font-size:13.5px;padding:10px 18px;border-radius:9px;cursor:pointer;}
+.barre{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;}
+
+  .voileM{position:fixed;inset:0;background:rgba(13,10,36,.62);z-index:60;
+    display:flex;align-items:center;justify-content:center;padding:20px;}
+  .fenetreM{background:var(--carte);border:1px solid var(--bord);border-radius:14px;
+    width:100%;max-width:480px;max-height:90vh;overflow:auto;}
+  .hM{padding:20px 24px 14px;border-bottom:1px solid var(--bord);}
+  .hM b{display:block;font-size:17px;font-weight:800;}
+  .hM small{display:block;font-size:13px;color:var(--txt2);margin-top:3px;}
+  .cM{padding:18px 24px;} .champM{margin-bottom:14px;}
+  .champM label{display:block;font-size:12.5px;font-weight:700;color:var(--txt2);margin-bottom:6px;}
+  .champM input,.champM select,.champM textarea{width:100%;background:var(--v2);
+    border:1px solid var(--bord);color:var(--txt);font-family:inherit;font-size:13.5px;
+    padding:9px 12px;border-radius:9px;outline:none;}
+  .pM{padding:14px 24px 20px;display:flex;gap:10px;justify-content:flex-end;
+    border-top:1px solid var(--bord);}
+  button.plat{background:var(--v2);border:1px solid var(--bord);color:var(--txt);
+    font-family:inherit;font-weight:700;font-size:13.5px;padding:10px 18px;
+    border-radius:9px;cursor:pointer;}
+footer{padding:20px 26px 40px;font-size:12.5px;color:var(--txt2);}
+@media (max-width:700px){
+  header,nav,main{padding-left:14px;padding-right:14px;}
+  nav{overflow-x:auto;}
+}
+</style></head><body>
+
+<header>
+  <div class="pastille">C</div>
+  <div><b>Portail Partenaire</b><small>AfriKfables</small></div>
+  <div class="qui" id="qui">Non connecté</div>
+</header>
+
+<nav>
+  <button data-v="perf" class="on">Performances</button>
+  <button data-v="reco">Réconciliation</button>
+  <button data-v="pass">Mes pass</button>
+</nav>
+
+<main>
+  <div class="perimetre" id="perimetre">
+    Vue limitée à votre périmètre. Aucune donnée d'un autre opérateur ou d'un autre pays n'est accessible depuis ce portail.
+  </div>
+
+  <div class="vue on" id="v-perf"></div>
+  <div class="vue" id="v-reco"></div>
+  <div class="vue" id="v-pass"></div>
+</main>
+
+<footer id="pied">Portail Partenaire — AfriKfables · Alphabet Digital</footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML;};
+var fr=function(n){return (n==null?0:n).toLocaleString('fr-FR');};
+
+/* ---- Accès au serveur. Le pays vient du jeton, jamais d'un paramètre. ---- */
+var API={
+  /* Détectée au démarrage : si /api/sante répond, on s'y connecte. */
+  base:null,
+  jeton:(function(){try{return sessionStorage.getItem('faso_partenaire');}catch(e){return null;}})(),
+  enLigne:function(){return !!(API.base&&API.jeton);},
+  entetes:function(){return {'Content-Type':'application/json','Authorization':'Bearer '+API.jeton};},
+  get:function(chemin){
+    if(!API.enLigne())return Promise.reject(new Error('hors ligne'));
+    return fetch(API.base+chemin,{headers:API.entetes()}).then(function(r){
+      if(r.status===403)throw new Error('Ce compte n\'a pas accès au portail partenaire');
+      if(!r.ok)throw new Error('réponse '+r.status);
+      return r.json();});
+  },
+  post:function(chemin,corps){
+    if(!API.enLigne())return Promise.reject(new Error('hors ligne'));
+    return fetch(API.base+chemin,{method:'POST',headers:API.entetes(),
+      body:JSON.stringify(corps)}).then(function(r){
+      if(!r.ok)throw new Error('réponse '+r.status);return r.json();});
+  }
+};
+
+var jours=30;
+
+/* Une fenêtre de demande. Le partenaire signale ou demande ; il ne modifie rien. */
+function modale(titre, sousTitre, champs, surValider){
+  var z=document.createElement('div');
+  z.className='voileM';
+  var corps=champs.map(function(c){
+    if(c.type==='select')
+      return '<div class="champM"><label>'+esc(c.lbl)+'</label><select data-m="'+c.cle+'">'+
+        c.options.map(function(o){return '<option value="'+esc(o.v)+'">'+esc(o.t)+'</option>';}).join('')+
+        '</select></div>';
+    if(c.type==='texte')
+      return '<div class="champM"><label>'+esc(c.lbl)+'</label>'+
+        '<textarea data-m="'+c.cle+'" rows="3" placeholder="'+esc(c.exemple||'')+'"></textarea></div>';
+    return '<div class="champM"><label>'+esc(c.lbl)+'</label>'+
+      '<input data-m="'+c.cle+'" placeholder="'+esc(c.exemple||'')+'"></div>';
+  }).join('');
+  z.innerHTML='<div class="fenetreM"><div class="hM"><b>'+esc(titre)+'</b>'+
+    '<small>'+esc(sousTitre)+'</small></div><div class="cM">'+corps+'</div>'+
+    '<div class="pM"><button class="plat" data-annuler>Annuler</button>'+
+    '<button class="act" data-valider>Envoyer</button></div></div>';
+  document.body.appendChild(z);
+  var fermer=function(){z.remove();};
+  z.querySelector('[data-annuler]').onclick=fermer;
+  z.onclick=function(e){if(e.target===z)fermer();};
+  z.querySelector('[data-valider]').onclick=function(){
+    var v={};
+    Array.prototype.forEach.call(z.querySelectorAll('[data-m]'),function(e){v[e.getAttribute('data-m')]=e.value.trim();});
+    var manque=champs.filter(function(c){return c.requis&&!v[c.cle];});
+    if(manque.length){alert('À compléter : '+manque.map(function(c){return c.lbl;}).join(', '));return;}
+    fermer(); surValider(v);
+  };
+  var p1=z.querySelector('[data-m]'); if(p1)p1.focus();
+}
+function envoyerDemande(corps, zoneEtat){
+  var e=$(zoneEtat);
+  if(!API.enLigne()){if(e)e.textContent='Serveur non connecté : la demande n\'a pas été envoyée.';return;}
+  if(e)e.textContent='Envoi…';
+  API.post('/partenaire/demandes',corps)
+    .then(function(d){if(e)e.textContent=d.message;})
+    .catch(function(x){if(e)e.textContent='Échec : '+x.message;});
+}
+
+/* ---- État honnête quand le serveur n'est pas joint ---- */
+function horsLigne(quoi){
+  return '<div class="bloc"><div class="avert"><b>Serveur non connecté</b><br><br>'+
+    quoi+'<br><br>Ce portail ne montre aucun chiffre tant qu\'il n\'est pas relié au serveur. '+
+    'Renseigner <code>API.base</code> et se connecter avec un compte partenaire.</div></div>';
+}
+
+/* ================= PERFORMANCES ================= */
+function vuePerf(){
+  var h='<div class="barre" style="margin:0 0 16px">'+
+    '<label style="font-size:13px;color:var(--txt2)">Période</label>'+
+    '<select id="periode">'+
+      '<option value="7">7 derniers jours</option>'+
+      '<option value="30" selected>30 derniers jours</option>'+
+      '<option value="90">90 derniers jours</option>'+
+    '</select></div>';
+
+  if(!API.enLigne()){
+    h+=horsLigne('Les abonnés actifs, le revenu généré et la répartition par pass '+
+      'sont calculés à partir des transactions réelles de votre pays.');
+    h+='<div class="bloc"><h3>Ce que ce portail affichera</h3><table>'+
+      '<tr><th>Indicateur</th><th>Définition</th></tr>'+
+      '<tr><td>Abonnés actifs</td><td>comptes de votre pays avec un abonnement en cours</td></tr>'+
+      '<tr><td>Revenu généré</td><td>somme des prélèvements aboutis sur la période</td></tr>'+
+      '<tr><td>Prélèvements en échec</td><td>tentatives refusées — utile pour détecter un incident</td></tr>'+
+      '<tr><td>Répartition par pass</td><td>jour, semaine, mois</td></tr>'+
+      '<tr><td>Évolution hebdomadaire</td><td>nouveaux abonnements semaine par semaine</td></tr>'+
+      '</table></div>';
+    $('v-perf').innerHTML=h;
+    brancherPeriode();
+    return;
+  }
+
+  $('v-perf').innerHTML=h+'<div class="bloc">Chargement…</div>';
+  brancherPeriode();
+
+  API.get('/partenaire/performances?jours='+jours).then(function(d){
+    var tot=(d.prelevements.reussis+d.prelevements.echecs)||1;
+    var tauxEchec=(d.prelevements.echecs/tot*100);
+    var c='<div class="chiffres">'+
+      chiffre('Abonnés actifs',fr(d.abonnesActifs),'')+
+      chiffre('Revenu généré',fr(d.revenu)+' '+devise,'sur '+d.jours+' jours')+
+      chiffre('Prélèvements aboutis',fr(d.prelevements.reussis),'')+
+      chiffre('Taux d\'échec',tauxEchec.toFixed(1)+' %',
+        tauxEchec>10?'élevé — à surveiller':'dans la normale')+
+      '</div>';
+
+    c+='<div class="bloc"><h3>Revenu par pass</h3>';
+    var max=Math.max.apply(null,d.parPass.map(function(x){return x.total;}).concat([1]));
+    d.parPass.forEach(function(x){
+      c+='<div class="ligneJ"><div class="h">'+esc(nomPass(x.pass))+
+         '<b>'+fr(x.total)+' '+devise+'</b></div>'+
+         '<div class="jauge"><i style="width:'+Math.round(x.total/max*100)+'%"></i></div></div>';
+    });
+    if(!d.parPass.length)c+='<div class="sous">Aucun abonnement sur la période.</div>';
+    c+='</div>';
+
+    c+='<div class="bloc"><h3>Nouveaux abonnements par semaine</h3>';
+    var mx=Math.max.apply(null,d.parSemaine.map(function(x){return x.n;}).concat([1]));
+    d.parSemaine.forEach(function(x){
+      c+='<div class="ligneJ"><div class="h">'+
+         new Date(x.semaine).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+
+         '<b>'+fr(x.n)+'</b></div>'+
+         '<div class="jauge"><i style="width:'+Math.round(x.n/mx*100)+'%"></i></div></div>';
+    });
+    if(!d.parSemaine.length)c+='<div class="sous">Aucune donnée sur la période.</div>';
+    c+='</div>';
+
+    $('v-perf').innerHTML=h+c;
+    brancherPeriode();
+  }).catch(erreur('v-perf',h));
+}
+
+function chiffre(t,v,note){
+  return '<div class="chiffre"><small>'+t+'</small><b>'+v+'</b>'+
+    (note?'<div class="var">'+note+'</div>':'')+'</div>';
+}
+function nomPass(id){
+  return id==='jour'?'Pass jour':id==='semaine'?'Pass semaine':id==='mois'?'Pass mois':id;
+}
+function brancherPeriode(){
+  var s=$('periode');
+  if(s){s.value=String(jours);s.onchange=function(){jours=+s.value;vuePerf();};}
+}
+function erreur(cible,prefixe){
+  return function(e){
+    $(cible).innerHTML=(prefixe||'')+'<div class="bloc"><div class="avert"><b>Lecture impossible</b><br><br>'+
+      esc(e.message)+'</div></div>';
+  };
+}
+
+/* ================= RÉCONCILIATION ================= */
+function vueReco(){
+  var mois=new Date().toISOString().slice(0,7);
+  var h='<div class="bloc"><h3>Rapprochement des relevés</h3>'+
+    '<div class="sous">Nos prélèvements comparés aux vôtres, ligne à ligne. '+
+    'Seuls les écarts sont listés : références absentes d\'un côté, montants ou statuts différents.</div>'+
+    '<div class="barre"><label style="font-size:13px;color:var(--txt2)">Mois</label>'+
+    '<input type="month" id="moisReco" value="'+mois+'">'+
+    '<button class="act" id="btnReco">Comparer</button></div></div>';
+
+  h+='<div class="bloc"><h3>Déposer votre relevé</h3>'+
+    '<div class="sous">Un fichier CSV avec trois colonnes : <code>reference;montant;statut</code>. '+
+    'Le rapprochement se fait sur la référence de transaction.</div>'+
+    '<div class="barre"><input type="file" id="fichierReleve" accept=".csv,text/csv">'+
+    '<button class="act" id="btnDepot">Déposer</button></div>'+
+    '<div id="etatDepot" style="margin-top:10px;font-size:13px;color:var(--txt2)"></div></div>';
+
+  if(!API.enLigne())
+    h+=horsLigne('Le rapprochement compare nos transactions aux vôtres. Il demande le serveur.');
+
+  h+='<div class="bloc"><h3>Signaler un écart</h3>'+
+    '<div class="sous">Si votre relevé ne correspond pas au nôtre, signalez-le. '+
+    'La demande part à l\'équipe finance, qui vous répond après vérification.</div>'+
+    '<div class="barre"><button class="act" id="btnEcart">Signaler un écart de facturation</button></div>'+
+    '<div id="etatEcart" style="margin-top:10px;font-size:13px;color:var(--txt2)"></div></div>';
+  h+='<div id="resReco"></div>';
+  $('v-reco').innerHTML=h;
+
+  $('btnEcart').onclick=function(){
+    modale('Signaler un écart de facturation',
+      'Transmis à l\'équipe finance pour vérification.',[
+      {cle:'periode',lbl:'Mois concerné',exemple:'2026-09',requis:true},
+      {cle:'montant',lbl:'Montant de l\'écart',exemple:'20 000'},
+      {cle:'message',lbl:'Précisions',type:'texte',
+       exemple:'Ce qui diffère, et sur quelles transactions.'}
+    ],function(v){
+      envoyerDemande({type:'ecart',periode:v.periode,
+        montant:(v.montant||'').replace(/\D/g,''),message:v.message},'etatEcart');
+    });
+  };
+
+  $('btnReco').onclick=function(){
+    if(!API.enLigne()){$('resReco').innerHTML=horsLigne('Rapprochement indisponible hors ligne.');return;}
+    $('resReco').innerHTML='<div class="bloc">Comparaison…</div>';
+    API.get('/partenaire/reconciliation?mois='+$('moisReco').value).then(function(d){
+      var c='<div class="chiffres">'+
+        chiffre('Transactions comparées',fr(d.total),'')+
+        chiffre('Concordantes',fr(d.concordants),'')+
+        chiffre('Écarts',fr(d.ecarts),d.ecarts?'à examiner':'aucun écart')+
+        '</div>';
+      if(d.ecarts){
+        c+='<div class="bloc"><h3>Écarts constatés</h3><table>'+
+          '<tr><th>Référence</th><th>Chez nous</th><th>Chez vous</th><th>Nature</th></tr>';
+        d.lignes.forEach(function(l){
+          c+='<tr><td>'+esc(l.reference)+'</td>'+
+             '<td>'+(l.montant_nous==null?'—':fr(l.montant_nous)+' '+devise)+'</td>'+
+             '<td>'+(l.montant_eux==null?'—':fr(l.montant_eux)+' '+devise)+'</td>'+
+             '<td><span class="pastilleE ko">'+esc(l.ecart)+'</span></td></tr>';
+        });
+        c+='</table></div>';
+      }else{
+        c+='<div class="bloc"><div class="sous">Aucun écart sur ce mois. '+
+          'Les deux relevés concordent ligne à ligne.</div></div>';
+      }
+      $('resReco').innerHTML=c;
+    }).catch(erreur('resReco',''));
+  };
+
+  $('btnDepot').onclick=function(){
+    var f=$('fichierReleve').files[0];
+    if(!f){$('etatDepot').textContent='Choisir un fichier.';return;}
+    if(!API.enLigne()){$('etatDepot').textContent='Serveur non connecté.';return;}
+    var l=new FileReader();
+    l.onload=function(){
+      var lignes=String(l.result).split(/\r?\n/).filter(Boolean).map(function(x){
+        var c=x.split(/[;,\t]/);
+        return {reference:(c[0]||'').trim(),montant:c[1],statut:(c[2]||'reussi').trim()};
+      }).filter(function(x){return x.reference&&!/^ref/i.test(x.reference);});
+      $('etatDepot').textContent='Dépôt de '+lignes.length+' lignes…';
+      API.post('/partenaire/releve',{mois:$('moisReco').value,lignes:lignes})
+        .then(function(d){$('etatDepot').textContent=d.deposees+' lignes déposées pour '+d.mois+'.';})
+        .catch(function(e){$('etatDepot').textContent='Échec : '+e.message;});
+    };
+    l.readAsText(f);
+  };
+}
+
+/* ================= MES PASS ================= */
+var devise='F CFA';
+function vuePass(){
+  if(!API.enLigne()){
+    $('v-pass').innerHTML=horsLigne('Les pass proposés dans votre pays, leurs tarifs, '+
+      'le numéro court et le mot de résiliation viennent du serveur.')+blocDemandePass();
+    brancherDemandePass();
+    return;
+  }
+  $('v-pass').innerHTML='<div class="bloc">Chargement…</div>';
+  API.get('/partenaire/pass').then(function(d){
+    devise=d.devise||'F CFA';
+    var c='<div class="bloc"><h3>'+esc(d.nom)+' — '+esc(d.operateur)+'</h3><table>'+
+      '<tr><th>Pass</th><th>Prix</th><th>Durée</th></tr>';
+    (d.pass||[]).forEach(function(p){
+      c+='<tr><td>'+esc(nomPass(p.id))+'</td><td>'+fr(p.p)+' '+esc(devise)+'</td>'+
+         '<td>'+(p.id==='jour'?'1 jour':p.id==='semaine'?'7 jours':'30 jours')+'</td></tr>';
+    });
+    c+='</table></div>';
+    c+='<div class="bloc"><h3>Paramètres de service</h3>'+
+      '<table><tr><td>Numéro court</td><td><b>'+esc(d.courtCode||'à définir')+'</b></td></tr>'+
+      '<tr><td>Mot de résiliation</td><td><b>'+esc(d.motStop)+'</b></td></tr></table>'+
+      '<div class="sous" style="margin:12px 0 0">Ces valeurs sont fixées d\'un commun accord. '+
+      'Toute modification passe par votre référent AfriKfables.</div></div>';
+    $('v-pass').innerHTML=c;
+  }).catch(erreur('v-pass',''));
+}
+
+function blocDemandePass(){
+  return '<div class="bloc"><h3>Demander un nouveau pass</h3>'+
+    '<div class="sous">La création et la tarification des pass restent gérées par AfriKfables. '+
+    'Vous pouvez proposer une offre : elle sera étudiée par l\'équipe produit.</div>'+
+    '<div class="barre"><button class="act" id="btnPass">Demander un nouveau pass</button></div>'+
+    '<div id="etatPass" style="margin-top:10px;font-size:13px;color:var(--txt2)"></div></div>';
+}
+function brancherDemandePass(){
+  var b=$('btnPass'); if(!b)return;
+  b.onclick=function(){
+    modale('Demander un nouveau pass',
+      'Votre demande sera étudiée par l\'équipe produit.',[
+      {cle:'intitule',lbl:'Nom souhaité',exemple:'Pass week-end',requis:true},
+      {cle:'montant',lbl:'Prix envisagé',exemple:'250'},
+      {cle:'duree',lbl:'Durée',type:'select',options:[
+        {v:'1 jour',t:'1 jour'},{v:'2 jours',t:'2 jours'},{v:'7 jours',t:'7 jours'},
+        {v:'14 jours',t:'14 jours'},{v:'30 jours',t:'30 jours'}]},
+      {cle:'message',lbl:'Pourquoi ce pass',type:'texte',
+       exemple:'En quoi il conviendrait à vos abonnés.'}
+    ],function(v){
+      envoyerDemande({type:'pass',intitule:v.intitule,duree:v.duree,
+        montant:(v.montant||'').replace(/\D/g,''),message:v.message},'etatPass');
+    });
+  };
+}
+
+/* ================= NAVIGATION ================= */
+var vues={perf:vuePerf,reco:vueReco,pass:vuePass};
+Array.prototype.forEach.call(document.querySelectorAll('nav button'),function(b){
+  b.onclick=function(){
+    Array.prototype.forEach.call(document.querySelectorAll('nav button'),function(x){x.classList.remove('on');});
+    Array.prototype.forEach.call(document.querySelectorAll('.vue'),function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    var v=b.getAttribute('data-v');
+    $('v-'+v).classList.add('on');
+    vues[v]();
+  };
+});
+
+/* ---- Identité du partenaire ---- */
+if(API.enLigne()){
+  API.get('/auth/moi').then(function(a){
+    $('qui').textContent=(a.nom||'Partenaire')+' — '+(a.pays||'').toUpperCase();
+    $('perimetre').innerHTML='Vue limitée à votre périmètre : <b>'+esc(a.nom)+'</b>. '+
+      'Aucune donnée d\'un autre opérateur ou d\'un autre pays n\'est accessible depuis ce portail.';
+    $('pied').textContent='Portail Partenaire — accès limité aux données de '+a.nom+
+      '. Pour toute question, contactez votre référent AfriKfables.';
+  }).catch(function(){});
+}else{
+  $('qui').textContent='Hors ligne';
+}
+
+/* On cherche l'API avant le premier rendu. */
+fetch('/api/sante',{cache:'no-store'})
+  .then(function(r){return r.ok?r.json():null;})
+  .then(function(d){ if(d&&d.etat==='ok')API.base='/api'; })
+  .catch(function(){})
+  .then(function(){
+    if(API.enLigne()){
+      API.get('/auth/moi').then(function(a){
+        $('qui').textContent=(a.nom||'Partenaire')+' — '+(a.pays||'').toUpperCase();
+      }).catch(function(){});
+    }
+    vuePerf();
+  });
+})();
+</script>
+</body></html>
