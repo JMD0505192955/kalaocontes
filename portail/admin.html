@@ -2335,11 +2335,36 @@ $('publier').onclick=function(){
   $('modale').classList.add('on');
 };
 
+/* Refuse de publier un contenu manifestement vide : une publication accidentelle
+   écraserait la base et effacerait le catalogue. */
+function contenuSuspect(){
+  var pb=[];
+  if(!(D.contes||[]).length)pb.push('aucun conte');
+  if(!(D.bientot||[]).length)pb.push('aucun conte annoncé');
+  if(!(D.cats||[]).length)pb.push('aucune catégorie');
+  if(!Object.keys(D.docs||{}).length)pb.push('aucun document légal');
+  return pb;
+}
+
 function publierEnLigne(){
+  var pb=contenuSuspect();
+  if(pb.length){
+    if(!confirm("Ce contenu semble incomplet : "+pb.join(', ')+".\n\n"+
+      "Publier maintenant écraserait ce qui est en ligne. "+
+      "Recharge la page pour récupérer le contenu du serveur.\n\n"+
+      "Publier quand même ?"))return;
+  }
   var b=$('publier'), texte=b.textContent;
   b.disabled=true;
   var faites=0, ratees=[];
-  var aFaire=SECTIONS_PUB.filter(function(k){return D[k]!=null;});
+  var aFaire=SECTIONS_PUB.filter(function(k){
+    var v=D[k];
+    if(v==null)return false;
+    /* une liste vide ou un objet vide n'écrase rien : on la saute */
+    if(Array.isArray(v)&&!v.length)return false;
+    if(!Array.isArray(v)&&typeof v==='object'&&!Object.keys(v).length)return false;
+    return true;
+  });
 
   var suivant=function(i){
     if(i>=aFaire.length){
