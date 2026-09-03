@@ -40,6 +40,24 @@ r.put('/contenu/:section', protege, role('admin','editeur'), async (req, res) =>
   const s = req.params.section;
   if (!SECTIONS.includes(s)) return res.status(404).json({ erreur: 'Section inconnue' });
 
+  /* Une section pleine ne s'écrase pas par une section vide sans le dire explicitement.
+     C'est ce qui a permis, une fois, d'effacer tout un catalogue en un clic. */
+  const vide = req.body == null
+    || (Array.isArray(req.body) && !req.body.length)
+    || (typeof req.body === 'object' && !Array.isArray(req.body) && !Object.keys(req.body).length);
+  if (vide && req.query.forcer !== '1') {
+    const { rows } = await q('SELECT valeur FROM contenu WHERE section=$1', [s]);
+    const avant = rows[0]?.valeur;
+    const pleine = Array.isArray(avant) ? avant.length : (avant && Object.keys(avant).length);
+    if (pleine) {
+      console.warn(`[contenu] refus : ${s} vide écraserait ${pleine} entrées`);
+      return res.status(409).json({
+        erreur: `Refusé : cette section contient ${pleine} entrées en ligne, ` +
+                `et le contenu envoyé est vide. Ajoutez ?forcer=1 si c'est voulu.`
+      });
+    }
+  }
+
   try {
     const sortie = await transaction(async (c) => {
       const cur = await c.query('SELECT version FROM contenu WHERE section=$1 FOR UPDATE', [s]);
