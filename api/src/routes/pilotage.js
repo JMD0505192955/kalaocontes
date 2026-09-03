@@ -136,4 +136,66 @@ r.post('/admin/demandes/:id', protege, role('admin','finance','support'), async 
   res.json({ id: +req.params.id, statut });
 });
 
+/* ================= COMPTES D'ACCÈS =================
+   Un compte partenaire est un administrateur borné à un pays.
+   C'est la colonne 'pays' qui fait la restriction — sans elle, aucune donnée. */
+const bcrypt = require('bcryptjs');
+
+r.get('/admin/comptes', protege, role('admin'), async (_req, res) => {
+  const { rows } = await q(
+    `SELECT id, courriel, nom, role, pays, actif, cree_le, vu_le
+       FROM administrateurs ORDER BY role, nom`);
+  res.json(rows);
+});
+
+r.post('/admin/comptes', protege, role('admin'), async (req, res) => {
+  const { courriel, nom, motdepasse, role: r2, pays } = req.body || {};
+  if (!courriel || !nom || !motdepasse)
+    return res.status(400).json({ erreur: 'Courriel, nom et mot de passe attendus' });
+  if (String(motdepasse).length < 10)
+    return res.status(400).json({ erreur: 'Mot de passe trop court (10 caractères minimum)' });
+  if (!['admin', 'editeur', 'support', 'finance', 'operateur'].includes(r2))
+    return res.status(400).json({ erreur: 'Rôle inconnu' });
+  /* Un compte partenaire sans pays verrait tout : on refuse. */
+  if (r2 === 'operateur' && !pays)
+    return res.status(400).json({ erreur: 'Un compte partenaire doit être rattaché à un pays' });
+
+  try {
+    const { rows } = await q(
+      `INSERT INTO administrateurs (courriel, motdepasse, nom, role, pays)
+       VALUES ($1,$2,$3,$4,$5) RETURNING id, courriel, nom, role, pays`,
+      [String(courriel).toLowerCase().trim(), await bcrypt.hash(motdepasse, 12),
+       nom, r2, r2 === 'operateur' ? pays : null]);
+    await tracer(req, 'compte.cree', rows[0].courriel, { role: r2, pays: pays || null });
+    res.json(rows[0]);
+  } catch (e) {
+    if (e.code === '23505') return res.status(409).json({ erreur: 'Ce courriel existe déjà' });
+    console.error('[comptes] :', e.message);
+    res.status(500).json({ erreur: 'Création impossible' });
+  }
+});
+
+r.post('/admin/comptes/:id', protege, role('admin'), async (req, res) => {
+  const { actif, motdepasse } = req.body || {};
+  if (String(req.admin.id) === String(req.params.id) && actif === false)
+    return res.status(400).json({ erreur: 'On ne suspend pas son propre compte' });
+  try {
+    if (motdepasse) {
+      if (String(motdepasse).length < 10)
+        return res.status(400).json({ erreur: 'Mot de passe trop court' });
+      await q('UPDATE administrateurs SET motdepasse=$1 WHERE id=$2',
+        [await bcrypt.hash(motdepasse, 12), req.params.id]);
+      await tracer(req, 'compte.motdepasse', req.params.id);
+    }
+    if (actif != null) {
+      await q('UPDATE administrateurs SET actif=$1 WHERE id=$2', [!!actif, req.params.id]);
+      await tracer(req, actif ? 'compte.reactive' : 'compte.suspendu', req.params.id);
+    }
+    res.json({ id: +req.params.id, actif });
+  } catch (e) {
+    console.error('[comptes] :', e.message);
+    res.status(500).json({ erreur: 'Modification impossible' });
+  }
+});
+
 module.exports = r;
