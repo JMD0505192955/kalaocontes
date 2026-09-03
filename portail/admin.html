@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icones/icone-32.png">
 <title>AfriKfables — administration</title>
 <style>
   :root{
@@ -81,6 +83,23 @@
     padding:12px 16px;cursor:pointer;white-space:nowrap;}
   .sousNav button:hover{color:var(--txt);}
   .sousNav button.on{color:var(--or);border-bottom-color:var(--or);}
+  #voileCnx{position:fixed;inset:0;background:var(--nuit);z-index:80;
+    display:none;align-items:center;justify-content:center;padding:20px;}
+  #voileCnx.on{display:flex;}
+  #carteCnx{background:var(--carte);border-radius:14px;width:100%;max-width:420px;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);}
+  #carteCnx .hd{display:flex;align-items:center;gap:12px;padding:22px 26px 18px;
+    border-bottom:1px solid var(--bord);}
+  #carteCnx .hd b{display:block;font-size:16px;font-weight:800;}
+  #carteCnx .hd small{display:block;font-size:12px;color:var(--txt2);}
+  #carteCnx .cp{padding:22px 26px;}
+  #carteCnx .intro{font-size:13.5px;color:var(--txt2);line-height:1.5;margin-bottom:18px;}
+  #carteCnx .champ{margin-bottom:14px;}
+  #carteCnx .champ label{display:block;font-size:12.5px;font-weight:700;
+    color:var(--txt2);margin-bottom:6px;}
+  #carteCnx .pd{padding:16px 26px 22px;display:flex;gap:10px;justify-content:flex-end;
+    border-top:1px solid var(--bord);}
+  #cnxErr{font-size:13px;color:var(--rouge);min-height:18px;}
   .voileM{position:fixed;inset:0;background:rgba(30,41,63,.45);z-index:60;
     display:flex;align-items:center;justify-content:center;padding:20px;}
   .fenetreM{background:var(--carte);border-radius:12px;width:100%;max-width:520px;
@@ -187,7 +206,7 @@
 <header>
   <h1>AfriKfables — administration</h1>
   <div class="etat" id="etat">chargement…</div>
-  <button class="act" id="publier" style="margin-left:14px">Publier</button>
+  <span id="etatSource" style="font-size:12px;color:var(--txt2);margin-right:10px"></span><button class="act" id="publier" style="margin-left:14px">Publier</button>
 </header>
 
 <nav>
@@ -233,6 +252,26 @@
   <div class="vue" id="v-campagnes"></div>
   <div class="vue" id="v-admin"></div>
   <div id="reserve" style="display:none"></div>
+
+<div id="voileCnx">
+  <form id="carteCnx" autocomplete="on">
+    <div class="hd"><span class="pastilleM">A</span>
+      <div><b>AfriKfables</b><small>Administration</small></div></div>
+    <div class="cp">
+      <p class="intro">Le serveur est joint. Connectez-vous pour modifier le contenu
+        et publier directement en ligne.</p>
+      <div class="champ"><label for="cnxMail">Courriel</label>
+        <input id="cnxMail" type="email" autocomplete="username" required></div>
+      <div class="champ"><label for="cnxMdp">Mot de passe</label>
+        <input id="cnxMdp" type="password" autocomplete="current-password" required></div>
+      <div id="cnxErr"></div>
+    </div>
+    <div class="pd">
+      <button type="button" class="plat" id="cnxPlusTard">Travailler hors ligne</button>
+      <button type="submit" class="act" id="cnxOk">Se connecter</button>
+    </div>
+  </form>
+</div>
   <div class="vue" id="v-finances"></div>
   <div class="vue" id="v-support"></div>
   <div class="vue" id="v-journal"></div>
@@ -298,6 +337,8 @@ function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');
   clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on');},2600);}
 function marquer(){modifie=true;majEtat();}
 function majEtat(){
+  var e=$('etatSource');
+  if(e)e.textContent = (API.enLigne()&&API.jeton) ? 'serveur' : 'fichier local';
   $('etat').textContent = D
     ? (D.contes.length+' contes · '+D.bientot.length+' à venir · '+D.conteurs.length+' conteurs'+
        (modifie?' · non publié':' · publié'))
@@ -380,6 +421,44 @@ function enregistrer(section){
     .catch(function(e){ toast('Échec : '+e.message); });
 }
 
+/* ---- Connexion au serveur ----
+   Sans jeton, l'API refuse toute écriture. On demande donc les identifiants
+   dès qu'elle est jointe, sauf si l'utilisateur choisit de travailler hors ligne. */
+var horsLigneChoisi=false;
+
+function demanderConnexion(){
+  return new Promise(function(fini){
+    var z=$('voileCnx'); if(!z){fini(false);return;}
+    z.classList.add('on');
+    $('cnxMail').focus();
+
+    $('carteCnx').onsubmit=function(e){
+      e.preventDefault();
+      var b=$('cnxOk'); b.disabled=true; b.textContent='…';
+      $('cnxErr').textContent='';
+      API.connexion($('cnxMail').value.trim(), $('cnxMdp').value)
+        .then(function(a){
+          z.classList.remove('on');
+          $('navQui').textContent=a.nom||a.courriel;
+          $('navRole').textContent=a.role;
+          fini(true);
+        })
+        .catch(function(err){
+          $('cnxErr').textContent=err.message;
+          b.disabled=false; b.textContent='Se connecter';
+          $('cnxMdp').select();
+        });
+    };
+
+    $('cnxPlusTard').onclick=function(){
+      horsLigneChoisi=true;
+      API.base=null;               /* on repasse en fichier local */
+      z.classList.remove('on');
+      fini(false);
+    };
+  });
+}
+
 /* Cherche l'API à côté du portail. Silencieux si elle n'est pas là. */
 function chercherAPI(){
   return fetch('/api/sante',{cache:'no-store'})
@@ -397,20 +476,39 @@ function charger(){
   if(local){
     try{D=JSON.parse(local);modifie=true;rendre();toast('Brouillon local restauré.');return;}catch(e){}
   }
-  chercherAPI().then(function(){ return API.lire(); })
-    .then(function(d){D=d;
-      ['cats','pays','marches','lexique','docs','jaquettes','aide','descriptions','voixDispo','attribution']
-        .forEach(function(k){if(!D[k])D[k]=(k==='cats'||k==='pays'||k==='marches')?[]:{};});
-      if(!D.marches.length)D.marches=MARCHES_DEFAUT.slice();
-      modifie=false;rendre();})
+  chercherAPI()
+    .then(function(joint){
+      if(!joint)return false;
+      /* un jeton de session encore valide évite de redemander */
+      if(API.jeton)return fetch(API.base+'/auth/moi',{headers:API.entetes()})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(a){
+          if(a){$('navQui').textContent=a.nom||a.courriel;$('navRole').textContent=a.role;return true;}
+          return demanderConnexion();
+        }).catch(function(){return demanderConnexion();});
+      return demanderConnexion();
+    })
+    .then(function(){ return API.lire(); })
+    .then(function(d){D=completer(d);modifie=false;rendre();})
     .catch(function(){
-      D={version:1,editeur:{},pass:[],conteurs:[],attribution:{},voixDispo:{},
-         descriptions:{},faq:[],aide:{},cats:[],lexique:{},docs:{},jaquettes:{},
-         contes:[],bientot:[]};
+      D=completer({version:1});
       rendre();
-      toast("contenu.json introuvable — dépose-le dans l'onglet Export.");
+      toast("Contenu introuvable — dépose-le dans Administration, onglet Publication.");
     });
 }
+/* Garantit que toutes les sections existent, quel que soit le chemin de chargement.
+   Sans cela, un contenu partiel fait échouer silencieusement les boutons d'ajout. */
+var LISTES=['cats','pays','marches','conteurs','pass','faq','contes','bientot'];
+var OBJETS=['editeur','lexique','docs','jaquettes','aide','descriptions','voixDispo','attribution'];
+function completer(d){
+  d=d||{};
+  LISTES.forEach(function(k){if(!Array.isArray(d[k]))d[k]=[];});
+  OBJETS.forEach(function(k){if(!d[k]||typeof d[k]!=='object')d[k]={};});
+  if(!d.marches.length)d.marches=MARCHES_DEFAUT.slice();
+  if(d.version==null)d.version=1;
+  return d;
+}
+
 function sauverBrouillon(){
   try{localStorage.setItem('faso_admin',JSON.stringify(D));}catch(e){
     toast('Brouillon trop volumineux pour le navigateur. Exporte souvent.');}
@@ -1408,6 +1506,19 @@ function vueMarches(){
       trous.join(', ')+'. Ces valeurs apparaissent dans le tunnel d\'abonnement et les documents légaux.</div>';
   }
 
+  /* Les accès partenaires : c'est ici qu'on les cherche, pas dans un menu Système. */
+  h+='<div class="bloc"><h3>Accès partenaires</h3>'+
+    '<div class="sous">Un compte partenaire donne à l\'opérateur un accès au portail '+
+    '<code>/partenaire.html</code>, <b>borné à son pays</b>. Il y voit ses abonnés, '+
+    'son revenu et sa réconciliation — jamais ceux d\'un autre.</div>'+
+    '<div id="listeComptes">'+(API.enLigne()&&API.jeton?'Chargement…':
+      '<div class="avert" style="margin:0"><b>Serveur non connecté</b> — '+
+      'les comptes vivent dans la base. Connectez-vous pour les gérer.</div>')+'</div>'+
+    (API.enLigne()&&API.jeton
+      ? '<div class="barre" style="margin-top:12px"><button class="act mini" id="addCompte">+ Nouveau compte partenaire</button></div>'
+      : '')+
+    '</div>';
+
   h+='<div class="bloc"><h3>Ce qu\'un marché ne contient pas</h3><div class="sous">'+
     'Les contes, les catégories, les conteurs et les décors sont <b>communs à tous les marchés</b>. '+
     'Un conte porte un pays d\'origine, qui sert à trier — jamais à restreindre l\'accès. '+
@@ -1419,8 +1530,72 @@ function vueMarches(){
 function ch(m,cle,lbl){
   return '<div><label>'+lbl+'</label><input data-mc="'+cle+'" value="'+esc(m[cle]==null?'':m[cle])+'"></div>';
 }
+function rendreComptes(){
+  var z=$('listeComptes'); if(!z||!API.enLigne()||!API.jeton)return;
+  appelAPI('/admin/comptes').then(function(L){
+    var part=L.filter(function(c){return c.role==='operateur';});
+    var eq=L.filter(function(c){return c.role!=='operateur';});
+    var lignes=function(T,vide){
+      if(!T.length)return '<tr><td colspan="5" style="color:var(--txt2)">'+vide+'</td></tr>';
+      return T.map(function(c){
+        return '<tr><td><b>'+esc(c.nom)+'</b><br>'+
+          '<span style="font-size:12px;color:var(--txt2)">'+esc(c.courriel)+'</span></td>'+
+          '<td>'+esc(c.role)+'</td>'+
+          '<td>'+(c.pays?esc(nomPays(c.pays)):'<span style="color:var(--txt2)">tous</span>')+'</td>'+
+          '<td>'+(c.vu_le?new Date(c.vu_le).toLocaleDateString('fr-FR'):'jamais')+'</td>'+
+          '<td style="text-align:right">'+
+          '<span class="pastille '+(c.actif?'ok':'ko')+'">'+(c.actif?'actif':'suspendu')+'</span> '+
+          '<button class="plat mini" data-cpt="'+c.id+'" data-act="'+(c.actif?0:1)+'">'+
+          (c.actif?'Suspendre':'Réactiver')+'</button></td></tr>';
+      }).join('');
+    };
+    z.innerHTML='<table><tr><th>Compte</th><th>Rôle</th><th>Pays</th><th>Dernière visite</th><th></th></tr>'+
+      lignes(part,'Aucun compte partenaire. Créez-en un quand un opérateur demandera son accès.')+
+      '</table>'+
+      '<div class="sous" style="margin:14px 0 6px">Comptes internes</div>'+
+      '<table><tr><th>Compte</th><th>Rôle</th><th>Pays</th><th>Dernière visite</th><th></th></tr>'+
+      lignes(eq,'—')+'</table>';
+
+    Array.prototype.forEach.call(z.querySelectorAll('[data-cpt]'),function(b){
+      b.onclick=function(){
+        fetch(API.base+'/admin/comptes/'+b.getAttribute('data-cpt'),{method:'POST',
+          headers:API.entetes(),body:JSON.stringify({actif:b.getAttribute('data-act')==='1'})})
+          .then(function(r){return r.json();})
+          .then(function(){rendreComptes();toast('Compte mis à jour.');})
+          .catch(function(e){toast('Échec : '+e.message);});
+      };
+    });
+  }).catch(function(e){
+    z.innerHTML='<div class="avert" style="margin:0">'+esc(e.message)+'</div>';
+  });
+}
+
 function brancherMarches(){
   var z=$('v-marches');
+  rendreComptes();
+  var ac=z.querySelector('#addCompte');
+  if(ac)ac.onclick=function(){
+    var optPays=(D.marches||[]).map(function(m){return {v:m.pays,t:m.nom+' — '+m.operateur};});
+    if(!optPays.length){toast('Déclarez d\'abord un marché.');return;}
+    modale('Nouveau compte partenaire',
+      'L\'opérateur accédera au portail partenaire, limité à ce pays.',[
+      {cle:'nom',lbl:'Nom affiché',exemple:'Orange Burkina Faso',requis:true},
+      {cle:'courriel',lbl:'Courriel de connexion',exemple:'vas@orange.bf',requis:true},
+      {cle:'pays',lbl:'Pays — borne ce qu\'il verra',type:'select',options:optPays},
+      {cle:'motdepasse',lbl:'Mot de passe provisoire (10 caractères minimum)',requis:true}
+    ],function(v){
+      fetch(API.base+'/admin/comptes',{method:'POST',headers:API.entetes(),
+        body:JSON.stringify({nom:v.nom,courriel:v.courriel,pays:v.pays,
+          motdepasse:v.motdepasse,role:'operateur'})})
+        .then(function(r){return r.json().then(function(d){
+          if(!r.ok)throw new Error(d.erreur||'Création refusée');return d;});})
+        .then(function(){
+          rendreComptes();
+          toast('Compte créé. Transmettez le mot de passe par un canal sûr, et demandez-lui de le changer.');
+        })
+        .catch(function(e){toast('Échec : '+e.message);});
+    });
+  };
   Array.prototype.forEach.call(z.querySelectorAll('[data-mo]'),function(b){
     b.onclick=function(){marcheOuvert=+b.getAttribute('data-mo');rendre();};
   });
@@ -2148,12 +2323,44 @@ function vueExport(){
 window.addEventListener('beforeunload',function(e){
   if(modifie){e.preventDefault();e.returnValue='';}
 });
+/* Publier : sur le serveur si l'API est jointe, par téléchargement sinon. */
+var SECTIONS_PUB=['contes','bientot','marches','conteurs','cats','pays','docs',
+  'lexique','jaquettes','aide','descriptions','voixDispo','attribution','editeur'];
+
 $('publier').onclick=function(){
+  if(API.enLigne()&&API.jeton){ publierEnLigne(); return; }
   $('modaleQuoi').textContent = modifie
     ? "Tes modifications ne sont pour l'instant que dans ce navigateur."
     : "Rien de nouveau depuis la dernière publication, mais tu peux retélécharger le fichier.";
   $('modale').classList.add('on');
 };
+
+function publierEnLigne(){
+  var b=$('publier'), texte=b.textContent;
+  b.disabled=true;
+  var faites=0, ratees=[];
+  var aFaire=SECTIONS_PUB.filter(function(k){return D[k]!=null;});
+
+  var suivant=function(i){
+    if(i>=aFaire.length){
+      b.disabled=false; b.textContent=texte;
+      if(ratees.length){
+        toast('Publié partiellement — échec sur : '+ratees.join(', '));
+      }else{
+        modifie=false; majEtat();
+        toast(faites+' sections publiées. Le portail est à jour.');
+      }
+      return;
+    }
+    var k=aFaire[i];
+    b.textContent='Publication… '+(i+1)+'/'+aFaire.length;
+    API.ecrire(k, D[k])
+      .then(function(){faites++;})
+      .catch(function(){ratees.push(k);})
+      .then(function(){suivant(i+1);});
+  };
+  suivant(0);
+}
 $('mFermer').onclick=function(){$('modale').classList.remove('on');};
 $('modale').onclick=function(e){if(e.target===this)this.classList.remove('on');};
 $('mDl').onclick=function(){telechargerContenu();

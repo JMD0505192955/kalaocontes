@@ -115,7 +115,7 @@
  },
  "faq": [
   {
-   "q": "Comment fonctionne l'essai gratuit ?",
+   "q": "Le premier conte est-il gratuit ?",
    "r": "Le premier conte est offert, sans abonnement et sans donner ton numéro. Tu choisis lequel. Une fois écouté ou lu, il reste accessible pour toujours, même sans pass."
   },
   {
@@ -638,9 +638,8 @@
      "n": "ARTICLE 2",
      "h": "Éditeur du service",
      "p": [
-      "Le service est édité par {{nom}}, société par actions simplifiée de droit ivoirien, dont le siège social est situé à <span class=\"trou\">adresse complète à compléter</span>, Cocody, Abidjan, Côte d’Ivoire.",
-      "Registre du commerce et du crédit mobilier : <span class=\"trou\">RCCM à compléter</span> — Compte contribuable : <span class=\"trou\">numéro à compléter</span>.",
-      "Directeur de la publication : <span class=\"trou\">nom à compléter</span>.",
+      "Le service est édité par {{nom}}, entreprise de technologie basée à Cocody, en République de Côte d’Ivoire.",
+      "Alphabet Digital conçoit et édite des plateformes numériques et des applications mobiles, et fournit des services et des contenus digitaux en Afrique de l’Ouest et en Afrique centrale.",
       "Le service est distribué dans ce pays en partenariat avec {{operateur}}."
      ]
     },
@@ -655,7 +654,7 @@
     },
     {
      "n": "ARTICLE 4",
-     "h": "Accès et essai gratuit",
+     "h": "Accès et découverte",
      "p": [
       "Le service est accessible depuis un navigateur mobile ou un ordinateur, sous réserve de disposer d'une connexion internet. Les frais de connexion restent à la charge de l'utilisateur, selon les tarifs de son opérateur.",
       "Un premier conte est accessible gratuitement, sans souscription ni communication du numéro de téléphone. Au-delà, l'accès à la bibliothèque nécessite un abonnement."
@@ -674,7 +673,7 @@
      "h": "Tarifs et paiement",
      "p": [
       "Les formules proposées sont les suivantes : pass jour à 50 F CFA, pass semaine à 200 F CFA, pass mois à 500 F CFA. Ces montants s'entendent toutes taxes comprises.",
-      "Le montant est prélevé sur le crédit téléphonique de la ligne renseignée, par l'intermédiaire de {{operateur}}. En cas de crédit insuffisant, l'abonnement est suspendu jusqu'au prochain prélèvement réussi, sans que cela constitue une résiliation.",
+      "Le montant est prélevé sur le crédit téléphonique ou le mobile money ou du mobile money de la ligne renseignée, par l'intermédiaire de {{operateur}}. En cas de crédit insuffisant, l'abonnement est suspendu jusqu'au prochain prélèvement réussi, sans que cela constitue une résiliation.",
       "L'éditeur peut modifier ses tarifs. Toute modification est notifiée par SMS au moins <span class=\"trou\">délai à confirmer avec l’opérateur</span> avant son entrée en vigueur, et ne s'applique pas à la période déjà payée."
      ]
     },
@@ -882,10 +881,10 @@
      "n": "",
      "h": "Nous écrire",
      "p": [
-      "Pour une question sur un abonnement, un prélèvement, un contenu, ou pour signaler un problème technique, l'équipe de {{nom}} est joignable :",
+      "Pour une question sur un abonnement, un prélèvement, un contenu, ou pour signaler un problème technique, l’équipe de {{nom}} est joignable :",
       "<b>Courriel</b> — {{courriel}}",
-      "<b>Téléphone</b> — {{tel}}",
-      "<b>Adresse</b> — <span class=\"trou\">adresse complète à compléter</span>, {{ville}}"
+      "<b>WhatsApp</b> — {{whatsapp}}",
+      "<b>Siège</b> — Cocody, Abidjan, République de Côte d’Ivoire"
      ]
     },
     {

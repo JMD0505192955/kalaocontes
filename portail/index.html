@@ -2,6 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icones/icone-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icones/icone-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icones/icone-180.png">
+<link rel="manifest" href="manifeste.json">
+<meta name="theme-color" content="#E66E2A">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>AfriKfables</title>
 <style>
@@ -6911,17 +6917,19 @@ function ouvrirCreation(p){
 /* Les indicatifs proposés viennent des marchés déclarés. */
 function rendreIndicatifsCrea(){
   var sel=$('creaInd'); if(!sel)return;
-  sel.innerHTML=MARCHES.map(function(m){
-    return '<option value="'+m.pays+'">'+(m.drapeau||'')+' '+m.ind+'</option>';}).join('');
+  sel.innerHTML=paysInscription().map(function(x){
+    return '<option value="'+x.pays+'">'+String(x.pays).toUpperCase()+' '+x.ind+'</option>';}).join('');
   var dep=(DB.paysTel)||(SAVE&&SAVE.pays)||MARCHE_DEFAUT;
   if(MARCHES.some(function(m){return m.pays===dep;}))sel.value=dep;
   indChoisi=sel.value;
   sel.onchange=function(){
     indChoisi=sel.value;
-    var m=marche();
-    $('creaTel').placeholder=(m.pays==='tg')?'90 00 00 00':'70 00 00 00';
+    var m=indicatifDe(indChoisi);
+    $('creaTel').placeholder=(m&&m.ex)||'70 00 00 00';
     majCreaValider();
   };
+  var d=indicatifDe(sel.value);
+  if(d&&d.ex)$('creaTel').placeholder=d.ex;
 }
 
 /* On n'entre dans la veillée qu'avec un prénom et, au premier profil, un numéro valide. */
@@ -6931,7 +6939,7 @@ function majCreaValider(){
   var besoinTel = zt && zt.style.display!=='none';
   var ok=!!nom;
   if(besoinTel){
-    var m=marche(), n=chiffres($('creaTel').value);
+    var m=indicatifDe(indChoisi)||marche(), n=chiffres($('creaTel').value);
     var re=new RegExp('^['+(m.debuts||'0-9')+']');
     ok = ok && n.length===(m.longueur||8) && re.test(n);
   }
@@ -8540,7 +8548,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-06-c',
+  build:'2026-09-08-d',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8575,6 +8583,46 @@ var MARCHE_DEFAUT='bf';
 /* Le pays de facturation vient de l'indicatif choisi à l'inscription : c'est une donnée
    certaine. Le pays déclaré dans le profil ne sert qu'à trier les contes. */
 var indChoisi=null;
+
+/* Tous les pays du catalogue peuvent s'inscrire, même sans opérateur sous contrat.
+   L'indicatif sert alors au tri des contes ; la facturation attend un marché. */
+var INDICATIFS=[
+ {pays:'bf', ind:'+226', longueur:8,  debuts:'0257',  ex:'70 00 00 00'},
+ {pays:'ci', ind:'+225', longueur:10, debuts:'01578', ex:'07 00 00 00 00'},
+ {pays:'tg', ind:'+228', longueur:8,  debuts:'79',    ex:'90 00 00 00'},
+ {pays:'bj', ind:'+229', longueur:10, debuts:'01',    ex:'01 00 00 00 00'},
+ {pays:'ml', ind:'+223', longueur:8,  debuts:'679',   ex:'70 00 00 00'},
+ {pays:'gn', ind:'+224', longueur:9,  debuts:'demo6', ex:'620 00 00 00'},
+ {pays:'sn', ind:'+221', longueur:9,  debuts:'7',     ex:'70 000 00 00'},
+ {pays:'ne', ind:'+227', longueur:8,  debuts:'89',    ex:'90 00 00 00'},
+ {pays:'cm', ind:'+237', longueur:9,  debuts:'62',    ex:'6 00 00 00 00'},
+ {pays:'cd', ind:'+243', longueur:9,  debuts:'89',    ex:'99 000 0000'},
+ {pays:'cg', ind:'+242', longueur:9,  debuts:'0',     ex:'06 000 0000'},
+ {pays:'ga', ind:'+241', longueur:8,  debuts:'0',     ex:'06 00 00 00'},
+ {pays:'td', ind:'+235', longueur:8,  debuts:'6679',  ex:'66 00 00 00'},
+ {pays:'cf', ind:'+236', longueur:8,  debuts:'7',     ex:'70 00 00 00'}
+];
+function indicatifDe(c){
+  var m=(typeof MARCHES!=='undefined')?MARCHES.filter(function(x){return x.pays===c;})[0]:null;
+  if(m&&m.ind)return m;                     /* un marché sous contrat prime */
+  return INDICATIFS.filter(function(x){return x.pays===c;})[0]||null;
+}
+/* Les pays proposés à l'inscription : ceux du catalogue, marchés en tête. */
+function paysInscription(){
+  var L=[];
+  (typeof MARCHES!=='undefined'?MARCHES:[]).forEach(function(m){
+    if(m.actif!==0)L.push({pays:m.pays,ind:m.ind,contrat:true});
+  });
+  INDICATIFS.forEach(function(x){
+    if(!L.some(function(y){return y.pays===x.pays;}))L.push({pays:x.pays,ind:x.ind,contrat:false});
+  });
+  return L;
+}
+/* Un pays sans opérateur sous contrat : on ne peut pas facturer là-bas. */
+function marcheSousContrat(){
+  var p=(DB&&DB.paysTel)||((SAVE&&SAVE.pays)?SAVE.pays:null);
+  return !!(p&&MARCHES.some(function(m){return m.pays===p&&m.actif!==0;}));
+}
 function marche(){
   var p=indChoisi||(DB&&DB.paysTel)||((SAVE&&SAVE.paysTel)?SAVE.paysTel:null)||((SAVE&&SAVE.pays)?SAVE.pays:null);
   var m=null;
@@ -8586,6 +8634,8 @@ function marche(){
 function M(cle){
   var m=marche();
   if(cle==='operateur'&&libre())return '';
+  /* Le siège social est unique — Cocody — même si chaque marché a une présence locale. */
+  if(cle==='ville')return EDITEUR.ville||'';
   return (m&&m[cle]!=null)?m[cle]:(EDITEUR[cle]||'');
 }
 /* En mode libre : aucun paiement, aucune mention d'opérateur, aucun chiffre simulé.
@@ -8609,13 +8659,17 @@ function dateFr(ms){var d=new Date(ms);
 function telJoli(n){return '+226 '+n.replace(/(\d{2})(?=\d)/g,'$1 ').trim();}
 function telMasque(n){return '+226 •• •• •• '+n.slice(-2);}
 function contesLus(){var n=0;DB.profils.forEach(function(p){for(var k in p.lus)if(p.lus[k])n++;});return n;}
-function essaiFini(){return !abonne()&&contesLus()>=1;}
+function essaiFini(){
+  /* Là où l'abonnement n'existe pas encore, on ne bloque personne. */
+  if(!marcheSousContrat())return false;
+  return !abonne()&&contesLus()>=1;
+}
 
 function majBandeau(){
   var b=$('bandeau');
   if(libre()){
     b.className='actif';
-    b.innerHTML='<div class="ic">🌙</div><div><div class="n">Version d\'essai — tout est ouvert</div>'+
+    b.innerHTML='<div class="ic">🌙</div><div><div class="n">Découvre AfriKfables</div>'+
       '<div class="d">Les neuf contes sont accessibles librement, sans abonnement.</div></div>';
     b.onclick=null;
     return;
@@ -8630,7 +8684,7 @@ function majBandeau(){
     b.className='';
     var reste=Math.max(0,1-contesLus());
     b.innerHTML='<div class="ic">🎁</div><div><div class="n">'+
-      (reste?'Ta veillée d\'essai est offerte':'Ton essai gratuit est terminé')+'</div>'+
+      (reste?'Ton conte du soir est offert':'Tu as écouté ton conte offert')+'</div>'+
       '<div class="d">'+(reste?'Un conte gratuit, puis un pass à partir de 50 F.'
                               :'Prends un pass pour rouvrir toute la bibliothèque.')+
       '</div></div><div class="fl">›</div>';
@@ -8663,8 +8717,13 @@ function passDuMarche(){
 }
 function montrerOffre(depuisMenu){
   var om=$('offMention');
-  if(om)om.textContent = libre() ? 'Version d\'essai : tout est ouvert, sans paiement.'
-    : ('Prélevé sur ton crédit '+(M('operateur')||'téléphonique')+'. Résiliable à tout moment.');
+  if(om){
+    if(libre())om.textContent='Découverte libre : tout est ouvert, sans paiement.';
+    else if(!marcheSousContrat())
+      om.textContent="L'abonnement n'est pas encore disponible dans ton pays. "+
+        "En attendant, les contes restent ouverts.";
+    else om.textContent='Prélevé sur ton crédit téléphonique ou ton mobile money. Résiliable à tout moment.';
+  }
   $('offTitre').textContent=depuisMenu?'Choisis ton pass':(contesLus()?'Ta veillée gratuite est finie':'Ouvre toute la bibliothèque');
   $('offSous').textContent=contesLus()&&!depuisMenu
     ? 'Tu as écouté ton conte offert. Prends un pass pour ouvrir les six autres et recevoir un nouveau conte chaque soir.'
@@ -8743,7 +8802,7 @@ $('numSuivant').onclick=function(){
 var otpRetourVers=null, otpInscription=null;
 
 function demanderOtpInscription(nom, avatar){
-  var m=marche();
+  var m=indicatifDe(indChoisi)||marche();
   otpInscription={nom:nom, avatar:avatar, tel:(m.ind||'')+' '+$('creaTel').value.trim(),
     pays:indChoisi||m.pays};
   otpRetourVers='inscription';
@@ -8840,7 +8899,7 @@ function montrerAbo(neuf){
     '<div class="l"><span>Souscrit le</span><b>'+dateFr(c.depuis)+'</b></div>'+
     '<div class="l"><span>'+(abonne()?'Renouvellement':'Expiré le')+'</span><b>'+dateFr(c.echeance)+'</b></div>';
   $('aboSimu').innerHTML='<b>Démonstration</b> — aucun prélèvement n\'est effectué. '+
-    'En production, le montant est débité du crédit '+M('operateur')+
+    'En production, le montant est débité du crédit téléphonique ou du mobile money'+
     ' et renouvelé automatiquement. Pour arrêter : envoyer <b>'+M('motStop')+'</b> au <b>'+M('courtCode')+'</b>.';
   $('aboStop').style.display=abonne()?'block':'none';
   montrer('ecranAbo');
@@ -8911,7 +8970,7 @@ function rendrePropos(){
       "toute la maison, et rien ne circule entre les utilisateurs : aucun message, aucun contact possible.",
       "Les prénoms restent sur le téléphone. Seul le numéro sert à l'abonnement."],false)+
     (libre()
-      ? '<div class="bloc2"><h4>Version d\'essai</h4>'+
+      ? '<div class="bloc2"><h4>Découverte libre</h4>'+
         '<p>Le portail est ouvert librement pendant cette phase de test : tous les contes sont '+
         'accessibles, sans abonnement, sans paiement et sans engagement.</p>'+
         '<p>Ton avis nous intéresse. Écris-nous ce qui te plaît, ce qui te manque, et ce que tes '+
@@ -9017,7 +9076,7 @@ function rendreVeillee(){
   var liste=libre()?[moi]:VEILLEURS.concat([moi]).sort(function(a,b){return b.s-a.s;});
   var h='<div class="accroche"><h2>La grande veillée</h2>'+
     '<p>Ceux qui écoutent ce soir, partout dans le pays.</p></div>'+
-    (libre()?'<div class="aide" style="margin-bottom:14px">Pendant l\'essai, seule ta propre veillée est comptée : '+
+    (libre()?'<div class="aide" style="margin-bottom:14px">Avant l\'abonnement, seule ta propre veillée est comptée : '+
       'il n\'y a pas encore de classement entre utilisateurs.</div>'
      :'<div class="avert"><b>Démonstration</b> — ce classement et ces notes sont simulés. '+
       'En production, ils proviennent du serveur et n\'affichent que des pseudonymes, jamais de numéro.</div>')+
@@ -9217,7 +9276,7 @@ $('mConteurs').onclick=function(){fermerMenu();rendreConteurs();};
 
 /* ================= AIDE ================= */
 var FAQ=[
- {q:"Comment fonctionne l'essai gratuit ?",
+ {q:"Le premier conte est-il gratuit ?",
   r:"Le premier conte est offert, sans abonnement et sans donner ton numéro. Tu choisis lequel. Une fois écouté ou lu, il reste accessible pour toujours, même sans pass."},
  {q:"Comment m'abonner, et combien ça coûte ?",
   r:"Trois formules : 50 F CFA la journée, 200 F la semaine, 500 F le mois. Tu entres ton numéro, tu reçois un code par SMS, et le montant est prélevé sur ton crédit téléphonique."},
@@ -9246,15 +9305,15 @@ function rendreSupport(){
     '<div class="waBtn" id="btnWa"><div class="ic">💬</div>'+
     '<div><div class="n">Écrire sur WhatsApp</div>'+
     '<div class="d">'+M('whatsapp')+' · réponse en journée</div></div></div>'+
-    '<div class="waBtn" id="btnMail" style="background:rgba(255,255,255,.09)">'+
+    '<div class="waBtn" id="btnMail" style="background:var(--carte);border:1px solid var(--bord);color:var(--txt)">'+
     '<div class="ic">✉️</div><div><div class="n">Envoyer un courriel</div>'+
-    '<div class="d">'+M('courriel')+'</div></div></div>'+
+    '<div class="d" style="color:var(--txt2)">'+M('courriel')+'</div></div></div>'+
     '<div class="titreSec" style="margin-top:20px">Questions fréquentes</div>';
   var lesQ=libre()
     ? FAQ.filter(function(x){return !/abonn|pass|prélèv|résili|STOP|crédit/i.test(x.q+' '+x.r);})
     : FAQ;
   if(libre())lesQ=[{q:"Le service est-il payant ?",
-    r:"Non. Pendant cette phase d'essai, les neuf contes sont ouverts librement, sans abonnement et sans prélèvement."}].concat(lesQ);
+    r:"Le premier conte est offert, sans abonnement. Pour écouter toute la bibliothèque, un pass s'achète depuis ton crédit téléphonique ou ton mobile money."}].concat(lesQ);
   lesQ.forEach(function(x,i){
     h+='<div class="faq" data-i="'+i+'"><div class="q">'+jetons(x.q)+'<span>+</span></div>'+
        '<div class="r">'+jetons(x.r)+'</div></div>';
@@ -9315,7 +9374,7 @@ cgu:{titre:"Conditions générales",sections:[
   "espace de questions sur le contenu des contes.",
   "L'éditeur enrichit le catalogue de nouveaux contes à intervalles réguliers, sans que cela ouvre "+
   "droit à modification du prix de l'abonnement en cours."]},
- {n:'ARTICLE 4',h:"Accès et essai gratuit",p:[
+ {n:'ARTICLE 4',h:"Accès et découverte",p:[
   "Le service est accessible depuis un navigateur mobile ou un ordinateur, sous réserve de disposer "+
   "d'une connexion internet. Les frais de connexion restent à la charge de l'utilisateur, selon les "+
   "tarifs de son opérateur.",
@@ -9330,8 +9389,8 @@ cgu:{titre:"Conditions générales",sections:[
  {n:'ARTICLE 6',h:"Tarifs et paiement",p:[
   "Les formules proposées sont les suivantes : pass jour à 50 F CFA, pass semaine à 200 F CFA, "+
   "pass mois à 500 F CFA. Ces montants s'entendent toutes taxes comprises.",
-  "Le montant est prélevé sur le crédit téléphonique de la ligne renseignée, par l'intermédiaire de "+
-  M('operateur')+". En cas de crédit insuffisant, l'abonnement est suspendu jusqu'au prochain "+
+  "Le montant est prélevé sur le crédit téléphonique ou le mobile money de la ligne renseignée, par l'intermédiaire de "+
+  M('operateur')+" (crédit téléphonique ou mobile money). En cas de solde insuffisant, l'abonnement est suspendu jusqu'au prochain "+
   "prélèvement réussi, sans que cela constitue une résiliation.",
   "L'éditeur peut modifier ses tarifs. Toute modification est notifiée par SMS au moins "+
   T('délai à confirmer avec l\'opérateur')+" avant son entrée en vigueur, et ne s'applique pas à la "+
@@ -9482,7 +9541,7 @@ function montrerDoc(cle){
   var d=DOCS[cle];if(!d)return;
   $('legTitre').textContent=jetons(d.titre);
   var h='';
-  if(libre())h+='<div class="avert"><b>Version d\'essai gratuite</b> — le service est actuellement ouvert '+
+  if(libre())h+='<div class="avert"><b>Accès libre</b> — le service est actuellement ouvert '+
     'sans abonnement et sans prélèvement. Les articles relatifs à la souscription et aux tarifs ne '+
     's\'appliqueront qu\'à la mise en service payante.</div>';
   if(!LEGAL_VALIDE)h+='<div class="avert"><b>Projet de document</b> — rédigé pour la démonstration et '+
@@ -9655,7 +9714,7 @@ function rendreVisiteur(){
 
   var pv=$('piedVis');
   if(pv)pv.textContent=libre()
-    ? "VERSION D'ESSAI · UN NOUVEAU CONTE CHAQUE SOIR"
+    ? "UN NOUVEAU CONTE CHAQUE SOIR"
     : 'UN NOUVEAU CONTE CHAQUE SOIR';
 
   var bc=$('visCreer');
@@ -9813,7 +9872,7 @@ function demarrer(){
   /* Ce qui dépend du mode doit être appliqué après le chargement du contenu. */
   var ma=$('mAbo');if(ma)ma.style.display=libre()?'none':'block';
   $('piedTexte').textContent=libre()
-    ? "VERSION D'ESSAI · UN NOUVEAU CONTE CHAQUE SOIR"
+    ? "UN NOUVEAU CONTE CHAQUE SOIR"
     : 'DÉMO VAS · UN NOUVEAU CONTE CHAQUE SOIR AVEC LE PASS';
   mascotte();
   var mL=$('mascotteL'); if(mL&&$('mascotte'))mL.getContext('2d').drawImage($('mascotte'),0,0);
@@ -9835,8 +9894,13 @@ function demarrer(){
   function go(){if(fini)return;fini=true;demarrer();}
   setTimeout(go,2500);                       // on ne bloque jamais le démarrage
   try{
-    fetch('contenu.json',{cache:'no-cache'})
-      .then(function(r){return r.ok?r.json():null;})
+    /* Le contenu vient du serveur s'il répond, du fichier sinon.
+       Le même portail fonctionne donc avec ou sans API. */
+    fetch('/api/contenu',{cache:'no-store'})
+      .then(function(r){if(!r.ok)throw 0;return r.json();})
+      .catch(function(){
+        return fetch('contenu.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;});
+      })
       .then(function(d){if(d)appliquerContenu(d);go();})
       .catch(function(){go();});
   }catch(e){go();}
