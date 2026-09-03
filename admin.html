@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icones/icone-32.png">
+<title>AfriKfables — administration</title>
+<style>
+  :root{
+  /* Fond clair, menu bleu nuit — le modèle attendu par les opérateurs. */
+  --fond:#F7F7F5; --fond2:#FFFFFF; --carte:#FFFFFF;
+  --bord:#E4E2DD; --bord2:#EFEEEA;
+  --nuit:#1E293F; --nuit2:#16203A;
+  --or:#C8801F; --orClair:#F4E4CC;
+  --vert:#2E7D53; --vertClair:#E3F1E9;
+  --rouge:#C0453C; --rougeClair:#FBE7E5;
+  --txt:#1B2233; --txt2:#6B7280;
+  --v1:#FAFAF8; --v2:#F3F2EF;
+  --om1:rgba(30,41,63,.06); --om2:rgba(30,41,63,.10);
+}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--fond);color:var(--txt);font-family:"Segoe UI",Roboto,Arial,sans-serif;
+    font-size:14px;line-height:1.5;}
+  header{background:var(--carte);border-bottom:1px solid var(--bord);padding:13px 26px;
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:20;
+    margin-left:236px;}
+  header h1{font-size:17px;font-weight:800;}
+  header h1 span{color:var(--or);}
+  header .etat{color:var(--txt2);}
+  header .etat{font-size:11.5px;color:var(--txt2);margin-left:auto;}
+  #publier{position:relative;background:var(--or);color:#fff;}
+  #publier.attente{box-shadow:0 0 0 3px rgba(245,194,27,.28);animation:pulse 1.8s infinite;}
+  @keyframes pulse{50%{box-shadow:0 0 0 7px rgba(245,194,27,.1);}}
+  #publier .pt{position:absolute;top:-7px;right:-7px;background:var(--rouge);color:#fff;
+    font-size:10px;font-weight:800;min-width:19px;height:19px;border-radius:999px;
+    display:flex;align-items:center;justify-content:center;padding:0 5px;}
+  #modale{position:fixed;inset:0;background:rgba(6,4,20,.8);z-index:60;display:none;
+    align-items:center;justify-content:center;padding:20px;}
+  #modale.on{display:flex;}
+  #modaleC{background:var(--carte);border:1px solid var(--bord);border-radius:18px;padding:24px;
+    max-width:560px;width:100%;}
+  #modaleC h3{font-size:19px;font-weight:800;margin-bottom:8px;}
+  #modaleC ol{margin:16px 0 16px 20px;} #modaleC li{margin-bottom:10px;line-height:1.6;}
+  nav{position:fixed;left:0;top:0;bottom:0;width:236px;overflow-y:auto;z-index:30;
+    background:var(--nuit);border-right:none;color:#E8EAF0;
+    display:flex;flex-direction:column;padding:0 0 14px;}
+  nav .marque{display:flex;align-items:center;gap:11px;padding:18px 16px;
+    border-bottom:1px solid rgba(255,255,255,.10);margin-bottom:8px;}
+  nav .pastilleM{width:34px;height:34px;border-radius:9px;background:var(--or);
+    color:#241a04;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  nav .marque b{display:block;font-size:14.5px;font-weight:800;color:#fff;}
+  nav .marque small{display:block;font-size:11.5px;color:#9AA3B8;}
+  nav .grp{font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:#78829B;
+    padding:16px 18px 6px;font-weight:800;}
+  nav button{display:block;width:calc(100% - 20px);margin:1px 10px;text-align:left;
+    background:none;border:none;color:#D7DBE6;font-family:inherit;
+    font-size:13.5px;padding:10px 14px;border-radius:8px;cursor:pointer;}
+  nav button:hover{background:rgba(255,255,255,.07);color:#fff;}
+  nav button.on{background:rgba(255,255,255,.13);color:#fff;font-weight:700;}
+  nav .pied{margin-top:auto;padding:14px 18px 0;border-top:1px solid rgba(255,255,255,.10);}
+  nav .pied b{display:block;font-size:12.5px;color:#fff;}
+  nav .pied small{display:block;font-size:11px;color:#8B94AB;}
+  main{padding:0 0 60px;margin-left:236px;}
+  .barreH{display:flex;align-items:center;gap:14px;padding:16px 26px;
+    border-bottom:1px solid var(--bord);background:var(--carte);}
+  .barreH h2{margin:0;}
+  .barreH .fil{font-size:12px;color:var(--txt2);}
+  .corpsV{padding:20px 26px;max-width:1240px;}
+  @media (max-width:900px){
+    nav{position:static;width:auto;flex-direction:row;flex-wrap:wrap;padding:10px;}
+    nav .marque,nav .grp,nav .pied{display:none;}
+    nav button{width:auto;margin:3px;padding:8px 14px;border-radius:999px;border:1px solid var(--bord);}
+    main{margin-left:0;} header{margin-left:0;}
+  }
+  .vue{display:none;} .vue.on{display:block;}
+  h2{font-size:20px;font-weight:800;margin-bottom:6px;}
+  .sous{color:var(--txt2);font-size:13px;margin-bottom:18px;}
+  .sousNav{display:flex;gap:3px;padding:0 26px;background:var(--carte);
+    border-bottom:1px solid var(--bord);overflow-x:auto;}
+  .sousNav button{background:none;border:none;border-bottom:2px solid transparent;
+    color:var(--txt2);font-family:inherit;font-size:13.5px;font-weight:700;
+    padding:12px 16px;cursor:pointer;white-space:nowrap;}
+  .sousNav button:hover{color:var(--txt);}
+  .sousNav button.on{color:var(--or);border-bottom-color:var(--or);}
+  #voileCnx{position:fixed;inset:0;background:var(--nuit);z-index:80;
+    display:none;align-items:center;justify-content:center;padding:20px;}
+  #voileCnx.on{display:flex;}
+  #carteCnx{background:var(--carte);border-radius:14px;width:100%;max-width:420px;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);}
+  #carteCnx .hd{display:flex;align-items:center;gap:12px;padding:22px 26px 18px;
+    border-bottom:1px solid var(--bord);}
+  #carteCnx .hd b{display:block;font-size:16px;font-weight:800;}
+  #carteCnx .hd small{display:block;font-size:12px;color:var(--txt2);}
+  #carteCnx .cp{padding:22px 26px;}
+  #carteCnx .intro{font-size:13.5px;color:var(--txt2);line-height:1.5;margin-bottom:18px;}
+  #carteCnx .champ{margin-bottom:14px;}
+  #carteCnx .champ label{display:block;font-size:12.5px;font-weight:700;
+    color:var(--txt2);margin-bottom:6px;}
+  #carteCnx .pd{padding:16px 26px 22px;display:flex;gap:10px;justify-content:flex-end;
+    border-top:1px solid var(--bord);}
+  #cnxErr{font-size:13px;color:var(--rouge);min-height:18px;}
+  .voileM{position:fixed;inset:0;background:rgba(30,41,63,.45);z-index:60;
+    display:flex;align-items:center;justify-content:center;padding:20px;}
+  .fenetreM{background:var(--carte);border-radius:12px;width:100%;max-width:520px;
+    max-height:90vh;overflow:auto;box-shadow:0 18px 50px rgba(30,41,63,.28);}
+  .hM{padding:20px 24px 14px;border-bottom:1px solid var(--bord);}
+  .hM b{display:block;font-size:17px;font-weight:800;}
+  .hM small{display:block;font-size:13px;color:var(--txt2);margin-top:3px;}
+  .cM{padding:18px 24px;}
+  .champM{margin-bottom:14px;}
+  .champM label{display:block;font-size:12.5px;font-weight:700;color:var(--txt2);margin-bottom:6px;}
+  .pM{padding:14px 24px 20px;display:flex;gap:10px;justify-content:flex-end;
+    border-top:1px solid var(--bord);}
+  .graf{padding:4px 0;}
+  .gl{margin-bottom:13px;}
+  .gt{display:flex;font-size:13px;color:var(--txt2);margin-bottom:5px;}
+  .gt b{margin-left:auto;color:var(--txt);font-weight:700;}
+  .gj{height:9px;background:var(--v2);border-radius:999px;overflow:hidden;}
+  .gj i{display:block;height:100%;background:var(--or);border-radius:999px;}
+  .courbe{position:relative;}
+  .courbe svg{width:100%;height:110px;display:block;}
+  .courbe .cx{display:flex;justify-content:space-between;font-size:11px;color:var(--txt2);margin-top:4px;}
+  .courbe .cmax{position:absolute;right:0;top:0;font-size:11px;color:var(--txt2);}
+  .quatre{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:16px;}
+  .kpi{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:15px 17px;
+    box-shadow:0 1px 2px var(--om1);}
+  .kpi small{display:block;font-size:12px;color:var(--txt2);margin-bottom:5px;}
+  .kpi b{font-size:25px;font-weight:800;line-height:1.1;color:var(--txt);}
+  .kpi .note{font-size:11.5px;color:var(--txt2);margin-top:3px;}
+  .anneau{display:flex;justify-content:center;padding:6px 0;}
+  .anneau svg{width:150px;height:150px;}
+  .deuxCol{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:900px){.deuxCol{grid-template-columns:1fr;}}
+  .bloc{background:var(--carte);border:1px solid var(--bord);border-radius:10px;
+    box-shadow:0 1px 2px var(--om1);padding:16px;margin-bottom:14px;}
+  .bloc h3{font-size:15px;font-weight:800;margin-bottom:10px;color:var(--or);}
+  label{display:block;font-size:11px;letter-spacing:.6px;color:var(--txt2);margin:10px 0 4px;
+    text-transform:uppercase;}
+  input,textarea,select{width:100%;background:var(--carte);border:1px solid var(--bord);
+    border-radius:9px;padding:10px 12px;color:var(--txt);font-family:inherit;font-size:14px;outline:none;}
+  input:focus,textarea:focus,select:focus{border-color:var(--or);}
+  textarea{resize:vertical;min-height:70px;line-height:1.55;}
+  .deux{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .trois{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media (max-width:760px){.deux,.trois{grid-template-columns:1fr;}}
+  button.act{background:var(--nuit);color:#fff;border:none;font-family:inherit;font-weight:700;
+    font-size:14px;padding:11px 20px;border-radius:10px;cursor:pointer;}
+  button.plat{background:var(--carte);color:var(--txt);border:1px solid var(--bord);}
+  button.danger{background:rgba(227,86,77,.16);color:#ffb3ad;border:1px solid rgba(227,86,77,.5);}
+  button.mini{font-size:12px;padding:7px 12px;}
+  .barre{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;}
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:left;background:var(--v1);font-size:10.5px;letter-spacing:1px;color:var(--txt2);text-transform:uppercase;
+    padding:8px 10px;border-bottom:1px solid var(--bord);}
+  td{padding:10px;border-bottom:1px solid rgba(255,255,255,.06);font-size:13.5px;vertical-align:middle;}
+  tr:hover td{background:rgba(255,255,255,.03);}
+  .pastille{border:none;display:inline-block;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;}
+  .ok{background:var(--vertClair);color:var(--vert);}
+  .ko{background:var(--rougeClair);color:var(--rouge);}
+  .att{background:var(--orClair);color:var(--or);}
+  .cle{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);}
+  .cle:last-child{border:none;}
+  .cle span{color:var(--txt2);}
+  .chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px;}
+  .chiffres div{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:15px;text-align:center;}
+  .chiffres b{display:block;font-size:26px;color:var(--or);line-height:1.1;}
+  .chiffres small{font-size:10px;letter-spacing:1px;color:var(--txt2);}
+  .etape{background:rgba(255,255,255,.04);border:1px solid var(--bord);border-radius:11px;
+    padding:12px;margin-bottom:9px;}
+  .etape .haut{display:flex;gap:9px;align-items:center;margin-bottom:8px;}
+  .etape .num{font-size:11px;color:var(--txt2);min-width:58px;}
+  .avert{background:rgba(245,194,27,.11);border:1px solid rgba(245,194,27,.4);border-radius:11px;
+    padding:12px 14px;font-size:12.5px;color:#f2e2b0;line-height:1.6;margin-bottom:16px;}
+  pre{background:rgba(0,0,0,.35);border:1px solid var(--bord);border-radius:10px;padding:14px;
+    font-size:12px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;word-break:break-word;
+    max-height:420px;overflow-y:auto;}
+  #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:#2c2560;
+    border:1px solid var(--bord);border-radius:12px;padding:12px 20px;font-size:13.5px;
+    opacity:0;transition:opacity .25s;pointer-events:none;z-index:50;}
+  #toast.on{opacity:1;}
+  .depot{border:2px dashed rgba(255,255,255,.22);border-radius:14px;padding:26px;text-align:center;
+    color:var(--txt2);font-size:13.5px;cursor:pointer;}
+  .depot.survol{border-color:var(--or);color:var(--or);}
+</style>
+</head>
+<body>
+
+<div id="porte" style="position:fixed;inset:0;background:#0d0a24;z-index:99;display:none;
+  align-items:center;justify-content:center;padding:24px;">
+  <div style="max-width:380px;width:100%;text-align:center">
+    <h1 style="font-size:20px;font-weight:800;margin-bottom:8px">AfriK<span style="color:#F5C21B">Faso</span></h1>
+    <div style="color:#a99ad4;font-size:13.5px;margin-bottom:20px">Administration</div>
+    <input id="porteMdp" type="password" placeholder="Mot de passe" autocomplete="current-password"
+      style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+      border-radius:9px;padding:13px;color:#EFEAFF;font-size:15px;outline:none;text-align:center">
+    <button id="porteOk" style="width:100%;margin-top:12px;background:#F5C21B;border:none;color:#241a04;
+      font-weight:700;font-size:15px;padding:13px;border-radius:10px;cursor:pointer">Entrer</button>
+    <div id="porteErr" style="color:#ffb3ad;font-size:12.5px;margin-top:12px;min-height:18px"></div>
+    <div style="color:#6f65a0;font-size:11px;margin-top:22px;line-height:1.6">
+      Ce verrou évite les regards de passage. La vraie protection se règle sur Netlify.</div>
+  </div>
+</div>
+
+<header>
+  <h1>AfriKfables — administration</h1>
+  <div class="etat" id="etat">chargement…</div>
+  <span id="etatSource" style="font-size:12px;color:var(--txt2);margin-right:10px"></span><button class="act" id="publier" style="margin-left:14px">Publier</button>
+</header>
+
+<nav>
+  <div class="marque"><span class="pastilleM">A</span>
+    <div><b>AfriKfables</b><small>Back-office</small></div></div>
+
+  <div class="grp">Général</div>
+  <button data-v="bord" class="on">Tableau de bord</button>
+
+  <div class="grp">Opérations</div>
+  <button data-v="abonnes">Utilisateurs</button>
+  <button data-v="contenus">Contenus</button>
+  <button data-v="cats">Catégories</button>
+  <button data-v="pass">Pass</button>
+
+  <div class="grp">Réseau</div>
+  <button data-v="pays">Pays</button>
+  <button data-v="marches">Opérateurs</button>
+
+  <div class="grp">Pilotage</div>
+  <button data-v="finances">Finances</button>
+  <button data-v="campagnes">Campagnes</button>
+  <button data-v="support">Support</button>
+
+  <div class="grp">Système</div>
+  <button data-v="admin">Administration</button>
+
+  <div class="pied"><b id="navQui">Hors ligne</b><small id="navRole">contenu local</small></div>
+</nav>
+
+<main>
+  <div class="vue on" id="v-bord"></div>
+  <div class="vue" id="v-contes"></div>
+  <div class="vue" id="v-conteurs"></div>
+  <div class="vue" id="v-prod"></div>
+  <div class="vue" id="v-prompts"></div>
+  <div class="vue" id="v-cats"></div>
+  <div class="vue" id="v-pays"></div>
+  <div class="vue" id="v-marches"></div>
+  <div class="vue" id="v-abonnes"></div>
+  <div class="vue" id="v-contenus"></div>
+  <div class="vue" id="v-pass"></div>
+  <div class="vue" id="v-campagnes"></div>
+  <div class="vue" id="v-admin"></div>
+  <div id="reserve" style="display:none"></div>
+
+<div id="voileCnx">
+  <form id="carteCnx" autocomplete="on">
+    <div class="hd"><span class="pastilleM">A</span>
+      <div><b>AfriKfables</b><small>Administration</small></div></div>
+    <div class="cp">
+      <p class="intro">Le serveur est joint. Connectez-vous pour modifier le contenu
+        et publier directement en ligne.</p>
+      <div class="champ"><label for="cnxMail">Courriel</label>
+        <input id="cnxMail" type="email" autocomplete="username" required></div>
+      <div class="champ"><label for="cnxMdp">Mot de passe</label>
+        <input id="cnxMdp" type="password" autocomplete="current-password" required></div>
+      <div id="cnxErr"></div>
+    </div>
+    <div class="pd">
+      <button type="button" class="plat" id="cnxPlusTard">Travailler hors ligne</button>
+      <button type="submit" class="act" id="cnxOk">Se connecter</button>
+    </div>
+  </form>
+</div>
+  <div class="vue" id="v-finances"></div>
+  <div class="vue" id="v-support"></div>
+  <div class="vue" id="v-journal"></div>
+  <div class="vue" id="v-medias"></div>
+  <div class="vue" id="v-lexique"></div>
+  <div class="vue" id="v-docs"></div>
+  <div class="vue" id="v-reglages"></div>
+  <div class="vue" id="v-export"></div>
+</main>
+
+<div id="modale"><div id="modaleC">
+  <h3>Publier les modifications</h3>
+  <div class="sous" id="modaleQuoi"></div>
+  <ol>
+    <li>Télécharge <b>contenu.json</b> — le bouton ci-dessous.</li>
+    <li>Remplace l'ancien <b>contenu.json</b> dans le dossier du portail, à côté d'<b>index.html</b>.</li>
+    <li>Redépose le dossier entier sur Netlify.</li>
+  </ol>
+  <div class="avert" style="margin-bottom:16px">Un navigateur ne peut pas écrire sur le serveur.
+  Ces trois étapes remplacent le bouton « publier » d'un back office classique. Elles prennent une minute.</div>
+  <div class="barre"><button class="act" id="mDl">Télécharger contenu.json</button>
+  <button class="plat" id="mFermer">Fermer</button></div>
+</div></div>
+<div id="toast"></div>
+
+<script>
+"use strict";
+var $=function(i){return document.getElementById(i);};
+
+/* ---------- verrou local ----------
+   Il empêche d'ouvrir l'outil par curiosité. Il ne protège pas le fichier lui-même :
+   quiconque lit le code source peut le contourner. Pour une vraie protection,
+   c'est le fichier _headers de Netlify qui fait le travail. */
+var MOT_DE_PASSE='';   // laisser vide pour désactiver ce verrou
+function empreinte(t){
+  var h=5381;
+  for(var i=0;i<t.length;i++)h=((h*33)^t.charCodeAt(i))>>>0;
+  return h.toString(16);
+}
+(function verrou(){
+  if(!MOT_DE_PASSE)return;
+  var ouvert=false;
+  try{ouvert=sessionStorage.getItem('faso_adm')===MOT_DE_PASSE;}catch(e){}
+  if(ouvert)return;
+  var d=document.getElementById('porte');
+  d.style.display='flex';
+  function tester(){
+    if(empreinte(document.getElementById('porteMdp').value)===MOT_DE_PASSE){
+      try{sessionStorage.setItem('faso_adm',MOT_DE_PASSE);}catch(e){}
+      d.style.display='none';
+    }else{
+      document.getElementById('porteErr').textContent='Mot de passe incorrect.';
+      document.getElementById('porteMdp').value='';
+    }
+  }
+  document.getElementById('porteOk').onclick=tester;
+  document.getElementById('porteMdp').onkeydown=function(e){if(e.key==='Enter')tester();};
+  setTimeout(function(){document.getElementById('porteMdp').focus();},100);
+})();
+var D=null, modifie=false;
+
+function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');
+  clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on');},2600);}
+function marquer(){modifie=true;majEtat();}
+function majEtat(){
+  var e=$('etatSource');
+  if(e)e.textContent = (API.enLigne()&&API.jeton) ? 'serveur' : 'fichier local';
+  $('etat').textContent = D
+    ? (D.contes.length+' contes · '+D.bientot.length+' à venir · '+D.conteurs.length+' conteurs'+
+       (modifie?' · non publié':' · publié'))
+    : 'aucun contenu chargé';
+  $('etat').style.color = modifie ? '#F5C21B' : '';
+  var b=$('publier');
+  if(!b)return;
+  b.classList.toggle('attente',!!modifie);
+  b.innerHTML='Publier'+(modifie?'<span class="pt">!</span>':'');
+}
+function telechargerContenu(){
+  var b=new Blob([JSON.stringify(D,null,1)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='contenu.json';a.click();
+  modifie=false;majEtat();
+}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+
+/* ---------- chargement ---------- */
+/* ================= COUCHE D'ACCÈS AUX DONNÉES =================
+   Tout passe par ici. Aujourd'hui : fichier JSON + brouillon local.
+   Demain : API du serveur. Seul ce bloc changera — les modules, jamais. */
+var API={
+  /* L'adresse du serveur est détectée au démarrage : si /api/sante répond,
+     le back office s'y connecte. Sinon il reste en mode fichier local.
+     Aucune configuration à faire quand tout tourne derrière le même nginx. */
+  base:null,
+  jeton:(function(){try{return sessionStorage.getItem('faso_jeton');}catch(e){return null;}})(),
+
+  connexion:function(courriel,motdepasse){
+    if(!API.base)return Promise.reject(new Error('Aucun serveur configuré'));
+    return fetch(API.base+'/auth/connexion',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({courriel:courriel,motdepasse:motdepasse})})
+      .then(function(r){return r.json().then(function(d){
+        if(!r.ok)throw new Error(d.erreur||'Connexion refusée');
+        API.jeton=d.jeton;
+        try{sessionStorage.setItem('faso_jeton',d.jeton);}catch(e){}
+        return d.admin;});});
+  },
+  deconnexion:function(){
+    API.jeton=null;
+    try{sessionStorage.removeItem('faso_jeton');}catch(e){}
+  },
+
+  enLigne:function(){return !!API.base;},
+
+  lire:function(){
+    if(API.enLigne())
+      return fetch(API.base+'/contenu',{headers:API.entetes()})
+        .then(function(r){if(!r.ok)throw new Error('lecture refusée');return r.json();});
+    return fetch('contenu.json',{cache:'no-cache'})
+      .then(function(r){if(!r.ok)throw new Error('contenu.json introuvable');return r.json();});
+  },
+
+  /* Enregistrer une section précise plutôt que tout le contenu :
+     c'est ce que fera l'API, et ça évite les écrasements entre éditeurs. */
+  ecrire:function(section,valeur){
+    if(API.enLigne())
+      return fetch(API.base+'/contenu/'+section,{method:'PUT',headers:API.entetes(),
+        body:JSON.stringify(valeur)}).then(function(r){
+          if(!r.ok)throw new Error('enregistrement refusé');return r.json();});
+    /* hors ligne : brouillon dans le navigateur, publication par export */
+    try{localStorage.setItem('faso_admin',JSON.stringify(D));}catch(e){
+      return Promise.reject(new Error('brouillon trop volumineux'));}
+    return Promise.resolve({section:section,local:true});
+  },
+
+  entetes:function(){
+    var h={'Content-Type':'application/json'};
+    if(API.jeton)h['Authorization']='Bearer '+API.jeton;
+    return h;
+  }
+};
+
+/* Enregistre une section et signale l'état. Les modules n'appellent que celle-ci. */
+function enregistrer(section){
+  marquer();
+  return API.ecrire(section,D?D[section]:null)
+    .then(function(r){ if(r&&!r.local){modifie=false;majEtat();} return r; })
+    .catch(function(e){ toast('Échec : '+e.message); });
+}
+
+/* ---- Connexion au serveur ----
+   Sans jeton, l'API refuse toute écriture. On demande donc les identifiants
+   dès qu'elle est jointe, sauf si l'utilisateur choisit de travailler hors ligne. */
+var horsLigneChoisi=false;
+
+function demanderConnexion(){
+  return new Promise(function(fini){
+    var z=$('voileCnx'); if(!z){fini(false);return;}
+    z.classList.add('on');
+    $('cnxMail').focus();
+
+    $('carteCnx').onsubmit=function(e){
+      e.preventDefault();
+      var b=$('cnxOk'); b.disabled=true; b.textContent='…';
+      $('cnxErr').textContent='';
+      API.connexion($('cnxMail').value.trim(), $('cnxMdp').value)
+        .then(function(a){
+          z.classList.remove('on');
+          $('navQui').textContent=a.nom||a.courriel;
+          $('navRole').textContent=a.role;
+          fini(true);
+        })
+        .catch(function(err){
+          $('cnxErr').textContent=err.message;
+          b.disabled=false; b.textContent='Se connecter';
+          $('cnxMdp').select();
+        });
+    };
+
+    $('cnxPlusTard').onclick=function(){
+      horsLigneChoisi=true;
+      API.base=null;               /* on repasse en fichier local */
+      z.classList.remove('on');
+      fini(false);
+    };
+  });
+}
+
+/* Cherche l'API à côté du portail. Silencieux si elle n'est pas là. */
+function chercherAPI(){
+  return fetch('/api/sante',{cache:'no-store'})
+    .then(function(r){ if(!r.ok)throw 0; return r.json(); })
+    .then(function(d){
+      if(d&&d.etat==='ok'){ API.base='/api'; return true; }
+      return false;
+    })
+    .catch(function(){ return false; });
+}
+
+function charger(){
+  var local=null;
+  try{local=localStorage.getItem('faso_admin');}catch(e){}
+  if(local){
+    try{D=JSON.parse(local);modifie=true;rendre();toast('Brouillon local restauré.');return;}catch(e){}
+  }
+  chercherAPI()
+    .then(function(joint){
+      if(!joint)return false;
+      /* un jeton de session encore valide évite de redemander */
+      if(API.jeton)return fetch(API.base+'/auth/moi',{headers:API.entetes()})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(a){
+          if(a){$('navQui').textContent=a.nom||a.courriel;$('navRole').textContent=a.role;return true;}
+          return demanderConnexion();
+        }).catch(function(){return demanderConnexion();});
+      return demanderConnexion();
+    })
+    .then(function(){ return API.lire(); })
+    .then(function(d){D=d;
+      ['cats','pays','marches','lexique','docs','jaquettes','aide','descriptions','voixDispo','attribution']
+        .forEach(function(k){if(!D[k])D[k]=(k==='cats'||k==='pays'||k==='marches')?[]:{};});
+      if(!D.marches.length)D.marches=MARCHES_DEFAUT.slice();
+      modifie=false;rendre();})
+    .catch(function(){
+      D={version:1,editeur:{},pass:[],conteurs:[],attribution:{},voixDispo:{},
+         descriptions:{},faq:[],aide:{},cats:[],lexique:{},docs:{},jaquettes:{},
+         contes:[],bientot:[]};
+      rendre();
+      toast("contenu.json introuvable — dépose-le dans l'onglet Export.");
+    });
+}
+function sauverBrouillon(){
+  try{localStorage.setItem('faso_admin',JSON.stringify(D));}catch(e){
+    toast('Brouillon trop volumineux pour le navigateur. Exporte souvent.');}
+}
+
+/* ---------- navigation ---------- */
+Array.prototype.forEach.call(document.querySelectorAll('nav button'),function(b){
+  b.onclick=function(){
+    Array.prototype.forEach.call(document.querySelectorAll('nav button'),function(x){x.classList.remove('on');});
+    Array.prototype.forEach.call(document.querySelectorAll('.vue'),function(x){x.classList.remove('on');});
+    b.classList.add('on');$('v-'+b.getAttribute('data-v')).classList.add('on');
+    rendre();
+  };
+});
+
+function rendre(){
+  majEtat();
+  if(!D)return;
+  var v=document.querySelector('nav button.on').getAttribute('data-v');
+  ({bord:vueBord,contes:vueContes,conteurs:vueConteurs,prod:vueProd,cats:vueCats,pays:vuePays,marches:vueMarches,abonnes:vueAbonnes,finances:vueFinances,support:vueSupport,contenus:vueContenus,pass:vuePass,campagnes:vueCampagnes,admin:vueAdmin,
+    medias:vueMedias,lexique:vueLexique,docs:vueDocs,
+    prompts:vuePrompts,reglages:vueReglages,export:vueExport}[v])();
+}
+
+/* ================= TABLEAU DE BORD ================= */
+function segmentsAttendus(c){
+  var vus={},n=0;
+  function pose(t){var k=String(t||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+    if(k&&!vus[k]){vus[k]=1;n++;}}
+  (c.etapes||[]).forEach(function(e){
+    if(e.choix){if(e.choix.q)pose(e.choix.q);(e.choix.o||[]).forEach(function(o){pose(o.s);});}
+    else pose(e.t);
+  });
+  (c.quiz||[]).forEach(function(q,i){
+    pose('Question '+(i+1)+'/'+c.quiz.length+'. '+q.q);
+    pose("C'est bien ça. Tu as l'oreille.");
+    pose('Non. La bonne réponse était : '+q.r[q.b]+'.');
+  });
+  pose(c.morale);
+  pose('Le conte est fini. Maintenant, dis-moi si tu as bien écouté.');
+  return n;
+}
+/* Graphiques dessinés en SVG. Aucune bibliothèque externe : le back office
+   doit fonctionner sans réseau, et une dépendance de moins est une panne de moins. */
+function barres(donnees, options){
+  options=options||{};
+  var max=Math.max.apply(null,donnees.map(function(d){return d.v;}).concat([1]));
+  var h='<div class="graf">';
+  donnees.forEach(function(d){
+    var pct=Math.round(d.v/max*100);
+    h+='<div class="gl"><div class="gt">'+esc(d.n)+
+       '<b>'+(options.format?options.format(d.v):d.v)+'</b></div>'+
+       '<div class="gj"><i style="width:'+pct+'%'+
+       (d.couleur?';background:'+d.couleur:'')+'"></i></div></div>';
+  });
+  return h+'</div>';
+}
+function courbe(points, options){
+  options=options||{};
+  if(!points.length)return '<div class="sous">Aucune donnée sur la période.</div>';
+  var L=300, H=90, max=Math.max.apply(null,points.map(function(p){return p.v;}).concat([1]));
+  var pas=points.length>1?L/(points.length-1):L;
+  var d=points.map(function(p,i){
+    return (i?'L':'M')+(i*pas).toFixed(1)+' '+(H-(p.v/max*(H-10))).toFixed(1);}).join(' ');
+  var aire=d+' L'+L+' '+H+' L0 '+H+' Z';
+  return '<div class="courbe"><svg viewBox="0 0 '+L+' '+H+'" preserveAspectRatio="none">'+
+    '<path d="'+aire+'" fill="var(--orClair)"/>'+
+    '<path d="'+d+'" fill="none" stroke="var(--or)" stroke-width="2"'+
+    ' stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'+
+    '</svg><div class="cx"><span>'+esc(points[0].n)+'</span>'+
+    '<span>'+esc(points[points.length-1].n)+'</span></div>'+
+    '<div class="cmax">max '+(options.format?options.format(max):max)+'</div></div>';
+}
+function anneau(part, total, libelle){
+  var pct=total?Math.round(part/total*100):0;
+  var r=52, c=2*Math.PI*r, rempli=c*pct/100;
+  return '<div class="anneau"><svg viewBox="0 0 130 130">'+
+    '<circle cx="65" cy="65" r="'+r+'" fill="none" stroke="var(--v2)" stroke-width="14"/>'+
+    '<circle cx="65" cy="65" r="'+r+'" fill="none" stroke="var(--or)" stroke-width="14"'+
+    ' stroke-linecap="round" stroke-dasharray="'+rempli.toFixed(1)+' '+c.toFixed(1)+'"'+
+    ' transform="rotate(-90 65 65)"/>'+
+    '<text x="65" y="62" text-anchor="middle" font-size="24" font-weight="800"'+
+    ' fill="var(--txt)">'+pct+'%</text>'+
+    '<text x="65" y="80" text-anchor="middle" font-size="10" fill="var(--txt2)">'+esc(libelle)+'</text>'+
+    '</svg></div>';
+}
+
+/* ---- Vue commerciale : chiffres réels du serveur, ou rien. ---- */
+function rendrePilotage(){
+  var z=$('pilotage'); if(!z)return;
+  if(!API.enLigne()){
+    z.innerHTML='<div class="bloc"><div class="avert" style="margin:0">'+
+      '<b>Serveur non connecté</b> — abonnés, revenus, performances par opérateur et par pays '+
+      'viennent des transactions réelles. Ils apparaîtront ici dès que l\'API sera jointe.<br><br>'+
+      'En attendant, la production éditoriale ci-dessous est à jour.</div></div>';
+    return;
+  }
+  var pays=$('pilPays')?$('pilPays').value:'';
+  var jours=$('pilJours')?$('pilJours').value:'30';
+  z.innerHTML='<div class="bloc">Chargement…</div>';
+  appelAPI('/admin/pilotage?jours='+jours+(pays?'&pays='+pays:'')).then(function(d){
+    var fr=function(n){return (n||0).toLocaleString('fr-FR');};
+    var tot=(d.revenu.reussis+d.revenu.echecs)||1;
+    var tauxEchec=(d.revenu.echecs/tot*100);
+
+    var h='<div class="quatre">'+
+      kpi('Abonnés actifs',fr(d.abonnes.actifs),fr(d.abonnes.nouveaux)+' nouveaux sur la période')+
+      kpi('Revenu encaissé',fr(d.revenu.encaisse)+' F CFA','sur '+d.jours+' jours')+
+      kpi('Prélèvements aboutis',fr(d.revenu.reussis),
+        tauxEchec.toFixed(1)+' % d\'échec'+(tauxEchec>10?' — à surveiller':''))+
+      kpi('Résiliations',fr(d.abonnes.resilies),'sur la période')+
+      '</div>';
+
+    if(d.incidents.length){
+      h+='<div class="bloc"><h3>Incidents des dernières 24 heures</h3>';
+      d.incidents.forEach(function(i){
+        h+='<div class="k"><span>'+esc(i.operateur)+'</span>'+
+           '<b style="color:var(--rouge)">'+fr(i.n)+' prélèvements en échec</b></div>';
+      });
+      h+='</div>';
+    }
+
+    h+='<div class="deuxCol">'+
+      '<div class="bloc"><h3>Revenu au fil des jours</h3>'+
+      courbe(d.evolution.map(function(x){
+        return {n:new Date(x.jour).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}),v:x.revenu};
+      }),{format:fr})+'</div>'+
+      '<div class="bloc"><h3>Nouveaux abonnés</h3>'+
+      courbe(d.evolution.map(function(x){
+        return {n:new Date(x.jour).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}),v:x.nouveaux};
+      }),{format:fr})+'</div></div>';
+
+    h+='<div class="deuxCol">'+
+      '<div class="bloc"><h3>Revenu par pays</h3>'+
+      barres(d.parPays.map(function(x){return {n:nomPays(x.pays),v:x.revenu};}),
+        {format:function(v){return fr(v)+' F CFA';}})+'</div>'+
+      '<div class="bloc"><h3>Revenu par opérateur</h3>'+
+      barres(d.parOperateur.map(function(x){
+        return {n:x.operateur+' — '+nomPays(x.pays),v:x.revenu};}),
+        {format:function(v){return fr(v)+' F CFA';}})+'</div></div>';
+
+    h+='<div class="deuxCol">'+
+      '<div class="bloc"><h3>Revenu par pass</h3>'+
+      barres(d.parPass.map(function(x){
+        return {n:libellePass(x.pass)+' — '+fr(x.nombre)+' vendus',v:x.revenu};}),
+        {format:function(v){return fr(v)+' F CFA';}})+'</div>'+
+      '<div class="bloc"><h3>Contes les plus écoutés</h3>'+
+      barres(d.contes.map(function(x){return {n:titreConte(x.conte),v:x.ecoutes};}),
+        {format:fr})+'</div></div>';
+
+    z.innerHTML=h;
+  }).catch(function(e){
+    z.innerHTML='<div class="bloc"><div class="avert" style="margin:0">'+
+      '<b>Le serveur n\'a pas répondu</b> — '+esc(e.message)+'</div></div>';
+  });
+}
+function kpi(t,v,note){
+  return '<div class="kpi"><small>'+t+'</small><b>'+v+'</b>'+
+    (note?'<div class="note">'+note+'</div>':'')+'</div>';
+}
+function nomPays(c){
+  var e=(D.pays||[]).filter(function(x){return x.c===c;})[0];
+  return e?e.n:(c||'—');
+}
+function libellePass(id){
+  return id==='jour'?'Pass jour':id==='semaine'?'Pass semaine':id==='mois'?'Pass mois':(id||'—');
+}
+function titreConte(id){
+  var c=D.contes.filter(function(x){return x.id===id;})[0];
+  return c?c.titre:id;
+}
+
+function vueBord(){
+  var totalSeg=D.contes.reduce(function(a,c){return a+segmentsAttendus(c);},0);
+  var avecVoix=D.contes.filter(function(c){return D.voixDispo[c.id];}).length;
+  /* Avancement réel de la production : c'est le pilotage le plus utile aujourd'hui. */
+  var segFaits=D.contes.filter(function(c){return D.voixDispo[c.id];})
+    .reduce(function(a,c){return a+segmentsAttendus(c);},0);
+  var parPays={}, tousLesContes=D.contes.concat(D.bientot);
+  tousLesContes.forEach(function(c){
+    if(!c.pays)return;
+    parPays[c.pays]=parPays[c.pays]||{total:0,faits:0};
+    parPays[c.pays].total++;
+    if(D.contes.indexOf(c)>=0)parPays[c.pays].faits++;
+  });
+  var nomP=function(k){var e=(D.pays||[]).filter(function(x){return x.c===k;})[0];return e?e.n:k;};
+  var listePays=Object.keys(parPays).map(function(k){
+    return {n:nomP(k),v:parPays[k].total,faits:parPays[k].faits};
+  }).sort(function(a,b){return b.v-a.v;}).slice(0,8);
+
+  /* Vue commerciale : elle se remplit dès que le serveur répond. */
+  var h='<div class="barreH"><div><h2>Tableau de bord</h2>'+
+    '<div class="fil">Vue d\'ensemble du service</div></div>'+
+    '<div style="margin-left:auto;display:flex;gap:10px;align-items:center">'+
+    '<select id="pilPays" style="width:auto"><option value="">Tous les pays</option>'+
+      (D.pays||[]).map(function(x){return '<option value="'+x.c+'">'+esc(x.n)+'</option>';}).join('')+
+    '</select>'+
+    '<select id="pilJours" style="width:auto">'+
+      '<option value="7">7 jours</option><option value="30" selected>30 jours</option>'+
+      '<option value="90">90 jours</option></select></div></div>'+
+    '<div class="corpsV"><div id="pilotage"></div>'+
+    '<h3 style="margin:24px 0 12px;font-size:15px;color:var(--or)">Production éditoriale</h3>'+
+    '<div class="chiffres">'+
+    '<div><b>'+D.contes.length+'</b><small>CONTES COMPLETS</small></div>'+
+    '<div><b>'+D.bientot.length+'</b><small>ANNONCÉS</small></div>'+
+    '<div><b>'+avecVoix+'</b><small>AVEC VOIX</small></div>'+
+    '<div><b>'+totalSeg+'</b><small>SEGMENTS AUDIO</small></div>'+
+    '<div><b>'+D.conteurs.length+'</b><small>CONTEURS</small></div>'+
+    '</div><div class="deuxCol">'+
+    '<div class="bloc"><h3>Avancement des enregistrements</h3>'+
+      anneau(segFaits,totalSeg,'segments enregistrés')+
+      '<div class="sous" style="text-align:center;margin:6px 0 0">'+
+      segFaits+' sur '+totalSeg+' segments · '+(totalSeg-segFaits)+' à produire</div></div>'+
+    '<div class="bloc"><h3>Catalogue par pays</h3>'+
+      barres(listePays,{format:function(v){return v+' contes';}})+
+      '<div class="sous" style="margin:4px 0 0">Contes complets et annoncés confondus.</div></div>'+
+    '</div><div class="chiffres" style="display:none">'+
+    '<div><b>'+D.faq.length+'</b><small>QUESTIONS D\'AIDE</small></div></div>';
+
+  h+='<div class="bloc"><h3>Les contes</h3><table><tr><th>Titre</th><th>Catégorie</th>'+
+     '<th>Conteur</th><th>Segments</th><th>Voix</th><th>Réponses</th></tr>';
+  D.contes.forEach(function(c){
+    var a=D.aide[c.id];
+    h+='<tr><td><b>'+esc(c.titre)+'</b></td><td>'+esc(c.catLbl)+'</td>'+
+       '<td>'+esc(nomConteur(D.attribution[c.id]))+'</td>'+
+       '<td>'+segmentsAttendus(c)+'</td>'+
+       '<td><span class="pastille '+(D.voixDispo[c.id]?'ok">enregistré':'ko">à faire')+'</span></td>'+
+       '<td><span class="pastille '+(a&&a.resume?'ok">complètes':'att">manquantes')+'</span></td></tr>';
+  });
+  h+='</table></div>';
+
+  var sansDesc=D.contes.filter(function(c){return !D.descriptions[c.id];});
+  var sansAide=D.contes.filter(function(c){return !D.aide[c.id]||!D.aide[c.id].resume;});
+  var sansVoix=D.contes.filter(function(c){return !D.voixDispo[c.id];});
+  if(sansDesc.length||sansAide.length||sansVoix.length){
+    h+='<div class="bloc"><h3>À compléter</h3>';
+    if(sansVoix.length)h+='<div class="cle"><span>Contes sans enregistrement</span><b>'+
+      sansVoix.map(function(c){return c.titre;}).join(', ')+'</b></div>';
+    if(sansDesc.length)h+='<div class="cle"><span>Contes sans description</span><b>'+
+      sansDesc.map(function(c){return c.titre;}).join(', ')+'</b></div>';
+    if(sansAide.length)h+='<div class="cle"><span>Contes sans réponses du conteur</span><b>'+
+      sansAide.map(function(c){return c.titre;}).join(', ')+'</b></div>';
+    h+='</div>';
+  }
+  $('v-bord').innerHTML=h+'</div>';
+  rendrePilotage();
+  var sp=$('pilPays'), sj=$('pilJours');
+  if(sp)sp.onchange=rendrePilotage;
+  if(sj)sj.onchange=rendrePilotage;
+}
+function nomConteur(id){
+  var c=D.conteurs.filter(function(x){return x.id===id;})[0];
+  return c?c.nom:'—';
+}
+
+/* ================= CONTES ================= */
+var conteOuvert=null;
+/* ================= MODALES =================
+   Une fenêtre de création par module, comme dans les back-offices opérateurs.
+   Un seul mécanisme, réutilisé partout. */
+function modale(titre, sousTitre, champs, surValider){
+  var z=document.createElement('div');
+  z.className='voileM';
+  var corps=champs.map(function(c){
+    if(c.type==='select')
+      return '<div class="champM"><label>'+esc(c.lbl)+'</label><select data-m="'+c.cle+'">'+
+        c.options.map(function(o){
+          return '<option value="'+esc(o.v)+'"'+(o.v===c.valeur?' selected':'')+'>'+esc(o.t)+'</option>';
+        }).join('')+'</select></div>';
+    if(c.type==='texte')
+      return '<div class="champM"><label>'+esc(c.lbl)+'</label>'+
+        '<textarea data-m="'+c.cle+'" rows="3" placeholder="'+esc(c.exemple||'')+'">'+
+        esc(c.valeur||'')+'</textarea></div>';
+    return '<div class="champM"><label>'+esc(c.lbl)+'</label>'+
+      '<input data-m="'+c.cle+'" value="'+esc(c.valeur||'')+'" placeholder="'+esc(c.exemple||'')+'"></div>';
+  }).join('');
+
+  z.innerHTML='<div class="fenetreM"><div class="hM"><b>'+esc(titre)+'</b>'+
+    (sousTitre?'<small>'+esc(sousTitre)+'</small>':'')+'</div>'+
+    '<div class="cM">'+corps+'</div>'+
+    '<div class="pM"><button class="plat" data-annuler>Annuler</button>'+
+    '<button class="act" data-valider>Créer</button></div></div>';
+  document.body.appendChild(z);
+
+  var fermer=function(){z.remove();};
+  z.querySelector('[data-annuler]').onclick=fermer;
+  z.onclick=function(e){if(e.target===z)fermer();};
+  document.addEventListener('keydown',function esc2(e){
+    if(e.key==='Escape'){fermer();document.removeEventListener('keydown',esc2);}});
+
+  z.querySelector('[data-valider]').onclick=function(){
+    var v={};
+    Array.prototype.forEach.call(z.querySelectorAll('[data-m]'),function(e){
+      v[e.getAttribute('data-m')]=e.value.trim();
+    });
+    var manque=champs.filter(function(c){return c.requis&&!v[c.cle];});
+    if(manque.length){
+      toast('À compléter : '+manque.map(function(c){return c.lbl;}).join(', '));
+      return;
+    }
+    fermer();
+    surValider(v);
+  };
+  var p1=z.querySelector('[data-m]');
+  if(p1)p1.focus();
+}
+
+/* Le statut éditorial : c'est lui qui empêche un conte non relu de partir en enregistrement. */
+var STATUTS={brouillon:'Brouillon', relecture:'En relecture', valide:'Relu et validé', publie:'Publié'};
+function statutDe(c){ return c.statut || (c.etapes&&c.etapes.length ? 'publie' : 'brouillon'); }
+function pastilleStatut(st){
+  var cl = st==='publie'?'ok' : st==='valide'?'ok' : st==='relecture'?'att' : '';
+  return '<span class="pastille '+cl+'">'+esc(STATUTS[st]||st)+'</span>';
+}
+var filtreConte={q:'',statut:'',pays:''};
+
+function vueContes(){
+  var L=D.contes.map(function(c,i){return {c:c,i:i};}).filter(function(x){
+    var c=x.c;
+    if(filtreConte.statut && statutDe(c)!==filtreConte.statut)return false;
+    if(filtreConte.pays && c.pays!==filtreConte.pays)return false;
+    if(filtreConte.q){
+      var q=filtreConte.q.toLowerCase();
+      if((c.titre||'').toLowerCase().indexOf(q)<0 &&
+         (c.accroche||'').toLowerCase().indexOf(q)<0)return false;
+    }
+    return true;
+  });
+  var compte=function(st){return D.contes.filter(function(c){return statutDe(c)===st;}).length;};
+
+  var h='<div class="barreH"><div><h2>Contes</h2>'+
+    '<div class="fil">Opérations / Contes</div></div>'+
+    '<div style="margin-left:auto;display:flex;gap:10px">'+
+    '<button class="plat" id="nouvelAnnonce">Annoncer un conte</button>'+
+    '<button class="act" id="nouveauConte">Nouveau conte</button></div></div>';
+
+  h+='<div class="corpsV">';
+
+  /* indicateurs, comme dans les maquettes */
+  h+='<div class="quatre">'+
+    kpi('Publiés',compte('publie'),'')+
+    kpi('Relus et validés',compte('valide'),'prêts pour l\'enregistrement')+
+    kpi('En relecture',compte('relecture'),'chez un relecteur du pays')+
+    kpi('Brouillons',compte('brouillon'),'')+
+    '</div>';
+
+  /* barre de filtres */
+  h+='<div class="barre" style="margin:0 0 14px">'+
+    '<input id="fcQ" placeholder="Rechercher un conte" value="'+esc(filtreConte.q)+'" style="max-width:280px">'+
+    '<select id="fcStatut" style="width:auto"><option value="">Tous les statuts</option>'+
+      Object.keys(STATUTS).map(function(k){
+        return '<option value="'+k+'"'+(filtreConte.statut===k?' selected':'')+'>'+STATUTS[k]+'</option>';
+      }).join('')+'</select>'+
+    '<select id="fcPays" style="width:auto"><option value="">Tous les pays</option>'+
+      (D.pays||[]).map(function(x){
+        return '<option value="'+x.c+'"'+(filtreConte.pays===x.c?' selected':'')+'>'+esc(x.n)+'</option>';
+      }).join('')+'</select>'+
+    (filtreConte.q||filtreConte.statut||filtreConte.pays
+      ? '<button class="plat mini" id="fcRaz">Tout effacer</button>' : '')+
+    '</div>';
+
+  h+='<div class="bloc"><h3>'+L.length+' conte'+(L.length>1?'s':'')+' complet'+(L.length>1?'s':'')+'</h3>'+
+     '<table><tr><th>Titre</th><th>Catégorie</th><th>Pays</th><th>Statut</th><th>Relecture</th><th>Étapes</th><th></th></tr>';
+  L.forEach(function(x){
+    var c=x.c, st=statutDe(c);
+    h+='<tr><td><b>'+esc(c.titre)+'</b></td><td>'+esc(c.catLbl)+'</td>'+
+       '<td>'+esc(nomPays(c.pays))+'</td>'+
+       '<td>'+pastilleStatut(st)+'</td>'+
+       '<td>'+(c.relecteur
+          ? esc(c.relecteur)+(c.relectureLe?' <span style="color:var(--txt2)">· '+esc(c.relectureLe)+'</span>':'')
+          : '<span style="color:var(--txt2)">—</span>')+'</td>'+
+       '<td>'+(c.etapes||[]).length+'</td>'+
+       '<td style="text-align:right"><button class="plat mini" data-ouvre="'+x.i+'">Ouvrir</button></td></tr>';
+  });
+  if(!L.length)h+='<tr><td colspan="7" style="color:var(--txt2)">Aucun conte ne correspond à ces filtres.</td></tr>';
+  h+='</table></div>';
+  h+='<div class="bloc"><h3>Annoncés</h3><table><tr><th>Titre</th><th>Catégorie</th><th>Accroche</th><th></th></tr>';
+  D.bientot.forEach(function(c,i){
+    h+='<tr><td><b>'+esc(c.titre)+'</b></td><td>'+esc(c.catLbl)+'</td><td>'+esc(c.accroche)+'</td>'+
+       '<td style="text-align:right"><button class="danger mini" data-suppr="'+i+'">Retirer</button></td></tr>';
+  });
+  h+='</table></div>';
+  if(conteOuvert!=null&&D.contes[conteOuvert])h+=editeurConte(D.contes[conteOuvert],conteOuvert);
+  $('v-contes').innerHTML=h+'</div>';
+  var maj=function(){rendre();};
+  if($('fcQ'))$('fcQ').oninput=function(){filtreConte.q=this.value;
+    clearTimeout(window._fc);window._fc=setTimeout(maj,250);};
+  if($('fcStatut'))$('fcStatut').onchange=function(){filtreConte.statut=this.value;maj();};
+  if($('fcPays'))$('fcPays').onchange=function(){filtreConte.pays=this.value;maj();};
+  if($('fcRaz'))$('fcRaz').onclick=function(){filtreConte={q:'',statut:'',pays:''};maj();};
+  brancherContes();
+}
+function editeurConte(c,i){
+  var st=statutDe(c);
+  /* Bloc de relecture — la leçon de Gbêpleu : un conte peut être libre de droits
+     et complètement faux. Seul quelqu'un du pays peut le dire. */
+  var h='<div class="bloc" id="relecture"><h3>Relecture et statut</h3>'+
+    '<div class="sous">Un conte doit être relu par quelqu\'un du pays <b>avant</b> l\'enregistrement. '+
+    'Une reprise après coup coûte le texte, la jaquette et tous les segments de voix.</div>'+
+    '<div class="trois">'+
+    '<div><label>Statut éditorial</label><select data-f="statut">'+
+      Object.keys(STATUTS).map(function(k){
+        return '<option value="'+k+'"'+(st===k?' selected':'')+'>'+STATUTS[k]+'</option>';
+      }).join('')+'</select></div>'+
+    '<div><label>Relu par</label><input data-f="relecteur" value="'+esc(c.relecteur||'')+
+      '" placeholder="Nom du relecteur"></div>'+
+    '<div><label>Origine du relecteur</label><input data-f="relecteurOrigine" value="'+
+      esc(c.relecteurOrigine||'')+'" placeholder="Ville ou région"></div>'+
+    '</div><div class="deux">'+
+    '<div><label>Date de relecture</label><input type="date" data-f="relectureLe" value="'+
+      esc(c.relectureLe||'')+'"></div>'+
+    '<div><label>Tradition d\'origine</label><input data-f="trad" value="'+esc(c.trad||'')+
+      '" placeholder="akan, kabyè, fon…"></div>'+
+    '</div>'+
+    '<div><label>Remarques du relecteur</label><textarea data-f="relectureNotes" rows="2" '+
+      'placeholder="Ce qui a été corrigé, ce qui reste à vérifier.">'+esc(c.relectureNotes||'')+'</textarea></div>'+
+    (st==='publie'&&!c.relecteur
+      ? '<div class="avert" style="margin-top:12px"><b>Publié sans relecture</b> — '+
+        'aucun relecteur n\'est enregistré pour ce conte.</div>'
+      : '')+
+    '</div>';
+
+  h+='<div class="bloc" id="editeur"><h3>'+esc(c.titre)+'</h3>'+
+    '<div class="trois">'+
+    '<div><label>Identifiant (ne pas changer si des voix existent)</label><input data-f="id" value="'+esc(c.id)+'"></div>'+
+    '<div><label>Titre</label><input data-f="titre" value="'+esc(c.titre)+'"></div>'+
+    '<div><label>Durée annoncée</label><input data-f="duree" value="'+esc(c.duree)+'"></div>'+
+    '</div><div class="trois">'+
+    '<div><label>Catégorie</label><select data-cat="1">'+
+      D.cats.filter(function(k){return k[0]!=='tous';}).map(function(k){
+        return '<option value="'+k[0]+'"'+(c.cat===k[0]?' selected':'')+'>'+esc(k[1])+'</option>';}).join('')+
+      '</select></div>'+
+    '<div><label>Étiquette sur la carte</label><input data-f="catLbl" value="'+esc(c.catLbl)+'"></div>'+
+    '<div><label>Décor de la vignette</label><input data-f="decor" value="'+esc(c.decor)+'"></div>'+
+    '</div><div class="deux">'+
+    '<div><label>Pays d\'origine</label><select data-pays="1">'+
+      '<option value="">Non précisé</option>'+
+      (D.pays||[]).map(function(p){return '<option value="'+p.c+'"'+(c.pays===p.c?' selected':'')+
+        '>'+esc(p.n)+'</option>';}).join('')+'</select></div>'+
+    '<div><label>Zone</label><input data-f="zone" value="'+esc(c.zone||'')+'" placeholder="ouest ou centre"></div>'+
+    '</div>'+
+    '<label>Accroche</label><input data-f="accroche" value="'+esc(c.accroche)+'">'+
+    '<label>Morale</label><textarea data-f="morale">'+esc(c.morale)+'</textarea>'+
+    '<label>Description de la fiche</label><textarea data-d="1">'+esc(D.descriptions[c.id]||'')+'</textarea>'+
+    '<label>Conteur</label><select data-conteur="1">'+
+      D.conteurs.map(function(x){return '<option value="'+x.id+'"'+
+        (D.attribution[c.id]===x.id?' selected':'')+'>'+esc(x.nom)+'</option>';}).join('')+'</select>'+
+    '<label style="margin-top:14px">Voix enregistrée</label>'+
+    '<select data-voix="1"><option value="0"'+(D.voixDispo[c.id]?'':' selected')+'>Non</option>'+
+    '<option value="1"'+(D.voixDispo[c.id]?' selected':'')+'>Oui</option></select>';
+
+  h+='<h3 style="margin-top:20px">Étapes du récit</h3>';
+  (c.etapes||[]).forEach(function(e,k){
+    h+='<div class="etape"><div class="haut"><span class="num">'+(k+1)+' · '+(e.choix?'choix':'récit')+'</span>'+
+       '<input style="max-width:120px" data-e="'+k+'" data-ef="d" value="'+esc(e.d||'')+'" placeholder="décor">'+
+       '<select style="max-width:150px" data-e="'+k+'" data-ef="effet">'+
+         ['','poussiere','etoiles','braises','pluie','oiseaux','secousse'].map(function(x){
+           return '<option value="'+x+'"'+((e.effet||'')===x?' selected':'')+'>'+
+             (x?x:'aucune animation')+'</option>';}).join('')+'</select>'+
+       '<button class="danger mini" data-esuppr="'+k+'" style="margin-left:auto">Retirer</button></div>'+
+       (e.scene&&e.scene.length?'<div class="sous" style="margin:0 0 8px">Scène : '+
+         e.scene.map(function(o){return o.p+' ('+(o.a||'immobile')+')';}).join(', ')+'</div>':'');
+    if(e.choix){
+      h+='<input data-e="'+k+'" data-ef="q" value="'+esc(e.choix.q||'')+'" placeholder="question posée (facultatif)">';
+      (e.choix.o||[]).forEach(function(o,m){
+        h+='<div style="display:flex;gap:8px;margin-top:8px;align-items:center">'+
+           '<input style="flex:1" data-e="'+k+'" data-o="'+m+'" data-of="t" value="'+esc(o.t)+'" placeholder="proposition">'+
+           '<input style="flex:2" data-e="'+k+'" data-o="'+m+'" data-of="s" value="'+esc(o.s)+'" placeholder="réponse du conteur">'+
+           '<label style="margin:0;white-space:nowrap;display:flex;align-items:center;gap:5px;text-transform:none">'+
+           '<input type="checkbox" style="width:auto" data-e="'+k+'" data-o="'+m+'" data-of="bon"'+
+           (o.bon?' checked':'')+'> bonne piste</label>'+
+           '<button class="danger mini" data-osuppr="'+k+'" data-om="'+m+'">×</button></div>';
+      });
+      h+='<div class="barre"><button class="plat mini" data-oadd="'+k+'">+ Proposition</button></div>';
+    }else{
+      h+='<textarea data-e="'+k+'" data-ef="t">'+esc(e.t)+'</textarea>';
+    }
+    h+='</div>';
+  });
+  h+='<div class="barre"><button class="plat mini" id="addRecit">+ Étape de récit</button>'+
+     '<button class="plat mini" id="addChoix">+ Étape de choix</button></div>';
+
+  h+='<h3 style="margin-top:20px">Quiz</h3>';
+  (c.quiz||[]).forEach(function(q,k){
+    h+='<div class="etape"><div class="haut"><span class="num">Q'+(k+1)+'</span>'+
+       '<input data-q="'+k+'" data-qf="q" value="'+esc(q.q)+'" placeholder="question">'+
+       '<button class="danger mini" data-qsuppr="'+k+'">Retirer</button></div><div class="trois">'+
+       q.r.map(function(r,m){return '<input data-q="'+k+'" data-r="'+m+'" value="'+esc(r)+'">';}).join('')+
+       '</div><label>Bonne réponse</label><select data-q="'+k+'" data-qb="1">'+
+       q.r.map(function(r,m){return '<option value="'+m+'"'+(q.b===m?' selected':'')+'>'+(m+1)+' — '+esc(r)+'</option>';}).join('')+
+       '</select></div>';
+  });
+  h+='<div class="barre"><button class="plat mini" id="addQuiz">+ Question</button></div>';
+  h+='<div class="barre" style="margin-top:20px"><button class="act" id="fermerEd">Terminer</button>'+
+     '<button class="danger" id="supprConte">Supprimer ce conte</button></div></div>';
+  return h;
+}
+function zoneDuPays(c){
+  var p=(D.pays||[]).filter(function(x){return x.c===c;})[0];
+  return p?p.z:'ouest';
+}
+function brancherContes(){
+  var z=$('v-contes');
+  /* les catégories sont des paires [id, libellé] */
+  var optCats=(D.cats||[]).filter(function(k){return k[0]!=='tous';})
+    .map(function(k){return {v:k[0],t:k[1]};});
+  var optPays=[{v:'',t:'— non précisé —'}].concat(
+    (D.pays||[]).map(function(x){return {v:x.c,t:x.n};}));
+
+  var b=z.querySelector('#nouveauConte');
+  if(b)b.onclick=function(){
+    modale('Nouveau conte','Ajoute un conte au catalogue. Le texte s\'écrit ensuite dans l\'éditeur.',[
+      {cle:'titre',lbl:'Titre du conte',exemple:'Le Chasseur et le Caméléon',requis:true},
+      {cle:'cat',lbl:'Catégorie',type:'select',options:optCats,valeur:'sagesse'},
+      {cle:'pays',lbl:'Pays d\'origine',type:'select',options:optPays},
+      {cle:'trad',lbl:'Tradition',exemple:'akan, kabyè, fon…'},
+      {cle:'accroche',lbl:'Accroche',type:'texte',exemple:'Une phrase qui donne envie d\'écouter.'}
+    ],function(v){
+      var cat=(D.cats||[]).filter(function(k){return k[0]===v.cat;})[0];
+      D.contes.push({
+        id:'c'+Date.now().toString(36),
+        titre:v.titre, cat:v.cat, catLbl:cat?cat[1].toUpperCase():v.cat.toUpperCase(),
+        duree:'5 min', decor:'savane', pays:v.pays||'', trad:v.trad||'',
+        zone:zoneDuPays(v.pays), accroche:v.accroche||'', morale:'',
+        statut:'brouillon',
+        etapes:[{d:'savane',t:''}], quiz:[{q:'',r:['','',''],b:0}]
+      });
+      conteOuvert=D.contes.length-1;
+      enregistrer('contes').then(rendre);
+      toast('Conte créé. Il est en brouillon : à relire avant enregistrement.');
+    });
+  };
+
+  var b2=z.querySelector('#nouvelAnnonce');
+  if(b2)b2.onclick=function(){
+    modale('Annoncer un conte','Il apparaîtra au catalogue avec la mention « bientôt ».',[
+      {cle:'titre',lbl:'Titre du conte',requis:true},
+      {cle:'cat',lbl:'Catégorie',type:'select',options:optCats,valeur:'sagesse'},
+      {cle:'pays',lbl:'Pays d\'origine',type:'select',options:optPays},
+      {cle:'trad',lbl:'Tradition',exemple:'éwé, bariba, dan…'},
+      {cle:'accroche',lbl:'Accroche',type:'texte'}
+    ],function(v){
+      var cat=(D.cats||[]).filter(function(k){return k[0]===v.cat;})[0];
+      D.bientot.push({titre:v.titre, cat:v.cat,
+        catLbl:cat?cat[1].toUpperCase():v.cat.toUpperCase(),
+        duree:'5 min', decor:'savane', pays:v.pays||'', trad:v.trad||'',
+        zone:zoneDuPays(v.pays), accroche:v.accroche||''});
+      enregistrer('bientot').then(rendre);
+      toast('Conte annoncé au catalogue.');
+    });
+  };
+  Array.prototype.forEach.call(z.querySelectorAll('[data-ouvre]'),function(e){
+    e.onclick=function(){conteOuvert=+e.getAttribute('data-ouvre');rendre();
+      setTimeout(function(){var d=$('editeur');if(d)d.scrollIntoView({behavior:'smooth'});},60);};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-suppr]'),function(e){
+    e.onclick=function(){D.bientot.splice(+e.getAttribute('data-suppr'),1);marquer();sauverBrouillon();rendre();};
+  });
+  if(conteOuvert==null||!D.contes[conteOuvert])return;
+  var c=D.contes[conteOuvert];
+  function chg(){marquer();sauverBrouillon();}
+  Array.prototype.forEach.call(z.querySelectorAll('#editeur [data-f]'),function(e){
+    e.oninput=function(){var f=e.getAttribute('data-f');
+      if(f==='id'){var vieux=c.id,neuf=e.value.trim();
+        if(neuf&&neuf!==vieux){
+          D.descriptions[neuf]=D.descriptions[vieux];delete D.descriptions[vieux];
+          D.attribution[neuf]=D.attribution[vieux];delete D.attribution[vieux];
+          if(D.voixDispo[vieux]){D.voixDispo[neuf]=1;delete D.voixDispo[vieux];}
+          if(D.aide[vieux]){D.aide[neuf]=D.aide[vieux];delete D.aide[vieux];}
+          c.id=neuf;}
+      }else c[f]=e.value;
+      chg();};
+  });
+  var sp=z.querySelector('#editeur [data-pays]');
+  if(sp)sp.onchange=function(){
+    c.pays=sp.value||undefined;
+    var e=(D.pays||[]).filter(function(x){return x.c===sp.value;})[0];
+    if(e)c.zone=e.z;
+    chg();rendre();};
+  var sca=z.querySelector('#editeur [data-cat]');
+  if(sca)sca.onchange=function(){c.cat=sca.value;
+    var k=D.cats.filter(function(x){return x[0]===sca.value;})[0];
+    if(k)c.catLbl=k[1].replace(/^Contes?\s+(d'|de\s+|du\s+)?/i,'').replace(/^Légendes du pays$/i,'Légende').toUpperCase();
+    chg();rendre();};
+  var dd=z.querySelector('#editeur [data-d]');
+  if(dd)dd.oninput=function(){D.descriptions[c.id]=dd.value;chg();};
+  var sc=z.querySelector('#editeur [data-conteur]');
+  if(sc)sc.onchange=function(){D.attribution[c.id]=sc.value;chg();};
+  var sv=z.querySelector('#editeur [data-voix]');
+  if(sv)sv.onchange=function(){if(sv.value==='1')D.voixDispo[c.id]=1;else delete D.voixDispo[c.id];chg();};
+
+  Array.prototype.forEach.call(z.querySelectorAll('#editeur [data-osuppr]'),function(e){
+    e.onclick=function(){c.etapes[+e.getAttribute('data-osuppr')].choix.o.splice(+e.getAttribute('data-om'),1);
+      chg();rendre();};});
+  Array.prototype.forEach.call(z.querySelectorAll('#editeur [data-oadd]'),function(e){
+    e.onclick=function(){c.etapes[+e.getAttribute('data-oadd')].choix.o.push({t:'',bon:false,s:''});
+      chg();rendre();};});
+  Array.prototype.forEach.call(z.querySelectorAll('#editeur [data-e]'),function(e){
+    var k=+e.getAttribute('data-e');
+    e.onchange=e.oninput=function(){
+      var et=c.etapes[k];
+      if(e.hasAttribute('data-o')){
+        var m=+e.getAttribute('data-o'),f=e.getAttribute('data-of');
+        et.choix.o[m][f]=(f==='bon')?e.checked:e.value;
+      }else{
+        var f2=e.getAttribute('data-ef');
+        if(f2==='q')et.choix.q=e.value; else et[f2]=e.value;
+      }
+      chg();};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('#editeur [data-esuppr]'),function(e){
+    e.onclick=function(){c.etapes.splice(+e.getAttribute('data-esuppr'),1);chg();rendre();};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('#editeur [data-q]'),function(e){
+    var k=+e.getAttribute('data-q');
+    var maj=function(){
+      var q=c.quiz[k];
+      if(e.hasAttribute('data-r'))q.r[+e.getAttribute('data-r')]=e.value;
+      else if(e.hasAttribute('data-qb'))q.b=+e.value;
+      else q.q=e.value;
+      chg();};
+    e.oninput=maj;e.onchange=maj;
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('#editeur [data-qsuppr]'),function(e){
+    e.onclick=function(){c.quiz.splice(+e.getAttribute('data-qsuppr'),1);chg();rendre();};
+  });
+  var ar=z.querySelector('#addRecit');
+  if(ar)ar.onclick=function(){c.etapes.push({d:c.decor,t:''});chg();rendre();};
+  var ac=z.querySelector('#addChoix');
+  if(ac)ac.onclick=function(){c.etapes.push({d:c.decor,choix:{q:'',o:[{t:'',bon:true,s:''},{t:'',bon:false,s:''}]}});chg();rendre();};
+  var aq=z.querySelector('#addQuiz');
+  if(aq)aq.onclick=function(){c.quiz.push({q:'',r:['','',''],b:0});chg();rendre();};
+  var fe=z.querySelector('#fermerEd');
+  if(fe)fe.onclick=function(){conteOuvert=null;rendre();};
+  var sup=z.querySelector('#supprConte');
+  if(sup)sup.onclick=function(){
+    if(!confirm('Supprimer « '+c.titre+' » ? Les fichiers de voix ne seront pas effacés.'))return;
+    D.contes.splice(conteOuvert,1);conteOuvert=null;chg();rendre();};
+}
+
+
+/* ================= REGROUPEMENTS À SOUS-ONGLETS =================
+   Onze entrées au menu, mais aucun outil perdu : les modules de production
+   vivent en sous-onglets, là où on les cherche. */
+
+function sousOnglets(cible, titre, fil, onglets, courant){
+  var h='<div class="barreH"><div><h2>'+esc(titre)+'</h2>'+
+    '<div class="fil">'+esc(fil)+'</div></div></div>'+
+    '<div class="sousNav">'+
+    onglets.map(function(o){
+      return '<button data-so="'+o.cle+'"'+(o.cle===courant?' class="on"':'')+'>'+esc(o.lbl)+'</button>';
+    }).join('')+'</div><div class="corpsV" id="'+cible+'Corps"></div>';
+  return h;
+}
+function brancherSousOnglets(zone, surChoix){
+  Array.prototype.forEach.call($(zone).querySelectorAll('[data-so]'),function(b){
+    b.onclick=function(){surChoix(b.getAttribute('data-so'));};
+  });
+}
+
+/* ---------------- Contenus ---------------- */
+var ongletContenu='contes';
+function vueContenus(){
+  abriter();
+  var L=[{cle:'contes',lbl:'Contes'},{cle:'conteurs',lbl:'Conteurs'},
+         {cle:'medias',lbl:'Médias'},{cle:'lexique',lbl:'Lexique'},
+         {cle:'prod',lbl:'Production'},{cle:'prompts',lbl:'Prompts Manus'}];
+  $('v-contenus').innerHTML=sousOnglets('contenus','Contenus','Opérations / Contenus',L,ongletContenu);
+  brancherSousOnglets('v-contenus',function(k){ongletContenu=k;vueContenus();});
+  poser('contenusCorps', ongletContenu,
+    {contes:vueContes,conteurs:vueConteurs,medias:vueMedias,
+     lexique:vueLexique,prod:vueProd,prompts:vuePrompts});
+}
+
+/* ---------------- Administration ---------------- */
+var ongletAdmin='reglages';
+function vueAdmin(){
+  abriter();
+  var L=[{cle:'reglages',lbl:'Réglages'},{cle:'docs',lbl:'Documents légaux'},
+         {cle:'journal',lbl:'Journal'},{cle:'export',lbl:'Publication'}];
+  $('v-admin').innerHTML=sousOnglets('admin','Administration','Système / Administration',L,ongletAdmin);
+  brancherSousOnglets('v-admin',function(k){ongletAdmin=k;vueAdmin();});
+  poser('adminCorps', ongletAdmin,
+    {reglages:vueReglages,docs:vueDocs,journal:vueJournal,export:vueExport});
+}
+
+/* Rend la vue demandée dans son conteneur d'origine, puis déplace l'élément
+   dans le regroupement. On déplace au lieu de copier : les branchements suivent. */
+/* Range les vues déplacées avant toute reconstruction : sans cela,
+   réécrire le regroupement les détruirait. */
+function abriter(){
+  var r=$('reserve'); if(!r)return;
+  Array.prototype.forEach.call(document.querySelectorAll('#contenusCorps > .vue, #adminCorps > .vue'),
+    function(v){v.classList.remove('on');v.style.display='';r.appendChild(v);});
+}
+function poser(corps, cle, vues){
+  var hote=$(corps);
+  if(!hote)return;
+  hote.innerHTML='';
+  var f=vues[cle], vue=$('v-'+cle);
+  if(!f||!vue)return;
+  f();
+  /* la barre de titre du regroupement suffit : on retire celle de la vue,
+     mais on garde ses boutons d'action en les remontant. */
+  var bh=vue.querySelector('.barreH');
+  if(bh){
+    var actions=bh.querySelector('div[style*="margin-left:auto"]');
+    var sn=$('v-'+(corps==='contenusCorps'?'contenus':'admin')).querySelector('.sousNav');
+    if(actions&&sn){
+      actions.style.marginLeft='auto';
+      actions.style.padding='6px 0';
+      sn.style.alignItems='center';
+      sn.appendChild(actions);
+    }
+    bh.remove();
+  }
+  vue.classList.add('on');
+  vue.style.display='block';
+  hote.appendChild(vue);
+}
+
+/* ---------------- Pass ---------------- */
+function vuePass(){
+  var h='<div class="barreH"><div><h2>Pass</h2>'+
+    '<div class="fil">Opérations / Pass</div></div></div><div class="corpsV">';
+  h+='<div class="bloc"><h3>Offres proposées</h3>'+
+    '<div class="sous">Les trois pass sont communs à tous les marchés. '+
+    'Leur prix, lui, se règle marché par marché dans <b>Opérateurs</b>.</div><table>'+
+    '<tr><th>Pass</th><th>Durée</th>'+
+    (D.marches||[]).map(function(m){return '<th>'+esc(m.nom)+'</th>';}).join('')+'</tr>';
+  [['jour','Pass jour','1 jour'],['semaine','Pass semaine','7 jours'],['mois','Pass mois','30 jours']]
+   .forEach(function(x){
+    h+='<tr><td><b>'+x[1]+'</b></td><td>'+x[2]+'</td>'+
+      (D.marches||[]).map(function(m){
+        var q=(m.pass||[]).filter(function(y){return y.id===x[0];})[0];
+        return '<td>'+(q?q.p+' '+esc(m.devise||''):'—')+'</td>';
+      }).join('')+'</tr>';
+  });
+  h+='</table></div>';
+  h+='<div class="bloc"><h3>Périmètre d\'accès</h3><div class="sous">'+
+    'Tous les pass donnent accès au <b>catalogue entier</b>. '+
+    'Il n\'existe pas de pass restreint à un sous-ensemble de contes : '+
+    'un enfant burkinabè peut écouter un conte ivoirien, et inversement. '+
+    'C\'est ce qui fait la valeur d\'un catalogue de '+
+    ((D.contes||[]).length+(D.bientot||[]).length)+' contes.</div></div>';
+  $('v-pass').innerHTML=h+'</div>';
+}
+
+/* ---------------- Campagnes ---------------- */
+function vueCampagnes(){
+  var h='<div class="barreH"><div><h2>Campagnes</h2>'+
+    '<div class="fil">Pilotage / Campagnes</div></div></div><div class="corpsV">';
+  h+=attenteServeur('Campagnes SMS et push',
+    'l\'envoi passe par les canaux des opérateurs et la liste des destinataires vient de la base.');
+  h+='<div class="bloc"><h3>Ce que ce module permettra</h3><table>'+
+    '<tr><th>Campagne</th><th>Cible</th></tr>'+
+    '<tr><td>Relance d\'essai</td><td>comptes en essai depuis plus de trois jours</td></tr>'+
+    '<tr><td>Réactivation</td><td>abonnés résiliés depuis moins d\'un mois</td></tr>'+
+    '<tr><td>Échec de paiement</td><td>prélèvements refusés — souvent un crédit insuffisant</td></tr>'+
+    '<tr><td>Nouveau conte</td><td>abonnés actifs du pays concerné</td></tr></table>'+
+    '<div class="avert" style="margin-top:12px"><b>À cadrer avec les opérateurs.</b> '+
+    'L\'envoi de SMS passe par leurs canaux et se facture. Le volume et la fréquence '+
+    'doivent figurer au contrat — c\'est aussi là que se négocie le push marketing '+
+    'que l\'opérateur s\'engage à faire de son côté.</div></div>';
+  $('v-campagnes').innerHTML=h+'</div>';
+}
+
+/* ================= MODULES QUI DEMANDENT LE SERVEUR =================
+   Ils affichent des données réelles quand l'API est jointe, et le disent
+   franchement sinon. Pas de chiffres inventés : un opérateur qui découvre
+   des données fictives ne fait plus confiance au reste. */
+
+function attenteServeur(titre, aQuoi){
+  return '<div class="bloc"><h3>'+titre+'</h3>'+
+    '<div class="avert" style="margin:0"><b>Serveur non connecté</b> — '+aQuoi+'<br><br>'+
+    'Renseigner <code>API.base</code> dans ce fichier, puis se connecter. '+
+    'Tant que le serveur n\'est pas en place, aucune donnée n\'est disponible : '+
+    'ce module reste vide plutôt que d\'afficher des chiffres inventés.</div></div>';
+}
+
+function appelAPI(chemin){
+  if(!API.enLigne())return Promise.reject(new Error('hors ligne'));
+  return fetch(API.base+chemin,{headers:API.entetes()}).then(function(r){
+    if(!r.ok)throw new Error('réponse '+r.status);return r.json();});
+}
+
+/* ---------------- Abonnés ---------------- */
+function vueAbonnes(){
+  var h=entete('Abonnés','Réseau / Abonnés');
+  h+='<div class="corpsV">';
+  if(!API.enLigne()){
+    h+=attenteServeur('Liste des abonnés',
+      'les abonnés, leur pays, leur opérateur et leur abonnement en cours viennent du serveur.');
+    h+='<div class="bloc"><h3>Ce que ce module montrera</h3><table>'+
+      '<tr><th>Colonne</th><th>Source</th></tr>'+
+      '<tr><td>Numéro et pays</td><td>déduit de l\'indicatif à l\'inscription</td></tr>'+
+      '<tr><td>Opérateur</td><td>marché correspondant au pays</td></tr>'+
+      '<tr><td>Pass en cours et échéance</td><td>table des abonnements</td></tr>'+
+      '<tr><td>Statut</td><td>essai, actif, suspendu, résilié</td></tr></table>'+
+      '<div class="sous" style="margin-top:10px">Route : <code>GET /admin/abonnes</code></div></div>';
+  }
+  h+='</div>';
+  $('v-abonnes').innerHTML=h;
+  if(!API.enLigne())return;
+  appelAPI('/admin/abonnes').then(function(L){
+    var t='<div class="bloc"><h3>'+L.length+' abonnés</h3><table>'+
+      '<tr><th>Numéro</th><th>Pays</th><th>Opérateur</th><th>Pass</th><th>Échéance</th><th>Statut</th></tr>';
+    L.forEach(function(a){
+      t+='<tr><td>'+esc(a.telephone)+'</td><td>'+esc(a.pays)+'</td>'+
+         '<td>'+esc(a.operateur||'—')+'</td><td>'+esc(a.pass||'—')+'</td>'+
+         '<td>'+(a.fin?new Date(a.fin).toLocaleDateString('fr-FR'):'—')+'</td>'+
+         '<td><span class="pastille '+(a.statut==='actif'?'ok':'att')+'">'+esc(a.statut)+'</span></td></tr>';
+    });
+    $('v-abonnes').querySelector('.corpsV').innerHTML=t+'</table></div>';
+  }).catch(function(e){
+    $('v-abonnes').querySelector('.corpsV').innerHTML=
+      '<div class="avert">Le serveur n\'a pas répondu : '+esc(e.message)+'</div>';
+  });
+}
+
+/* ---------------- Finances ---------------- */
+function vueFinances(){
+  var h=entete('Finances','Pilotage / Finances')+'<div class="corpsV">';
+  if(!API.enLigne()){
+    h+=attenteServeur('Revenus et prélèvements',
+      'le chiffre d\'affaires, les prélèvements réussis et les échecs viennent des transactions réelles.');
+    h+='<div class="bloc"><h3>Ce que ce module montrera</h3>'+
+      '<div class="sous">Par pays et par opérateur, sur la période choisie :</div><table>'+
+      '<tr><th>Indicateur</th><th>Calcul</th></tr>'+
+      '<tr><td>Revenu encaissé</td><td>somme des prélèvements réussis</td></tr>'+
+      '<tr><td>Taux d\'échec</td><td>prélèvements en échec sur le total</td></tr>'+
+      '<tr><td>Revenu par pass</td><td>répartition jour, semaine, mois</td></tr>'+
+      '<tr><td>Réconciliation</td><td>comparaison avec le relevé de l\'opérateur</td></tr></table>'+
+      '<div class="avert" style="margin-top:12px"><b>La réconciliation est le point sensible.</b> '+
+      'Les opérateurs facturent parfois des montants qui diffèrent des nôtres. '+
+      'Ce module doit permettre de rapprocher les deux relevés, ligne à ligne, '+
+      'et d\'exporter les écarts. C\'est ce qu\'ils demanderont en premier.</div></div>';
+  }
+  h+='</div>';
+  $('v-finances').innerHTML=h;
+}
+
+/* ---------------- Support ---------------- */
+function vueSupport(){
+  var h=entete('Support','Pilotage / Support')+'<div class="corpsV">';
+  if(!API.enLigne()){
+    h+=attenteServeur('Demandes des abonnés',
+      'les demandes arrivent par le formulaire d\'aide et par WhatsApp.');
+  }
+  h+='<div class="bloc"><h3>Demandes des partenaires</h3>'+
+    '<div class="sous">Écarts de facturation signalés et demandes de pass, '+
+    'envoyés depuis le portail partenaire.</div>'+
+    '<div id="fileDemandes">'+(API.enLigne()?'Chargement…':
+      '<div class="sous">Serveur non connecté — les demandes arrivent par l\'API.</div>')+
+    '</div></div>';
+  h+='<div class="bloc"><h3>Recherche d\'un abonné</h3>'+
+    '<div class="sous">Le cas le plus fréquent : quelqu\'un appelle en disant qu\'il a payé '+
+    'et que ça ne marche pas. Il faut pouvoir retrouver son numéro et voir ses prélèvements.</div>'+
+    '<div class="barre" style="margin-top:12px">'+
+    '<input id="rechAbo" placeholder="+226 70 00 00 00" style="max-width:260px">'+
+    '<button class="act mini" id="btnRechAbo">Chercher</button></div>'+
+    '<div id="resAbo" style="margin-top:12px"></div></div>';
+  h+='</div>';
+  $('v-support').innerHTML=h;
+  if(API.enLigne())appelAPI('/admin/demandes').then(function(L){
+    var z=$('fileDemandes'); if(!z)return;
+    if(!L.length){z.innerHTML='<div class="sous">Aucune demande en attente.</div>';return;}
+    var h2='<table><tr><th>Reçue le</th><th>Opérateur</th><th>Type</th>'+
+      '<th>Objet</th><th>Statut</th></tr>';
+    L.forEach(function(d){
+      h2+='<tr><td>'+new Date(d.cree_le).toLocaleDateString('fr-FR')+'</td>'+
+        '<td>'+esc(d.operateur)+'</td>'+
+        '<td>'+(d.type==='ecart'?'Écart de facturation':'Demande de pass')+'</td>'+
+        '<td>'+esc(d.type==='ecart'
+          ? (d.periode||'')+(d.montant?' · '+d.montant+' F CFA':'')
+          : (d.intitule||'')+(d.montant?' · '+d.montant+' F CFA':''))+'</td>'+
+        '<td><span class="pastille '+(d.statut==='traitee'?'ok':d.statut==='refusee'?'ko':'att')+'">'+
+          esc(d.statut)+'</span></td></tr>';
+    });
+    z.innerHTML=h2+'</table>';
+  }).catch(function(e){
+    var z=$('fileDemandes'); if(z)z.innerHTML='<div class="sous">'+esc(e.message)+'</div>';
+  });
+
+  var b=$('btnRechAbo');
+  if(b)b.onclick=function(){
+    var t=$('rechAbo').value.trim();
+    if(!t)return;
+    if(!API.enLigne()){$('resAbo').innerHTML='<div class="avert">Serveur non connecté.</div>';return;}
+    $('resAbo').textContent='Recherche…';
+    appelAPI('/abonnements/etat?telephone='+encodeURIComponent(t)).then(function(d){
+      $('resAbo').innerHTML=d.actif
+        ? '<div class="k"><span>Abonnement</span><b style="color:var(--vert)">actif — pass '+esc(d.pass)+
+          ', jusqu\'au '+new Date(d.fin).toLocaleDateString('fr-FR')+'</b></div>'
+        : '<div class="k"><span>Abonnement</span><b style="color:var(--rouge)">aucun abonnement en cours</b></div>';
+    }).catch(function(e){$('resAbo').innerHTML='<div class="avert">'+esc(e.message)+'</div>';});
+  };
+}
+
+/* ---------------- Journal ---------------- */
+function vueJournal(){
+  var h=entete('Journal','Système / Journal')+'<div class="corpsV">';
+  if(!API.enLigne()){
+    h+=attenteServeur('Journal des modifications',
+      'qui a changé quoi, quand, et depuis quelle adresse.');
+    h+='<div class="bloc"><h3>Pourquoi ce module compte</h3><div class="sous">'+
+      'Dès que plusieurs personnes éditent le contenu, il faut pouvoir répondre à '+
+      '« qui a dépublié ce conte ? ». Le serveur trace chaque action : modification de contenu, '+
+      'restauration d\'une version, connexion. Rien n\'est effaçable depuis l\'interface.</div></div>';
+  }
+  h+='</div>';
+  $('v-journal').innerHTML=h;
+}
+
+/* En-tête commune : titre et fil d'Ariane, comme dans les back-offices opérateurs. */
+function entete(titre, fil){
+  return '<div class="barreH"><div><h2>'+titre+'</h2>'+
+    '<div class="fil">'+fil+'</div></div>'+
+    '<div style="margin-left:auto;font-size:12px;color:var(--txt2)">'+
+    (API.enLigne()?'serveur connecté':'contenu local · aucune donnée d\'usage')+'</div></div>';
+}
+
+/* ================= MARCHÉS ================= */
+/* Un marché = un pays + un opérateur. Il ne porte que le circuit commercial :
+   ni contenu, ni catégorie, ni conteur. */
+var MARCHES_DEFAUT=[
+ {pays:'bf',nom:'Burkina Faso',ind:'+226',drapeau:'🇧🇫',longueur:8,debuts:'0257',
+  operateur:'Orange Burkina Faso',courtCode:'4444',motStop:'STOP CONTES',devise:'F CFA',
+  courriel:'',tel:'',whatsapp:'',ville:'Ouagadougou, Burkina Faso',
+  regulateur:"l'ARCEP du Burkina Faso",actif:1,
+  pass:[{id:'jour',p:50},{id:'semaine',p:200},{id:'mois',p:500}]},
+ {pays:'tg',nom:'Togo',ind:'+228',drapeau:'🇹🇬',longueur:8,debuts:'79',
+  operateur:'Moov Africa Togo',courtCode:'',motStop:'STOP CONTES',devise:'F CFA',
+  courriel:'',tel:'',whatsapp:'',ville:'Lomé, Togo',
+  regulateur:"l'ARCEP du Togo",actif:1,
+  pass:[{id:'jour',p:50},{id:'semaine',p:200},{id:'mois',p:500}]}
+];
+var marcheOuvert=0;
+
+function vueMarches(){
+  var L=D.marches||[];
+  var h='<h2>Marchés</h2><div class="sous">Un marché, c\'est un pays et son opérateur : '+
+    'indicatif, numéro court, mentions légales et tarifs. '+
+    '<b>Le contenu n\'est pas concerné</b> — les contes, catégories et conteurs restent communs à tous les pays.</div>';
+
+  h+='<div class="bloc"><h3>Marchés déclarés</h3><table>'+
+     '<tr><th>Pays</th><th>Opérateur</th><th>Indicatif</th><th>Court</th><th>Tarifs</th><th>État</th><th></th></tr>';
+  L.forEach(function(m,i){
+    var t=(m.pass||[]).map(function(x){return x.p;}).join(' / ');
+    h+='<tr'+(i===marcheOuvert?' style="background:var(--v1)"':'')+'>'+
+       '<td><b>'+(m.drapeau||'')+' '+esc(m.nom||m.pays)+'</b></td>'+
+       '<td>'+esc(m.operateur||'—')+'</td>'+
+       '<td>'+esc(m.ind||'—')+'</td>'+
+       '<td>'+(m.courtCode?esc(m.courtCode):'<span style="color:var(--rouge)">à définir</span>')+'</td>'+
+       '<td>'+(t||'—')+' '+esc(m.devise||'')+'</td>'+
+       '<td>'+(m.actif?'<span class="pastille ok">actif</span>':'<span class="pastille att">suspendu</span>')+'</td>'+
+       '<td style="text-align:right"><button class="plat mini" data-mo="'+i+'">Modifier</button></td></tr>';
+  });
+  h+='</table><div class="barre"><button class="act mini" id="addMarche">+ Nouveau marché</button></div></div>';
+
+  var m=L[marcheOuvert];
+  if(m){
+    h+='<div class="bloc"><h3>'+(m.drapeau||'')+' '+esc(m.nom||'')+'</h3>'+
+      '<div class="deux">'+
+      ch(m,'nom','Nom du pays')+ch(m,'pays','Code pays (deux lettres)')+
+      ch(m,'operateur','Opérateur')+ch(m,'ind','Indicatif (+226)')+
+      ch(m,'drapeau','Drapeau')+ch(m,'longueur','Chiffres du numéro')+
+      ch(m,'debuts','Premiers chiffres autorisés')+ch(m,'courtCode','Numéro court')+
+      ch(m,'motStop','Mot de résiliation')+ch(m,'devise','Devise')+
+      ch(m,'ville','Siège dans ce pays')+ch(m,'regulateur','Régulateur')+
+      ch(m,'courriel','Courriel du service client')+ch(m,'tel','Téléphone')+
+      ch(m,'whatsapp','WhatsApp')+
+      '</div>'+
+      '<div style="margin-top:12px"><label>État</label><select data-mact="1">'+
+        '<option value="1"'+(m.actif?' selected':'')+'>Actif — visible pour ce pays</option>'+
+        '<option value="0"'+(!m.actif?' selected':'')+'>Suspendu — retombe sur le marché par défaut</option>'+
+      '</select></div></div>';
+
+    h+='<div class="bloc"><h3>Tarifs</h3><div class="sous">Chaque marché a sa propre grille. '+
+      'Les changer ici ne touche pas aux autres pays.</div><table>'+
+      '<tr><th>Pass</th><th>Prix</th><th>Devise</th></tr>';
+    [['jour','Pass jour'],['semaine','Pass semaine'],['mois','Pass mois']].forEach(function(x){
+      var q=(m.pass||[]).filter(function(y){return y.id===x[0];})[0]||{id:x[0],p:0};
+      h+='<tr><td>'+x[1]+'</td>'+
+         '<td><input style="max-width:110px" type="number" data-mp="'+x[0]+'" value="'+(q.p||0)+'"></td>'+
+         '<td>'+esc(m.devise||'F CFA')+'</td></tr>';
+    });
+    h+='</table></div>';
+
+    var trous=[];
+    ['operateur','courtCode','courriel','tel','ville'].forEach(function(k){
+      if(!m[k])trous.push(k);
+    });
+    if(trous.length)h+='<div class="avert"><b>À compléter avant mise en service</b> — '+
+      trous.join(', ')+'. Ces valeurs apparaissent dans le tunnel d\'abonnement et les documents légaux.</div>';
+  }
+
+  /* Les accès partenaires : c'est ici qu'on les cherche, pas dans un menu Système. */
+  h+='<div class="bloc"><h3>Accès partenaires</h3>'+
+    '<div class="sous">Un compte partenaire donne à l\'opérateur un accès au portail '+
+    '<code>/partenaire.html</code>, <b>borné à son pays</b>. Il y voit ses abonnés, '+
+    'son revenu et sa réconciliation — jamais ceux d\'un autre.</div>'+
+    '<div id="listeComptes">'+(API.enLigne()&&API.jeton?'Chargement…':
+      '<div class="avert" style="margin:0"><b>Serveur non connecté</b> — '+
+      'les comptes vivent dans la base. Connectez-vous pour les gérer.</div>')+'</div>'+
+    (API.enLigne()&&API.jeton
+      ? '<div class="barre" style="margin-top:12px"><button class="act mini" id="addCompte">+ Nouveau compte partenaire</button></div>'
+      : '')+
+    '</div>';
+
+  h+='<div class="bloc"><h3>Ce qu\'un marché ne contient pas</h3><div class="sous">'+
+    'Les contes, les catégories, les conteurs et les décors sont <b>communs à tous les marchés</b>. '+
+    'Un conte porte un pays d\'origine, qui sert à trier — jamais à restreindre l\'accès. '+
+    'Chaque utilisateur voit tout le catalogue, où qu\'il soit.</div></div>';
+
+  $('v-marches').innerHTML=h;
+  brancherMarches();
+}
+function ch(m,cle,lbl){
+  return '<div><label>'+lbl+'</label><input data-mc="'+cle+'" value="'+esc(m[cle]==null?'':m[cle])+'"></div>';
+}
+function rendreComptes(){
+  var z=$('listeComptes'); if(!z||!API.enLigne()||!API.jeton)return;
+  appelAPI('/admin/comptes').then(function(L){
+    var part=L.filter(function(c){return c.role==='operateur';});
+    var eq=L.filter(function(c){return c.role!=='operateur';});
+    var lignes=function(T,vide){
+      if(!T.length)return '<tr><td colspan="5" style="color:var(--txt2)">'+vide+'</td></tr>';
+      return T.map(function(c){
+        return '<tr><td><b>'+esc(c.nom)+'</b><br>'+
+          '<span style="font-size:12px;color:var(--txt2)">'+esc(c.courriel)+'</span></td>'+
+          '<td>'+esc(c.role)+'</td>'+
+          '<td>'+(c.pays?esc(nomPays(c.pays)):'<span style="color:var(--txt2)">tous</span>')+'</td>'+
+          '<td>'+(c.vu_le?new Date(c.vu_le).toLocaleDateString('fr-FR'):'jamais')+'</td>'+
+          '<td style="text-align:right">'+
+          '<span class="pastille '+(c.actif?'ok':'ko')+'">'+(c.actif?'actif':'suspendu')+'</span> '+
+          '<button class="plat mini" data-cpt="'+c.id+'" data-act="'+(c.actif?0:1)+'">'+
+          (c.actif?'Suspendre':'Réactiver')+'</button></td></tr>';
+      }).join('');
+    };
+    z.innerHTML='<table><tr><th>Compte</th><th>Rôle</th><th>Pays</th><th>Dernière visite</th><th></th></tr>'+
+      lignes(part,'Aucun compte partenaire. Créez-en un quand un opérateur demandera son accès.')+
+      '</table>'+
+      '<div class="sous" style="margin:14px 0 6px">Comptes internes</div>'+
+      '<table><tr><th>Compte</th><th>Rôle</th><th>Pays</th><th>Dernière visite</th><th></th></tr>'+
+      lignes(eq,'—')+'</table>';
+
+    Array.prototype.forEach.call(z.querySelectorAll('[data-cpt]'),function(b){
+      b.onclick=function(){
+        fetch(API.base+'/admin/comptes/'+b.getAttribute('data-cpt'),{method:'POST',
+          headers:API.entetes(),body:JSON.stringify({actif:b.getAttribute('data-act')==='1'})})
+          .then(function(r){return r.json();})
+          .then(function(){rendreComptes();toast('Compte mis à jour.');})
+          .catch(function(e){toast('Échec : '+e.message);});
+      };
+    });
+  }).catch(function(e){
+    z.innerHTML='<div class="avert" style="margin:0">'+esc(e.message)+'</div>';
+  });
+}
+
+function brancherMarches(){
+  var z=$('v-marches');
+  rendreComptes();
+  var ac=z.querySelector('#addCompte');
+  if(ac)ac.onclick=function(){
+    var optPays=(D.marches||[]).map(function(m){return {v:m.pays,t:m.nom+' — '+m.operateur};});
+    if(!optPays.length){toast('Déclarez d\'abord un marché.');return;}
+    modale('Nouveau compte partenaire',
+      'L\'opérateur accédera au portail partenaire, limité à ce pays.',[
+      {cle:'nom',lbl:'Nom affiché',exemple:'Orange Burkina Faso',requis:true},
+      {cle:'courriel',lbl:'Courriel de connexion',exemple:'vas@orange.bf',requis:true},
+      {cle:'pays',lbl:'Pays — borne ce qu\'il verra',type:'select',options:optPays},
+      {cle:'motdepasse',lbl:'Mot de passe provisoire (10 caractères minimum)',requis:true}
+    ],function(v){
+      fetch(API.base+'/admin/comptes',{method:'POST',headers:API.entetes(),
+        body:JSON.stringify({nom:v.nom,courriel:v.courriel,pays:v.pays,
+          motdepasse:v.motdepasse,role:'operateur'})})
+        .then(function(r){return r.json().then(function(d){
+          if(!r.ok)throw new Error(d.erreur||'Création refusée');return d;});})
+        .then(function(){
+          rendreComptes();
+          toast('Compte créé. Transmettez le mot de passe par un canal sûr, et demandez-lui de le changer.');
+        })
+        .catch(function(e){toast('Échec : '+e.message);});
+    });
+  };
+  Array.prototype.forEach.call(z.querySelectorAll('[data-mo]'),function(b){
+    b.onclick=function(){marcheOuvert=+b.getAttribute('data-mo');rendre();};
+  });
+  var add=z.querySelector('#addMarche');
+  if(add)add.onclick=function(){
+    D.marches.push({pays:'xx',nom:'Nouveau pays',ind:'+000',drapeau:'',longueur:8,debuts:'',
+      operateur:'',courtCode:'',motStop:'STOP CONTES',devise:'F CFA',
+      courriel:'',tel:'',whatsapp:'',ville:'',regulateur:'',actif:0,
+      pass:[{id:'jour',p:50},{id:'semaine',p:200},{id:'mois',p:500}]});
+    marcheOuvert=D.marches.length-1;
+    enregistrer('marches').then(rendre);
+  };
+  var m=D.marches[marcheOuvert];
+  if(!m)return;
+  Array.prototype.forEach.call(z.querySelectorAll('[data-mc]'),function(e){
+    var maj=function(){
+      var k=e.getAttribute('data-mc');
+      m[k]=(k==='longueur')?(+e.value||8):e.value;
+      enregistrer('marches');
+    };
+    e.oninput=maj;e.onchange=maj;
+  });
+  var a=z.querySelector('[data-mact]');
+  if(a)a.onchange=function(){m.actif=+a.value;enregistrer('marches').then(rendre);};
+  Array.prototype.forEach.call(z.querySelectorAll('[data-mp]'),function(e){
+    e.oninput=function(){
+      var id=e.getAttribute('data-mp');
+      m.pass=m.pass||[];
+      var q=m.pass.filter(function(y){return y.id===id;})[0];
+      if(!q){q={id:id,p:0};m.pass.push(q);}
+      q.p=+e.value||0;
+      enregistrer('marches');
+    };
+  });
+}
+
+/* ================= PAYS ================= */
+function vuePays(){
+  var h='<h2>Pays</h2><div class="sous">Chaque conte porte un pays d\'origine. '+
+    'Le portail propose alors un filtre par pays et par zone, et remonte les contes du pays de l\'enfant.</div>'+
+    '<div class="bloc"><h3>Liste</h3><table><tr><th>Code</th><th>Nom</th><th>Zone</th><th>Contes</th><th></th></tr>';
+  (D.pays||[]).forEach(function(p,i){
+    var n=D.contes.filter(function(c){return c.pays===p.c;}).length+
+          D.bientot.filter(function(c){return c.pays===p.c;}).length;
+    h+='<tr><td><input style="max-width:70px" data-py="'+i+'" data-pf="c" value="'+esc(p.c)+'"></td>'+
+       '<td><input data-py="'+i+'" data-pf="n" value="'+esc(p.n)+'"></td>'+
+       '<td><select data-py="'+i+'" data-pf="z">'+
+         ['ouest','centre'].map(function(z){return '<option value="'+z+'"'+(p.z===z?' selected':'')+'>'+z+'</option>';}).join('')+
+       '</select></td><td>'+n+'</td>'+
+       '<td style="text-align:right"><button class="danger mini" data-pysup="'+i+'">Retirer</button></td></tr>';
+  });
+  h+='</table><div class="barre"><button class="act mini" id="addPays">+ Nouveau pays</button></div></div>';
+  var sans=D.contes.concat(D.bientot).filter(function(c){return !c.pays;});
+  if(sans.length)h+='<div class="avert">'+sans.length+' conte(s) sans pays : '+
+    sans.map(function(c){return c.titre;}).slice(0,8).join(', ')+'</div>';
+  $('v-pays').innerHTML=h;
+  var z=$('v-pays');
+  Array.prototype.forEach.call(z.querySelectorAll('[data-py]'),function(e){
+    var maj=function(){
+      var i=+e.getAttribute('data-py'), f=e.getAttribute('data-pf');
+      if(f==='c'){var v=D.pays[i].c,n=e.value.trim();
+        if(n&&n!==v){D.contes.concat(D.bientot).forEach(function(c){if(c.pays===v)c.pays=n;});D.pays[i].c=n;}
+      }else D.pays[i][f]=e.value;
+      marquer();sauverBrouillon();};
+    e.oninput=maj;e.onchange=maj;
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-pysup]'),function(e){
+    e.onclick=function(){D.pays.splice(+e.getAttribute('data-pysup'),1);marquer();sauverBrouillon();rendre();};});
+  z.querySelector('#addPays').onclick=function(){
+    D.pays.push({c:'xx',n:'Nouveau pays',z:'ouest'});marquer();sauverBrouillon();rendre();};
+}
+
+/* ================= CATÉGORIES ================= */
+function vueCats(){
+  var h='<h2>Catégories</h2><div class="sous">Ce sont les filtres qui apparaissent sur l\'accueil du portail. '+
+    '« Tous » doit rester en premier.</div><div class="bloc"><h3>Liste</h3>'+
+    '<table><tr><th>Clé</th><th>Libellé affiché</th><th>Contes</th><th></th></tr>';
+  D.cats.forEach(function(k,i){
+    var n=D.contes.filter(function(c){return c.cat===k[0];}).length+
+          D.bientot.filter(function(c){return c.cat===k[0];}).length;
+    h+='<tr><td><input data-k="'+i+'" data-kf="0" value="'+esc(k[0])+'"'+(k[0]==='tous'?' disabled':'')+'></td>'+
+       '<td><input data-k="'+i+'" data-kf="1" value="'+esc(k[1])+'"></td>'+
+       '<td>'+(k[0]==='tous'?'—':n)+'</td>'+
+       '<td style="text-align:right">'+(k[0]==='tous'?'':
+         '<button class="danger mini" data-ksuppr="'+i+'">Retirer</button>')+'</td></tr>';
+  });
+  h+='</table><div class="barre"><button class="act mini" id="addCat">+ Nouvelle catégorie</button></div></div>'+
+    '<div class="avert">Si tu retires une catégorie encore utilisée par des contes, ils resteront visibles '+
+    'dans « Tous » mais n\'apparaîtront plus sous aucun filtre. Change d\'abord leur catégorie.</div>';
+  $('v-cats').innerHTML=h;
+  var z=$('v-cats');
+  Array.prototype.forEach.call(z.querySelectorAll('[data-k]'),function(e){
+    e.oninput=function(){
+      var i=+e.getAttribute('data-k'), f=+e.getAttribute('data-kf');
+      if(f===0){var vieux=D.cats[i][0],neuf=e.value.trim();
+        if(neuf&&neuf!==vieux){
+          D.contes.forEach(function(c){if(c.cat===vieux)c.cat=neuf;});
+          D.bientot.forEach(function(c){if(c.cat===vieux)c.cat=neuf;});
+          D.cats[i][0]=neuf;}
+      }else D.cats[i][1]=e.value;
+      marquer();sauverBrouillon();};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-ksuppr]'),function(e){
+    e.onclick=function(){D.cats.splice(+e.getAttribute('data-ksuppr'),1);marquer();sauverBrouillon();rendre();};});
+  z.querySelector('#addCat').onclick=function(){
+    D.cats.push(['nouvelle','Nouvelle catégorie']);marquer();sauverBrouillon();rendre();};
+}
+
+/* ================= MÉDIAS ================= */
+/* Tout ce qui arrive de Manus : images et voix.
+   Le navigateur redimensionne, convertit, renomme et empaquette.
+   Il ne peut pas réencoder un MP3 : les corrections de niveau restent à faire en amont. */
+
+var FORMATS={
+  vignette:{l:240,h:240,q:.72,suffixe:'',dossier:'(intégrée au contenu)',desc:'vignette des cartes'},
+  jaquette:{l:640,h:640,q:.74,suffixe:'-640',dossier:'contes-images/',desc:'grande illustration'},
+  portrait:{l:1024,h:576,q:.74,suffixe:'',dossier:'contes-images/',desc:'portrait large du conteur'},
+  portraitc:{l:360,h:360,q:.8,suffixe:'-carre',dossier:'contes-images/',desc:'portrait carré du conteur'}
+};
+var medias={cible:null,type:null,dernier:null,audio:[]};
+
+function vueMedias(){
+  var h='<h2>Médias</h2><div class="sous">Ce que Manus livre passe par ici : redimensionnement, conversion, '+
+    'renommage et contrôle. Les fichiers ressortent prêts à déposer sur Netlify.</div>';
+
+  h+='<div class="bloc"><h3>Images</h3>'+
+    '<div class="deux"><div><label>À quoi sert l\'image</label><select id="mType">'+
+    '<option value="vignette">Vignette d\'un conte — intégrée au contenu, rien à déposer</option>'+
+    '<option value="jaquette">Grande illustration d\'un conte</option>'+
+    '<option value="portrait">Portrait de conteur, large</option>'+
+    '<option value="portraitc">Portrait de conteur, carré</option>'+
+    '</select></div><div><label>Pour quel élément</label><select id="mCible"></select></div></div>'+
+    '<div class="depot" id="depImg" style="margin-top:14px">Dépose une image ici, ou touche pour choisir</div>'+
+    '<div id="mApercu"></div>'+
+    '<input type="file" id="mFich" accept="image/*" style="display:none"></div>';
+
+  h+='<div class="bloc"><h3>Voix</h3>'+
+    '<div><label>Conte concerné</label><select id="aCible">'+
+    D.contes.map(function(c){return '<option value="'+c.id+'">'+esc(c.titre)+' — '+segmentsAttendus(c)+' segments</option>';}).join('')+
+    '</select></div>'+
+    '<div class="depot" id="depAudio" style="margin-top:14px">Dépose ici les MP3 du conte, ou touche pour les choisir</div>'+
+    '<input type="file" id="aFich" accept="audio/mpeg,.mp3" multiple style="display:none">'+
+    '<div id="aRapport"></div></div>';
+
+  h+='<div class="avert">Le navigateur ne peut pas réencoder un MP3. Il contrôle, il renomme, il empaquette — '+
+    'mais si un fichier sature ou traîne en fin, il faut le refaire chez Manus, ou me l\'envoyer.</div>';
+
+  $('v-medias').innerHTML=h;
+  brancherMedias();
+}
+function majCibles(){
+  var t=$('mType').value;
+  var l = (t==='portrait'||t==='portraitc')
+    ? D.conteurs.map(function(c){return ['conteur-'+c.id,c.nom];})
+    : D.contes.map(function(c){return [c.id,c.titre];});
+  $('mCible').innerHTML=l.map(function(x){return '<option value="'+x[0]+'">'+esc(x[1])+'</option>';}).join('');
+}
+function brancherMedias(){
+  var z=$('v-medias');
+  majCibles();
+  $('mType').onchange=majCibles;
+  var dep=z.querySelector('#depImg'), fi=z.querySelector('#mFich');
+  dep.onclick=function(){fi.value='';fi.click();};
+  dep.ondragover=function(e){e.preventDefault();dep.classList.add('survol');};
+  dep.ondragleave=function(){dep.classList.remove('survol');};
+  dep.ondrop=function(e){e.preventDefault();dep.classList.remove('survol');
+    if(e.dataTransfer.files[0])traiterImage(e.dataTransfer.files[0]);};
+  fi.onchange=function(){if(fi.files[0])traiterImage(fi.files[0]);};
+
+  var da=z.querySelector('#depAudio'), fa=z.querySelector('#aFich');
+  da.onclick=function(){fa.value='';fa.click();};
+  da.ondragover=function(e){e.preventDefault();da.classList.add('survol');};
+  da.ondragleave=function(){da.classList.remove('survol');};
+  da.ondrop=function(e){e.preventDefault();da.classList.remove('survol');
+    if(e.dataTransfer.files.length)traiterAudio(e.dataTransfer.files);};
+  fa.onchange=function(){if(fa.files.length)traiterAudio(fa.files);};
+}
+
+/* ---------- images ---------- */
+function traiterImage(fichier){
+  var t=$('mType').value, cible=$('mCible').value, F=FORMATS[t];
+  var r=new FileReader();
+  r.onload=function(){
+    var im=new Image();
+    im.onload=function(){
+      var cv=document.createElement('canvas');cv.width=F.l;cv.height=F.h;
+      var c=cv.getContext('2d');
+      var k=Math.max(F.l/im.width,F.h/im.height);
+      var w=im.width*k, hh=im.height*k;
+      c.drawImage(im,(F.l-w)/2,(F.h-hh)/2,w,hh);
+      var webp=cv.toDataURL('image/webp',F.q);
+      var estWebp=webp.indexOf('image/webp')>=0;
+      if(!estWebp)webp=cv.toDataURL('image/jpeg',0.8);
+      var nom=cible+F.suffixe+(estWebp?'.webp':'.jpg');
+      var poids=Math.round(webp.length*0.75/1024);
+      medias.dernier={data:webp,nom:nom,type:t,cible:cible};
+      var h='<div class="etape" style="margin-top:14px"><div class="haut">'+
+        '<img src="'+webp+'" style="width:74px;height:74px;object-fit:cover;border-radius:10px">'+
+        '<div style="flex:1"><b>'+esc(nom)+'</b>'+
+        '<div class="sous" style="margin:3px 0 0">'+im.width+'×'+im.height+' d\'origine → '+F.l+'×'+F.h+
+        ' · '+poids+' Ko · '+F.desc+'</div></div></div>'+
+        '<div class="barre">'+
+        (t==='vignette'
+          ? '<button class="act mini" id="mGarder">Enregistrer dans le contenu</button>'
+          : '<button class="act mini" id="mTelecharger">Télécharger '+esc(nom)+'</button>')+
+        '</div>'+
+        (t==='vignette'?'':'<div class="sous" style="margin-top:8px">À déposer dans <b>'+F.dossier+'</b></div>')+
+        '</div>';
+      $('mApercu').innerHTML=h;
+      var g=$('mGarder');
+      if(g)g.onclick=function(){
+        D.jaquettes[cible]=webp;marquer();sauverBrouillon();
+        toast('Vignette enregistrée dans le contenu.');rendre();};
+      var d=$('mTelecharger');
+      if(d)d.onclick=function(){
+        var a=document.createElement('a');a.href=webp;a.download=nom;a.click();
+        toast('Fichier téléchargé. Dépose-le dans '+F.dossier);};
+    };
+    im.onerror=function(){toast('Image illisible.');};
+    im.src=r.result;
+  };
+  r.readAsDataURL(fichier);
+}
+
+/* ---------- voix ---------- */
+function traiterAudio(liste){
+  var id=$('aCible').value;
+  var conte=D.contes.filter(function(c){return c.id===id;})[0];
+  var attendus=segmentsAttendus(conte);
+  var textes=textesDe(conte);
+  $('aRapport').innerHTML='<div class="sous" style="margin-top:14px">Analyse de '+liste.length+' fichiers…</div>';
+  var ctx=new (window.AudioContext||window.webkitAudioContext)();
+  var resultats=[], reste=liste.length;
+  Array.prototype.forEach.call(liste,function(f){
+    var num=(f.name.match(/-(\d+)\.mp3$/)||[])[1];
+    var r=new FileReader();
+    r.onload=function(){
+      ctx.decodeAudioData(r.result.slice(0)).then(function(buf){
+        var d=buf.duration, ch=buf.getChannelData(0);
+        var crete=0; for(var i=0;i<ch.length;i+=7){var v=Math.abs(ch[i]);if(v>crete)crete=v;}
+        // silence de fin
+        var seuil=0.008, j=ch.length-1;
+        while(j>0&&Math.abs(ch[j])<seuil)j--;
+        var fin=(ch.length-j)/buf.sampleRate;
+        var k=0; while(k<ch.length&&Math.abs(ch[k])<seuil)k++;
+        var debut=k/buf.sampleRate;
+        var mots=(textes[+num]||'').split(/\s+/).filter(Boolean).length;
+        var parole=Math.max(.3,d-debut-fin);
+        resultats.push({nom:f.name,num:+num,fichier:f,duree:d,crete:20*Math.log10(crete||1e-6),
+          fin:fin,mots:mots,debit:mots?Math.round(mots/parole*60):0});
+        if(!--reste)afficherRapport(resultats,id,attendus);
+      }).catch(function(){
+        resultats.push({nom:f.name,num:+num,fichier:f,erreur:'illisible'});
+        if(!--reste)afficherRapport(resultats,id,attendus);
+      });
+    };
+    r.readAsArrayBuffer(f);
+  });
+}
+function textesDe(c){
+  var vus={},n=0,out={};
+  function pose(t){var k=String(t||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+    if(k&&!vus[k]){vus[k]=1;n++;out[n]=k;}}
+  (c.etapes||[]).forEach(function(e){
+    if(e.choix){if(e.choix.q)pose(e.choix.q);(e.choix.o||[]).forEach(function(o){pose(o.s);});}
+    else pose(e.t);});
+  (c.quiz||[]).forEach(function(q,i){
+    pose('Question '+(i+1)+'/'+c.quiz.length+'. '+q.q);
+    pose("C'est bien ça. Tu as l'oreille.");
+    pose('Non. La bonne réponse était : '+q.r[q.b]+'.');});
+  pose(c.morale);
+  pose('Le conte est fini. Maintenant, dis-moi si tu as bien écouté.');
+  return out;
+}
+function afficherRapport(res,id,attendus){
+  res.sort(function(a,b){return a.num-b.num;});
+  var presents={}; res.forEach(function(r){presents[r.num]=1;});
+  var manquants=[]; for(var i=1;i<=attendus;i++)if(!presents[i])manquants.push(i);
+  var debits=res.filter(function(r){return r.debit;}).map(function(r){return r.debit;});
+  var moy=debits.length?Math.round(debits.reduce(function(a,b){return a+b;},0)/debits.length):0;
+  var aRefaire=res.filter(function(r){return r.erreur||r.crete>-0.5||r.fin>0.75||r.debit>170||r.debit<70;});
+
+  var h='<div class="chiffres" style="margin-top:16px">'+
+    '<div><b>'+res.length+'/'+attendus+'</b><small>FICHIERS</small></div>'+
+    '<div><b>'+moy+'</b><small>MOTS / MINUTE</small></div>'+
+    '<div><b>'+aRefaire.length+'</b><small>À REVOIR</small></div>'+
+    '<div><b>'+manquants.length+'</b><small>MANQUANTS</small></div></div>';
+  if(manquants.length)h+='<div class="avert">Segments manquants : '+manquants.join(', ')+'</div>';
+  if(moy&&(moy<100||moy>140))h+='<div class="avert">Le débit moyen s\'écarte du reste du catalogue, '+
+    'qui tourne autour de 120 mots par minute. Un écart de plus de 20 % s\'entend quand on passe d\'un conte à l\'autre.</div>';
+
+  h+='<table style="margin-top:10px"><tr><th>Fichier</th><th>Durée</th><th>Crête</th><th>Silence de fin</th><th>Débit</th><th>État</th></tr>';
+  res.forEach(function(r){
+    var pb=[];
+    if(r.erreur)pb.push('illisible');
+    else{
+      if(r.crete>-0.5)pb.push('sature');
+      if(r.fin>0.75)pb.push('fin trop longue');
+      if(r.debit>170)pb.push('trop rapide');
+      if(r.debit&&r.debit<70)pb.push('trop lent');
+    }
+    h+='<tr><td>'+esc(r.nom)+'</td>'+
+       '<td>'+(r.duree?r.duree.toFixed(1)+' s':'—')+'</td>'+
+       '<td>'+(r.crete!=null&&isFinite(r.crete)?r.crete.toFixed(1)+' dB':'—')+'</td>'+
+       '<td>'+(r.fin!=null?Math.round(r.fin*1000)+' ms':'—')+'</td>'+
+       '<td>'+(r.debit||'—')+'</td>'+
+       '<td><span class="pastille '+(pb.length?'att">'+pb.join(', '):'ok">bon')+'</span></td></tr>';
+  });
+  h+='</table>';
+  h+='<div class="barre" style="margin-top:14px">'+
+     '<button class="act" id="aZip">Télécharger le dossier voix/'+id+'</button>'+
+     '<button class="plat" id="aVoix">Marquer ce conte comme enregistré</button></div>'+
+     '<div class="sous" style="margin-top:8px">Le dossier téléchargé se dépose tel quel dans <b>voix/</b> à côté d\'index.html.</div>';
+  $('aRapport').innerHTML=h;
+  $('aZip').onclick=function(){fabriquerZip(res,id);};
+  $('aVoix').onclick=function(){D.voixDispo[id]=1;marquer();sauverBrouillon();
+    toast('Conte marqué comme enregistré.');};
+}
+
+/* ---------- fabrication d'une archive, sans compression ---------- */
+function crc32(u8){
+  var t=crc32.t;
+  if(!t){t=crc32.t=new Uint32Array(256);
+    for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}}
+  var c2=0xFFFFFFFF;
+  for(var i=0;i<u8.length;i++)c2=t[(c2^u8[i])&0xFF]^(c2>>>8);
+  return (c2^0xFFFFFFFF)>>>0;
+}
+function fabriquerZip(res,id){
+  toast('Préparation de l\'archive…');
+  var fichiers=res.filter(function(r){return !r.erreur;});
+  var lus=0, contenus=[];
+  fichiers.forEach(function(r,i){
+    var fr=new FileReader();
+    fr.onload=function(){
+      contenus[i]={nom:id+'/'+id+'-'+(r.num<10?'0':'')+r.num+'.mp3',
+                   donnees:new Uint8Array(fr.result)};
+      if(++lus===fichiers.length)assembler(contenus,id);
+    };
+    fr.readAsArrayBuffer(r.fichier);
+  });
+}
+function assembler(fichiers,id){
+  var morceaux=[], central=[], offset=0;
+  var enc=new TextEncoder();
+  function u16(v){return [v&255,(v>>8)&255];}
+  function u32(v){return [v&255,(v>>8)&255,(v>>16)&255,(v>>24)&255];}
+  fichiers.forEach(function(f){
+    var nom=enc.encode(f.nom), crc=crc32(f.donnees), t=f.donnees.length;
+    var loc=[].concat([80,75,3,4],u16(20),u16(0),u16(0),u16(0),u16(0),
+      u32(crc),u32(t),u32(t),u16(nom.length),u16(0));
+    morceaux.push(new Uint8Array(loc),nom,f.donnees);
+    central.push({nom:nom,crc:crc,t:t,offset:offset});
+    offset+=loc.length+nom.length+t;
+  });
+  var debutCentral=offset, tailleCentral=0;
+  central.forEach(function(c){
+    var e=[].concat([80,75,1,2],u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),
+      u32(c.crc),u32(c.t),u32(c.t),u16(c.nom.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(c.offset));
+    morceaux.push(new Uint8Array(e),c.nom);
+    tailleCentral+=e.length+c.nom.length;
+  });
+  var fin=[].concat([80,75,5,6],u16(0),u16(0),u16(central.length),u16(central.length),
+    u32(tailleCentral),u32(debutCentral),u16(0));
+  morceaux.push(new Uint8Array(fin));
+  var b=new Blob(morceaux,{type:'application/zip'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='voix-'+id+'.zip';a.click();
+  toast('Archive de '+fichiers.length+' fichiers téléchargée.');
+}
+
+/* ================= LEXIQUE ================= *//* ================= LEXIQUE ================= */
+function vueLexique(){
+  var cles=Object.keys(D.lexique||{});
+  var h='<h2>Lexique</h2><div class="sous">Quand un enfant demande « c\'est quoi un karité ? » pendant '+
+    'la lecture, le conteur répond avec ce qui est écrit ici. Le mot déclencheur doit être écrit sans accent.</div>'+
+    '<div class="bloc"><h3>'+cles.length+' mots</h3>';
+  cles.forEach(function(k,i){
+    h+='<div class="etape"><div class="haut">'+
+       '<input style="max-width:200px" data-lx="'+i+'" data-lxk="'+esc(k)+'" data-lxf="cle" value="'+esc(k)+'">'+
+       '<button class="danger mini" data-lxsuppr="'+esc(k)+'" style="margin-left:auto">Retirer</button></div>'+
+       '<textarea data-lxk="'+esc(k)+'" data-lxf="def">'+esc(D.lexique[k])+'</textarea></div>';
+  });
+  h+='<div class="barre"><button class="act mini" id="addLx">+ Nouveau mot</button></div></div>';
+  $('v-lexique').innerHTML=h;
+  var z=$('v-lexique');
+  Array.prototype.forEach.call(z.querySelectorAll('[data-lxk]'),function(e){
+    e.oninput=function(){
+      var k=e.getAttribute('data-lxk');
+      if(e.getAttribute('data-lxf')==='def'){D.lexique[k]=e.value;}
+      else{var n=e.value.trim().toLowerCase();
+        if(n&&n!==k){D.lexique[n]=D.lexique[k];delete D.lexique[k];e.setAttribute('data-lxk',n);}}
+      marquer();sauverBrouillon();};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-lxsuppr]'),function(e){
+    e.onclick=function(){delete D.lexique[e.getAttribute('data-lxsuppr')];marquer();sauverBrouillon();rendre();};});
+  z.querySelector('#addLx').onclick=function(){
+    D.lexique['nouveaumot']='';marquer();sauverBrouillon();rendre();};
+}
+
+/* ================= DOCUMENTS ================= */
+var docOuvert=null;
+function vueDocs(){
+  var noms={cgu:'Conditions générales',confidentialite:'Confidentialité',cookies:'Cookies',contact:'Contact'};
+  var h='<h2>Documents</h2><div class="sous">Les textes légaux affichés dans le portail. '+
+    'Les passages surlignés en jaune y apparaissent comme « à compléter ».</div>';
+  h+='<div class="bloc"><h3>Documents</h3><table><tr><th>Document</th><th>Sections</th><th></th></tr>';
+  Object.keys(D.docs||{}).forEach(function(k){
+    h+='<tr><td><b>'+esc(D.docs[k].titre||noms[k]||k)+'</b></td>'+
+       '<td>'+(D.docs[k].sections||[]).length+'</td>'+
+       '<td style="text-align:right"><button class="plat mini" data-doc="'+k+'">Ouvrir</button></td></tr>';
+  });
+  h+='</table></div>';
+  if(docOuvert&&D.docs[docOuvert]){
+    var d=D.docs[docOuvert];
+    h+='<div class="bloc" id="edDoc"><h3>'+esc(d.titre)+'</h3>'+
+      '<label>Titre du document</label><input data-dt="1" value="'+esc(d.titre)+'">';
+    (d.sections||[]).forEach(function(sec,i){
+      h+='<div class="etape"><div class="haut">'+
+         '<input style="max-width:130px" data-s="'+i+'" data-sf="n" value="'+esc(sec.n||'')+'" placeholder="ARTICLE 1">'+
+         '<input data-s="'+i+'" data-sf="h" value="'+esc(sec.h||'')+'" placeholder="titre de la section">'+
+         '<button class="danger mini" data-ssuppr="'+i+'">Retirer</button></div>'+
+         '<textarea data-s="'+i+'" data-sf="p" style="min-height:110px">'+esc((sec.p||[]).join('\n\n'))+'</textarea>'+
+         '<div class="sous" style="margin:6px 0 0;font-size:11.5px">Une ligne vide sépare deux paragraphes.</div></div>';
+    });
+    h+='<div class="barre"><button class="plat mini" id="addSec">+ Section</button>'+
+       '<button class="act mini" id="fermerDoc">Terminer</button></div></div>';
+  }
+  $('v-docs').innerHTML=h;
+  var z=$('v-docs');
+  Array.prototype.forEach.call(z.querySelectorAll('[data-doc]'),function(e){
+    e.onclick=function(){docOuvert=e.getAttribute('data-doc');rendre();
+      setTimeout(function(){var d=$('edDoc');if(d)d.scrollIntoView({behavior:'smooth'});},60);};});
+  if(!docOuvert||!D.docs[docOuvert])return;
+  var d=D.docs[docOuvert];
+  var t=z.querySelector('[data-dt]');
+  if(t)t.oninput=function(){d.titre=t.value;marquer();sauverBrouillon();};
+  Array.prototype.forEach.call(z.querySelectorAll('[data-s]'),function(e){
+    e.oninput=function(){
+      var i=+e.getAttribute('data-s'), f=e.getAttribute('data-sf');
+      if(f==='p')d.sections[i].p=e.value.split(/\n\s*\n/).map(function(x){return x.trim();}).filter(Boolean);
+      else d.sections[i][f]=e.value;
+      marquer();sauverBrouillon();};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-ssuppr]'),function(e){
+    e.onclick=function(){d.sections.splice(+e.getAttribute('data-ssuppr'),1);marquer();sauverBrouillon();rendre();};});
+  var as=z.querySelector('#addSec');
+  if(as)as.onclick=function(){d.sections.push({n:'',h:'Nouvelle section',p:['']});marquer();sauverBrouillon();rendre();};
+  var fd=z.querySelector('#fermerDoc');
+  if(fd)fd.onclick=function(){docOuvert=null;rendre();};
+}
+
+/* ================= CONTEURS ================= */
+function vueConteurs(){
+  var h='<h2>Conteurs</h2><div class="sous">Chaque conte est porté par un seul conteur, du début à la morale.</div>';
+  D.conteurs.forEach(function(c,i){
+    var n=D.contes.filter(function(x){return D.attribution[x.id]===c.id;}).length;
+    h+='<div class="bloc"><h3>'+esc(c.nom)+' — '+n+' conte'+(n>1?'s':'')+'</h3>'+
+      '<div class="trois">'+
+      '<div><label>Identifiant</label><input data-c="'+i+'" data-cf="id" value="'+esc(c.id)+'"></div>'+
+      '<div><label>Nom</label><input data-c="'+i+'" data-cf="nom" value="'+esc(c.nom)+'"></div>'+
+      '<div><label>Région</label><input data-c="'+i+'" data-cf="region" value="'+esc(c.region)+'"></div>'+
+      '</div><label>Rôle</label><input data-c="'+i+'" data-cf="role" value="'+esc(c.role)+'">'+
+      '<label>Description</label><textarea data-c="'+i+'" data-cf="desc">'+esc(c.desc)+'</textarea>'+
+      '<label>Caractère de la voix</label><textarea data-c="'+i+'" data-cf="voix">'+esc(c.voix)+'</textarea>'+
+      '<div class="barre"><button class="danger mini" data-csuppr="'+i+'">Supprimer</button></div></div>';
+  });
+  h+='<div class="barre"><button class="act" id="addConteur">+ Nouveau conteur</button></div>';
+  $('v-conteurs').innerHTML=h;
+  var z=$('v-conteurs');
+  Array.prototype.forEach.call(z.querySelectorAll('[data-c]'),function(e){
+    e.oninput=function(){
+      var c=D.conteurs[+e.getAttribute('data-c')],f=e.getAttribute('data-cf');
+      if(f==='id'){var v=c.id,n=e.value.trim();
+        if(n&&n!==v){for(var k in D.attribution)if(D.attribution[k]===v)D.attribution[k]=n;c.id=n;}
+      }else c[f]=e.value;
+      marquer();sauverBrouillon();};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-csuppr]'),function(e){
+    e.onclick=function(){D.conteurs.splice(+e.getAttribute('data-csuppr'),1);marquer();sauverBrouillon();rendre();};
+  });
+  z.querySelector('#addConteur').onclick=function(){
+    D.conteurs.push({id:'conteur'+(D.conteurs.length+1),nom:'Nouveau conteur',role:'CONTEUR',
+      region:'',desc:'',voix:''});
+    marquer();sauverBrouillon();rendre();};
+}
+
+/* ================= PRODUCTION ================= */
+function vueProd(){
+  var h='<h2>Production</h2><div class="sous">Ce qui est fait, ce qui manque. Le test cherche les fichiers réellement présents à côté de cette page.</div>';
+  h+='<div class="barre" style="margin-bottom:16px"><button class="act" id="testerFichiers">Tester les fichiers en ligne</button></div>';
+  h+='<div class="bloc"><h3>Par conte</h3><table id="tprod"><tr><th>Conte</th><th>Segments attendus</th>'+
+     '<th>Premier segment</th><th>Dernier segment</th><th>Jaquette</th></tr>';
+  D.contes.forEach(function(c){
+    var n=segmentsAttendus(c);
+    h+='<tr data-id="'+c.id+'"><td><b>'+esc(c.titre)+'</b></td><td>'+n+'</td>'+
+       '<td class="p1">—</td><td class="p2">—</td><td class="pj">—</td></tr>';
+  });
+  h+='</table></div>';
+  h+='<div class="bloc"><h3>Portraits des conteurs</h3><table id="tport"><tr><th>Conteur</th><th>Grand</th><th>Carré</th></tr>';
+  D.conteurs.forEach(function(c){
+    h+='<tr data-cid="'+c.id+'"><td><b>'+esc(c.nom)+'</b></td><td class="g">—</td><td class="q">—</td></tr>';
+  });
+  h+='</table></div>';
+  $('v-prod').innerHTML=h;
+  $('v-prod').querySelector('#testerFichiers').onclick=testerFichiers;
+}
+function existe(url){
+  return fetch(url,{method:'HEAD',cache:'no-cache'})
+    .then(function(r){return r.ok;}).catch(function(){return false;});
+}
+function pastille(ok){return '<span class="pastille '+(ok?'ok">présent':'ko">absent')+'</span>';}
+function testerFichiers(){
+  toast('Test en cours…');
+  D.contes.forEach(function(c){
+    var n=segmentsAttendus(c);
+    var tr=document.querySelector('#tprod tr[data-id="'+c.id+'"]');
+    var p1='voix/'+c.id+'/'+c.id+'-01.mp3';
+    var p2='voix/'+c.id+'/'+c.id+'-'+(n<10?'0':'')+n+'.mp3';
+    existe(p1).then(function(o){tr.querySelector('.p1').innerHTML=pastille(o);});
+    existe(p2).then(function(o){tr.querySelector('.p2').innerHTML=pastille(o);});
+    existe('contes-images/'+c.id+'-640.webp').then(function(o){tr.querySelector('.pj').innerHTML=pastille(o);});
+  });
+  D.conteurs.forEach(function(c){
+    var tr=document.querySelector('#tport tr[data-cid="'+c.id+'"]');
+    existe('contes-images/conteur-'+c.id+'.webp').then(function(o){tr.querySelector('.g').innerHTML=pastille(o);});
+    existe('contes-images/conteur-'+c.id+'-carre.webp').then(function(o){tr.querySelector('.q').innerHTML=pastille(o);});
+  });
+}
+
+/* ================= PROMPTS ================= */
+function vuePrompts(){
+  var h='<h2>Prompts Manus</h2><div class="sous">Générés depuis le contenu réel, avec la numérotation exacte que le portail ira chercher.</div>';
+  h+='<div class="bloc"><h3>Choisir</h3><select id="quelPrompt">'+
+     '<optgroup label="Voix d\'un conte">'+
+     D.contes.map(function(c){return '<option value="voix:'+c.id+'">'+esc(c.titre)+'</option>';}).join('')+
+     '</optgroup><optgroup label="Illustrations">'+
+     D.contes.map(function(c){return '<option value="jaq:'+c.id+'">Jaquette — '+esc(c.titre)+'</option>';}).join('')+
+     D.conteurs.map(function(c){return '<option value="port:'+c.id+'">Portrait — '+esc(c.nom)+'</option>';}).join('')+
+     '</optgroup></select>'+
+     '<div class="barre"><button class="act" id="genPrompt">Générer</button>'+
+     '<button class="plat" id="copierPrompt">Copier</button></div></div>'+
+     '<pre id="sortiePrompt">Choisis un élément et touche Générer.</pre>';
+  $('v-prompts').innerHTML=h;
+  $('v-prompts').querySelector('#genPrompt').onclick=function(){
+    var v=$('quelPrompt').value.split(':');
+    $('sortiePrompt').textContent = v[0]==='voix' ? promptVoix(v[1])
+      : v[0]==='jaq' ? promptJaquette(v[1]) : promptPortrait(v[1]);
+  };
+  $('v-prompts').querySelector('#copierPrompt').onclick=function(){
+    var t=$('sortiePrompt').textContent;
+    if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){toast('Copié.');},
+      function(){toast('Copie impossible, sélectionne le texte.');});
+    else toast('Sélectionne le texte pour le copier.');
+  };
+}
+var CHARTE_VOIX =
+"Je vais te donner une serie de textes a narrer, un par un, pour un conte du soir destine aux enfants au Burkina Faso.\n\n"+
+"Garde exactement la meme voix sur toute la serie : meme timbre, meme accent, meme intention. La regularite prime sur tout le reste.\n\n"+
+"VOIX_DESCRIPTION\n\n"+
+"Debit lent, autour de 115 mots par minute, avec de vraies respirations entre les phrases.\n"+
+"Les repliques introduites par un tiret sont des dialogues : les colorer a peine, sans imiter les personnages.\n"+
+"Silence de fin : 400 ms maximum, ne pas laisser trainer la fin.\n\n"+
+"Livraison : MP3 mono, 22050 Hz, 48 kbps, normalise a -16 LUFS, 200 ms de silence au debut, aucun bruit de fond.\n"+
+"Pour chaque texte, un seul fichier MP3, nomme exactement comme indique. Ne modifie jamais le texte.";
+function promptVoix(id){
+  var c=D.contes.filter(function(x){return x.id===id;})[0];
+  var ct=D.conteurs.filter(function(x){return x.id===D.attribution[id];})[0]||D.conteurs[0];
+  var vus={},n=0,L=[];
+  function seg(t,note){
+    var k=String(t||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+    if(!k||vus[k])return;vus[k]=1;n++;
+    L.push('--- '+id+'-'+(n<10?'0':'')+n+'.mp3  ('+note+')');
+    L.push(k);L.push('');
+  }
+  (c.etapes||[]).forEach(function(e){
+    if(e.choix){if(e.choix.q)seg(e.choix.q,'question au public');
+      (e.choix.o||[]).forEach(function(o){seg(o.s,'reaction a « '+o.t+' »');});}
+    else seg(e.t,'narration');
+  });
+  (c.quiz||[]).forEach(function(q,i){
+    seg('Question '+(i+1)+'/'+c.quiz.length+'. '+q.q,'quiz '+(i+1));
+    seg("C'est bien ça. Tu as l'oreille.",'bonne reponse');
+    seg('Non. La bonne réponse était : '+q.r[q.b]+'.','mauvaise reponse '+(i+1));
+  });
+  seg(c.morale,'la morale, plus lent et plus bas');
+  seg('Le conte est fini. Maintenant, dis-moi si tu as bien écouté.','transition vers le quiz');
+  return '=== '+c.titre+' — '+n+' segments ===\n\n'+
+    'ETAPE 1 : coller ceci une fois en tete de conversation\n\n'+
+    CHARTE_VOIX.replace('VOIX_DESCRIPTION','Voix : '+ct.nom+'. '+ct.voix+
+      ' Francais d\'Afrique de l\'Ouest, accent burkinabe assume. Il parle a un enfant assis en face de lui, le soir. Il raconte, il ne lit pas. Aucun effet, aucune musique.')+
+    '\n\nETAPE 2 : envoyer les textes un par un\n\n'+L.join('\n');
+}
+var CHARTE_IMAGE =
+"Style : illustration vectorielle plate pour livre d'enfants, formes arrondies et epaisses, aplats de couleur, "+
+"contours doux, leger grain de papier. Pas de photorealisme, pas de 3D, aucun texte dans l'image.\n"+
+"Univers : Burkina Faso. Savane sahelienne, baobabs, karites, cases rondes a toit de paille, pagnes tisses, "+
+"motifs bogolan. Personnages aux peaux brunes et noires.\n"+
+"Palette : ocre, terre de sienne, jaune mil, vert acacia, rouge laterite, indigo profond pour les nuits, or chaud.\n"+
+"Cadrage centre, sujet lisible en tout petit : l'image sera affichee a 104 pixels de cote sur un telephone.";
+function promptJaquette(id){
+  var c=D.contes.filter(function(x){return x.id===id;})[0];
+  return '=== Jaquette — '+c.titre+' ===\n\nFormat : carre 1024 x 1024. Fichier attendu : '+id+'-640.webp (livrer en PNG, la conversion est faite ensuite).\n\n'+
+    CHARTE_IMAGE+'\n\nScene : '+(c.accroche||'')+'\n'+
+    (D.descriptions[id]||'')+'\n\n'+
+    'Ne pas illustrer la fin du conte.';
+}
+function promptPortrait(id){
+  var c=D.conteurs.filter(function(x){return x.id===id;})[0];
+  return '=== Portrait — '+c.nom+' ===\n\nDeux images : 1280 x 720 nommee conteur-'+id+', et 512 x 512 cadree sur le visage nommee conteur-'+id+'-carre.\n\n'+
+    CHARTE_IMAGE+'\n\n'+
+    'Le personnage est dans un decor de veillee du soir, feu de bois et ciel etoile, decor discret et sombre. '+
+    'Il regarde le spectateur, il est en train de raconter : bouche entrouverte, une main levee.\n\n'+
+    'Personnage : '+c.nom+', '+c.role.toLowerCase()+', '+c.region+'. '+c.desc;
+}
+
+/* ================= RÉGLAGES ================= */
+function vueReglages(){
+  var e=D.editeur||{};
+  var champs=[['nom','Nom de l\'éditeur'],['produit','Nom du produit'],['version','Version'],
+    ['build','Numéro de version détaillé'],['courriel','Courriel'],['tel','Téléphone'],
+    ['whatsapp','WhatsApp'],['ville','Ville et pays'],['operateur','Opérateur partenaire'],
+    ['motStop','Mot-clé de résiliation'],['courtCode','Numéro court']];
+  var h='<h2>Réglages</h2><div class="sous">Ces valeurs apparaissent dans les documents légaux, l\'aide et la page À propos.</div>'+
+    '<div class="bloc"><h3>Mode de fonctionnement</h3>'+
+    '<select id="rMode">'+
+    '<option value="libre"'+(e.mode==='libre'?' selected':'')+'>Essai public — tout ouvert, sans paiement ni opérateur</option>'+
+    '<option value="vas"'+(e.mode!=='libre'?' selected':'')+'>Service VAS — abonnement, pass et opérateur</option>'+
+    '</select>'+
+    '<div class="sous" style="margin-top:10px">En mode essai, le portail masque le tunnel d\'abonnement, '+
+    'les pass, la mention de l\'opérateur et tous les chiffres simulés — abonnés, écoutes, notes, classement. '+
+    'Les compteurs personnels restent affichés : ils sont réels.</div></div>'+
+    '<div class="bloc"><h3>Éditeur</h3><div class="deux">';
+  champs.forEach(function(c){
+    h+='<div><label>'+c[1]+'</label><input data-r="'+c[0]+'" value="'+esc(e[c[0]]||'')+'"></div>';
+  });
+  h+='</div></div>';
+  h+='<div class="bloc"><h3>Formules d\'abonnement</h3>';
+  (D.pass||[]).forEach(function(p,i){
+    h+='<div class="trois" style="margin-bottom:10px">'+
+      '<div><label>Nom</label><input data-p="'+i+'" data-pf="n" value="'+esc(p.n)+'"></div>'+
+      '<div><label>Prix (F CFA)</label><input data-p="'+i+'" data-pf="p" value="'+esc(p.p)+'"></div>'+
+      '<div><label>Durée (jours)</label><input data-p="'+i+'" data-pf="j" value="'+esc(p.j)+'"></div>'+
+      '</div><label>Description</label><input data-p="'+i+'" data-pf="d" value="'+esc(p.d)+'">';
+  });
+  h+='</div>';
+  h+='<div class="bloc"><h3>Questions fréquentes</h3>';
+  (D.faq||[]).forEach(function(f,i){
+    h+='<div class="etape"><input data-faq="'+i+'" data-ff="q" value="'+esc(f.q)+'">'+
+       '<textarea data-faq="'+i+'" data-ff="r" style="margin-top:8px">'+esc(f.r)+'</textarea>'+
+       '<div class="barre"><button class="danger mini" data-faqsuppr="'+i+'">Retirer</button></div></div>';
+  });
+  h+='<div class="barre"><button class="plat mini" id="addFaq">+ Question</button></div></div>';
+  $('v-reglages').innerHTML=h;
+  var z=$('v-reglages');
+  var rm=z.querySelector('#rMode');
+  if(rm)rm.onchange=function(){D.editeur.mode=rm.value;marquer();sauverBrouillon();
+    toast(rm.value==='libre'?'Mode essai public activé.':'Mode service VAS activé.');};
+  Array.prototype.forEach.call(z.querySelectorAll('[data-r]'),function(x){
+    x.oninput=function(){D.editeur[x.getAttribute('data-r')]=x.value;marquer();sauverBrouillon();};});
+  Array.prototype.forEach.call(z.querySelectorAll('[data-p]'),function(x){
+    x.oninput=function(){var p=D.pass[+x.getAttribute('data-p')],f=x.getAttribute('data-pf');
+      p[f]=(f==='p'||f==='j')?(+x.value||0):x.value;marquer();sauverBrouillon();};});
+  Array.prototype.forEach.call(z.querySelectorAll('[data-faq]'),function(x){
+    x.oninput=function(){D.faq[+x.getAttribute('data-faq')][x.getAttribute('data-ff')]=x.value;
+      marquer();sauverBrouillon();};});
+  Array.prototype.forEach.call(z.querySelectorAll('[data-faqsuppr]'),function(x){
+    x.onclick=function(){D.faq.splice(+x.getAttribute('data-faqsuppr'),1);marquer();sauverBrouillon();rendre();};});
+  z.querySelector('#addFaq').onclick=function(){D.faq.push({q:'',r:''});marquer();sauverBrouillon();rendre();};
+}
+
+/* ================= EXPORT ================= */
+function vueExport(){
+  var h='<h2>Export</h2><div class="sous">Le portail lit un fichier nommé contenu.json posé à côté de lui.</div>'+
+    '<div class="avert">Tant que tu n\'as pas exporté puis déposé le fichier sur Netlify, '+
+    'tes modifications ne vivent que dans ce navigateur. Exporte souvent.</div>'+
+    '<div class="bloc"><h3>Télécharger</h3>'+
+    '<div class="barre"><button class="act" id="dlJson">Télécharger contenu.json</button>'+
+    '<button class="plat" id="voirJson">Voir le contenu</button></div>'+
+    '<div class="cle" style="margin-top:14px"><span>Contes complets</span><b>'+D.contes.length+'</b></div>'+
+    '<div class="cle"><span>Contes annoncés</span><b>'+D.bientot.length+'</b></div>'+
+    '<div class="cle"><span>Conteurs</span><b>'+D.conteurs.length+'</b></div>'+
+    '<div class="cle"><span>Poids estimé</span><b>'+Math.round(JSON.stringify(D).length/1024)+' Ko</b></div></div>'+
+    '<div class="bloc"><h3>Importer un fichier</h3>'+
+    '<div class="depot" id="depot">Dépose ici un contenu.json, ou touche pour choisir un fichier</div>'+
+    '<input type="file" id="fich" accept=".json" style="display:none"></div>'+
+    '<div class="bloc"><h3>Marche à suivre</h3>'+
+    '<div class="cle"><span>1</span><b>Télécharger contenu.json</b></div>'+
+    '<div class="cle"><span>2</span><b>Le poser dans le dossier du portail, à côté d\'index.html</b></div>'+
+    '<div class="cle"><span>3</span><b>Redéposer le dossier entier sur Netlify</b></div>'+
+    '<div class="cle"><span>4</span><b>Vérifier le portail : le catalogue doit refléter tes modifications</b></div></div>'+
+    '<div class="bloc"><h3>Brouillon local</h3>'+
+    '<div class="barre"><button class="danger" id="vider">Effacer le brouillon et repartir du fichier en ligne</button></div></div>'+
+    '<pre id="apercu" style="display:none"></pre>';
+  $('v-export').innerHTML=h;
+  var z=$('v-export');
+  z.querySelector('#dlJson').onclick=function(){
+    telechargerContenu();toast('Fichier téléchargé. Remplace contenu.json puis redéploie.');
+  };
+  z.querySelector('#voirJson').onclick=function(){
+    var p=$('apercu');p.style.display=p.style.display==='none'?'block':'none';
+    p.textContent=JSON.stringify(D,null,1).slice(0,60000);
+  };
+  var dep=z.querySelector('#depot'),fich=z.querySelector('#fich');
+  dep.onclick=function(){fich.click();};
+  fich.onchange=function(){if(fich.files[0])lire(fich.files[0]);};
+  dep.ondragover=function(e){e.preventDefault();dep.classList.add('survol');};
+  dep.ondragleave=function(){dep.classList.remove('survol');};
+  dep.ondrop=function(e){e.preventDefault();dep.classList.remove('survol');
+    if(e.dataTransfer.files[0])lire(e.dataTransfer.files[0]);};
+  function lire(f){
+    var r=new FileReader();
+    r.onload=function(){
+      try{D=JSON.parse(r.result);modifie=true;sauverBrouillon();rendre();toast('Contenu importé.');}
+      catch(err){toast('Fichier illisible : '+err.message);}
+    };
+    r.readAsText(f);
+  }
+  z.querySelector('#vider').onclick=function(){
+    if(!confirm('Effacer le brouillon local ? Les modifications non exportées seront perdues.'))return;
+    try{localStorage.removeItem('faso_admin');}catch(e){}
+    location.reload();
+  };
+}
+
+window.addEventListener('beforeunload',function(e){
+  if(modifie){e.preventDefault();e.returnValue='';}
+});
+/* Publier : sur le serveur si l'API est jointe, par téléchargement sinon. */
+var SECTIONS_PUB=['contes','bientot','marches','conteurs','cats','pays','docs',
+  'lexique','jaquettes','aide','descriptions','voixDispo','attribution','editeur'];
+
+$('publier').onclick=function(){
+  if(API.enLigne()&&API.jeton){ publierEnLigne(); return; }
+  $('modaleQuoi').textContent = modifie
+    ? "Tes modifications ne sont pour l'instant que dans ce navigateur."
+    : "Rien de nouveau depuis la dernière publication, mais tu peux retélécharger le fichier.";
+  $('modale').classList.add('on');
+};
+
+function publierEnLigne(){
+  var b=$('publier'), texte=b.textContent;
+  b.disabled=true;
+  var faites=0, ratees=[];
+  var aFaire=SECTIONS_PUB.filter(function(k){return D[k]!=null;});
+
+  var suivant=function(i){
+    if(i>=aFaire.length){
+      b.disabled=false; b.textContent=texte;
+      if(ratees.length){
+        toast('Publié partiellement — échec sur : '+ratees.join(', '));
+      }else{
+        modifie=false; majEtat();
+        toast(faites+' sections publiées. Le portail est à jour.');
+      }
+      return;
+    }
+    var k=aFaire[i];
+    b.textContent='Publication… '+(i+1)+'/'+aFaire.length;
+    API.ecrire(k, D[k])
+      .then(function(){faites++;})
+      .catch(function(){ratees.push(k);})
+      .then(function(){suivant(i+1);});
+  };
+  suivant(0);
+}
+$('mFermer').onclick=function(){$('modale').classList.remove('on');};
+$('modale').onclick=function(e){if(e.target===this)this.classList.remove('on');};
+$('mDl').onclick=function(){telechargerContenu();
+  $('modale').classList.remove('on');
+  toast('Fichier téléchargé. Remplace contenu.json puis redéploie.');};
+
+charger();
+</script>
+</body>
+</html>
