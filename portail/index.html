@@ -8548,7 +8548,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-09-a',
+  build:'2026-09-10-a',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8817,8 +8817,19 @@ function demanderOtpInscription(nom, avatar){
 }
 
 /* Une fois le code juste, on crée le profil pour de bon. */
+/* Après confirmation du numéro, on prévient le serveur — s'il est là.
+   Le portail continue de fonctionner sans, l'inscription reste locale. */
+function enregistrerAuServeur(tel, pays){
+  if(!tel||!pays)return;
+  fetch('/api/abonnes',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({telephone:tel.replace(/\s/g,''),pays:pays})})
+    .then(function(r){if(r.ok)DB.enregistre=true;save();})
+    .catch(function(){});   /* silencieux : l'utilisateur n'a pas à le savoir */
+}
+
 function finirInscription(){
   var o=otpInscription; if(!o)return;
+  enregistrerAuServeur(o.tel, o.pays);
   DB.tel=o.tel; DB.paysTel=o.pays; DB.telValide=true;
   DB.profils=DB.profils.filter(function(x){return !x.invite;});
   var p={id:'p'+Date.now(),nom:o.nom,avatar:o.avatar,points:0,serie:0,dernier:'',
