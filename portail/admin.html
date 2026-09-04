@@ -233,6 +233,7 @@
 
   <div class="grp">Pilotage</div>
   <button data-v="finances">Finances</button>
+  <button data-v="competitions">Compétitions</button>
   <button data-v="campagnes">Campagnes</button>
   <button data-v="support">Support</button>
 
@@ -254,6 +255,7 @@
   <div class="vue" id="v-abonnes"></div>
   <div class="vue" id="v-contenus"></div>
   <div class="vue" id="v-pass"></div>
+  <div class="vue" id="v-competitions"></div>
   <div class="vue" id="v-campagnes"></div>
   <div class="vue" id="v-admin"></div>
   <div id="reserve" style="display:none"></div>
@@ -534,7 +536,7 @@ function rendre(){
   majEtat();
   if(!D)return;
   var v=document.querySelector('nav button.on').getAttribute('data-v');
-  ({bord:vueBord,contes:vueContes,conteurs:vueConteurs,prod:vueProd,cats:vueCats,pays:vuePays,marches:vueMarches,abonnes:vueAbonnes,finances:vueFinances,support:vueSupport,contenus:vueContenus,pass:vuePass,campagnes:vueCampagnes,admin:vueAdmin,
+  ({bord:vueBord,contes:vueContes,conteurs:vueConteurs,prod:vueProd,cats:vueCats,pays:vuePays,marches:vueMarches,abonnes:vueAbonnes,finances:vueFinances,support:vueSupport,contenus:vueContenus,pass:vuePass,campagnes:vueCampagnes,competitions:vueCompetitions,admin:vueAdmin,
     medias:vueMedias,lexique:vueLexique,docs:vueDocs,
     prompts:vuePrompts,reglages:vueReglages,export:vueExport}[v])();
 }
@@ -1261,6 +1263,167 @@ function vuePass(){
     'C\'est ce qui fait la valeur d\'un catalogue de '+
     ((D.contes||[]).length+(D.bientot||[]).length)+' contes.</div></div>';
   $('v-pass').innerHTML=h+'</div>';
+}
+
+/* ---------------- Compétitions ----------------
+   Classement par mérite uniquement. Pas de tirage au sort :
+   il relèverait du régulateur des jeux dans plusieurs pays. */
+var FORMATS={
+  points:     'Classement par points — total accumulé sur la période',
+  regularite: 'Défi de régularité — nombre de soirs où l\'enfant est venu'
+};
+
+function vueCompetitions(){
+  var h=entete('Compétitions','Pilotage / Compétitions')+'<div class="corpsV">';
+  if(!API.enLigne()||!API.jeton){
+    h+=attenteServeur('Compétitions et classements',
+      'les points, les participants et les palmarès vivent dans la base.');
+    h+='<div class="bloc"><h3>Les règles du dispositif</h3><table>'+
+      '<tr><th>Point</th><th>Choix retenu</th></tr>'+
+      '<tr><td>Format</td><td>Classement par points, ou défi de régularité. '+
+      '<b>Jamais de tirage au sort</b> : il relèverait du régulateur des jeux.</td></tr>'+
+      '<tr><td>Qui participe</td><td>Tous les inscrits, ou seulement les abonnés payants — au choix par pays</td></tr>'+
+      '<tr><td>Barème</td><td>Points par conte écouté, quiz réussi, soir d\'affilée</td></tr>'+
+      '<tr><td>Seuil minimal</td><td>Évite qu\'un compte créé la veille rafle un lot</td></tr>'+
+      '<tr><td>Lots</td><td>Annoncés à l\'avance, obligatoires avant activation</td></tr>'+
+      '<tr><td>Palmarès</td><td>Figé à la clôture, jamais recalculé</td></tr></table></div>';
+    $('v-competitions').innerHTML=h+'</div>';
+    return;
+  }
+  $('v-competitions').innerHTML=h+'<div id="corpsComp">Chargement…</div></div>';
+  chargerCompetitions();
+}
+
+function chargerCompetitions(){
+  appelAPI('/admin/competitions').then(function(L){
+    var h='<div class="barre" style="margin:0 0 16px">'+
+      '<button class="act" id="addComp">Nouvelle compétition</button></div>';
+
+    if(!L.length){
+      h+='<div class="bloc"><div class="sous">Aucune compétition. '+
+        'Créez-en une par pays : les règles et les lots peuvent différer d\'un opérateur à l\'autre.</div></div>';
+    }else{
+      h+='<div class="bloc"><h3>'+L.length+' compétition'+(L.length>1?'s':'')+'</h3><table>'+
+        '<tr><th>Nom</th><th>Pays</th><th>Format</th><th>Période</th>'+
+        '<th>Participants</th><th>Lots</th><th>État</th><th></th></tr>';
+      L.forEach(function(c){
+        var enCours=c.active&&new Date(c.fin)>=new Date();
+        h+='<tr><td><b>'+ech(c.nom)+'</b></td>'+
+          '<td>'+ech(nomPays(c.pays))+'</td>'+
+          '<td>'+(c.format==='regularite'?'Régularité':'Points')+'</td>'+
+          '<td>'+new Date(c.debut).toLocaleDateString('fr-FR')+' → '+
+                 new Date(c.fin).toLocaleDateString('fr-FR')+'</td>'+
+          '<td>'+c.participants+'</td>'+
+          '<td>'+(c.nb_lots||'<span style="color:var(--rouge)">aucun</span>')+'</td>'+
+          '<td><span class="pastille '+(enCours?'ok':'att')+'">'+
+            (enCours?'en cours':c.active?'terminée':'brouillon')+'</span></td>'+
+          '<td style="text-align:right">'+
+          '<button class="plat mini" data-lots="'+c.id+'">Lots</button> '+
+          (c.active
+            ? '<button class="plat mini" data-clot="'+c.id+'">Clôturer</button>'
+            : '<button class="plat mini" data-act="'+c.id+'">Activer</button>')+
+          '</td></tr>';
+      });
+      h+='</table></div>';
+    }
+
+    h+='<div class="bloc"><h3>Pourquoi pas de tirage au sort</h3><div class="sous">'+
+      'Un tirage relève de la réglementation des jeux dans plusieurs pays, avec '+
+      'déclaration préalable et huissier. Le classement par mérite y échappe : '+
+      'on récompense une performance mesurable, pas la chance. '+
+      'C\'est aussi plus lisible pour les familles.</div></div>';
+
+    $('corpsComp').innerHTML=h;
+    brancherCompetitions(L);
+  }).catch(function(e){
+    $('corpsComp').innerHTML='<div class="avert">'+ech(e.message)+'</div>';
+  });
+}
+
+function brancherCompetitions(L){
+  var z=$('corpsComp');
+  var a=z.querySelector('#addComp');
+  if(a)a.onclick=function(){
+    var optPays=(D.marches||[]).map(function(m){return {v:m.pays,t:m.nom+' — '+m.operateur};});
+    if(!optPays.length){toast('Déclarez d\'abord un marché.');return;}
+    var d=new Date(), f=new Date(Date.now()+7*864e5);
+    modale('Nouvelle compétition',
+      'Classement par mérite. Les lots s\'ajoutent ensuite, avant activation.',[
+      {cle:'nom',lbl:'Nom affiché aux familles',exemple:'Le défi de la semaine',requis:true},
+      {cle:'pays',lbl:'Pays',type:'select',options:optPays},
+      {cle:'format',lbl:'Format',type:'select',options:[
+        {v:'points',t:'Points — total accumulé'},
+        {v:'regularite',t:'Régularité — soirs de présence'}]},
+      {cle:'qui',lbl:'Qui participe',type:'select',options:[
+        {v:'abonnes',t:'Les abonnés payants seulement'},
+        {v:'tous',t:'Tous les inscrits'}]},
+      {cle:'debut',lbl:'Début (AAAA-MM-JJ)',valeur:d.toISOString().slice(0,10),requis:true},
+      {cle:'fin',lbl:'Fin (AAAA-MM-JJ)',valeur:f.toISOString().slice(0,10),requis:true},
+      {cle:'gagnants',lbl:'Nombre de gagnants',valeur:'3'},
+      {cle:'minimum',lbl:'Minimum de points pour figurer au classement',valeur:'5'}
+    ],function(v){
+      fetch(API.base+'/admin/competitions',{method:'POST',headers:API.entetes(),
+        body:JSON.stringify({nom:v.nom,pays:v.pays,format:v.format,qui:v.qui,
+          debut:v.debut,fin:v.fin,gagnants:+v.gagnants||3,minimum:+v.minimum||5})})
+        .then(function(r){return r.json().then(function(d){
+          if(!r.ok)throw new Error(d.erreur||'Création refusée');return d;});})
+        .then(function(){chargerCompetitions();
+          toast('Compétition créée. Ajoutez les lots, puis activez-la.');})
+        .catch(function(e){toast('Échec : '+e.message);});
+    });
+  };
+
+  Array.prototype.forEach.call(z.querySelectorAll('[data-lots]'),function(b){
+    b.onclick=function(){gererLots(b.getAttribute('data-lots'),L);};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-act]'),function(b){
+    b.onclick=function(){
+      fetch(API.base+'/admin/competitions/'+b.getAttribute('data-act'),
+        {method:'POST',headers:API.entetes(),body:JSON.stringify({active:true})})
+        .then(function(r){return r.json().then(function(d){
+          if(!r.ok)throw new Error(d.erreur||'Activation refusée');return d;});})
+        .then(function(){chargerCompetitions();toast('Compétition activée.');})
+        .catch(function(e){toast(e.message);});
+    };
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-clot]'),function(b){
+    b.onclick=function(){
+      if(!confirm("Clôturer figera le palmarès définitivement. Continuer ?"))return;
+      fetch(API.base+'/admin/competitions/'+b.getAttribute('data-clot')+'/cloturer',
+        {method:'POST',headers:API.entetes()})
+        .then(function(r){return r.json();})
+        .then(function(d){chargerCompetitions();
+          toast(d.erreur||('Palmarès figé : '+d.gagnants+' gagnant(s).'));})
+        .catch(function(e){toast(e.message);});
+    };
+  });
+}
+
+function gererLots(id,L){
+  var c=(L||[]).filter(function(x){return String(x.id)===String(id);})[0]||{};
+  var n=c.gagnants||3;
+  var champs=[];
+  for(var i=1;i<=n;i++){
+    champs.push({cle:'lot'+i,lbl:'Lot du '+i+(i===1?'er':'e')+' — intitulé',
+      exemple:i===1?'Un téléphone':'Du crédit de communication'});
+  }
+  champs.push({cle:'finance',lbl:'Financé par',type:'select',options:[
+    {v:'partage',t:'Partagé — plateforme et opérateur'},
+    {v:'operateur',t:'L\'opérateur'},
+    {v:'plateforme',t:'AfriKfables'}]});
+
+  modale('Lots de « '+(c.nom||'')+' »',
+    'Ils seront affichés aux familles avant le début. Une compétition sans lot ne peut pas être activée.',
+    champs,function(v){
+      var faits=0;
+      for(var i=1;i<=n;i++){
+        if(!v['lot'+i])continue;
+        fetch(API.base+'/admin/competitions/'+id+'/lots',{method:'POST',headers:API.entetes(),
+          body:JSON.stringify({rang:i,intitule:v['lot'+i],finance_par:v.finance})})
+          .then(function(){faits++;});
+      }
+      setTimeout(function(){chargerCompetitions();toast('Lots enregistrés.');},600);
+    });
 }
 
 /* ---------------- Campagnes ---------------- */
