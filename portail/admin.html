@@ -101,6 +101,13 @@
     border-top:1px solid var(--bord);}
   #cnxErr{font-size:13px;color:var(--rouge);min-height:18px;}
   button.plat.actif{background:var(--nuit);color:#fff;border-color:var(--nuit);}
+  nav .pied{display:flex!important;align-items:center;gap:10px;flex-direction:row!important;}
+  nav .pied .qui{flex:1 1 auto;min-width:0;}
+  nav .pied .qui b,nav .pied .qui small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #btnQuitter{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+    color:#fff;font-family:inherit;font-size:12px;font-weight:700;padding:7px 12px;
+    border-radius:8px;cursor:pointer;flex:0 0 auto;width:auto;}
+  #btnQuitter:hover{background:rgba(255,255,255,.18);}
   .voileM{position:fixed;inset:0;background:rgba(30,41,63,.45);z-index:60;
     display:flex;align-items:center;justify-content:center;padding:20px;}
   .fenetreM{background:var(--carte);border-radius:12px;width:100%;max-width:520px;
@@ -240,7 +247,10 @@
   <div class="grp">Système</div>
   <button data-v="admin">Administration</button>
 
-  <div class="pied"><b id="navQui">Hors ligne</b><small id="navRole">contenu local</small></div>
+  <div class="pied">
+    <div class="qui"><b id="navQui">Hors ligne</b><small id="navRole">contenu local</small></div>
+    <button id="btnQuitter" title="Se déconnecter" style="display:none">Quitter</button>
+  </div>
 </nav>
 
 <main>
@@ -434,6 +444,19 @@ function enregistrer(section){
    dès qu'elle est jointe, sauf si l'utilisateur choisit de travailler hors ligne. */
 var horsLigneChoisi=false;
 
+function majBoutonQuitter(){
+  var b=$('btnQuitter'); if(!b)return;
+  b.style.display=(API.enLigne()&&API.jeton)?'':'none';
+  b.onclick=function(){
+    if(!confirm("Se déconnecter ?\n\n"+
+      (modifie?"Des modifications ne sont pas publiées : elles resteront dans ce navigateur.\n\n":"")+
+      "Il faudra saisir à nouveau vos identifiants."))return;
+    API.deconnexion();
+    horsLigneChoisi=false;
+    location.reload();
+  };
+}
+
 function demanderConnexion(){
   return new Promise(function(fini){
     var z=$('voileCnx'); if(!z){fini(false);return;}
@@ -449,6 +472,7 @@ function demanderConnexion(){
           z.classList.remove('on');
           $('navQui').textContent=a.nom||a.courriel;
           $('navRole').textContent=a.role;
+          majBoutonQuitter();
           fini(true);
         })
         .catch(function(err){
@@ -491,7 +515,8 @@ function charger(){
       if(API.jeton)return fetch(API.base+'/auth/moi',{headers:API.entetes()})
         .then(function(r){return r.ok?r.json():null;})
         .then(function(a){
-          if(a){$('navQui').textContent=a.nom||a.courriel;$('navRole').textContent=a.role;return true;}
+          if(a){$('navQui').textContent=a.nom||a.courriel;$('navRole').textContent=a.role;
+            majBoutonQuitter();return true;}
           return demanderConnexion();
         }).catch(function(){return demanderConnexion();});
       return demanderConnexion();

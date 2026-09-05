@@ -7082,7 +7082,9 @@ function rendreFiche(){
     h+='<div class="grp">'+
        '<a class="doux" data-r="changer">Changer de profil<span class="fl">›</span></a>'+
        '<a class="doux" data-r="diag">Diagnostic de la voix<span class="fl">›</span></a>'+
-       '<a class="danger" data-r="reset">Remettre ma progression à zéro</a></div>';
+       '<a class="danger" data-r="reset">Remettre ma progression à zéro</a>'+
+       (DB.tel?'<a class="danger" data-r="quitter">Retirer mon numéro de ce téléphone</a>':'')+
+       '</div>';
     h+='<div class="legal">'+
        '<a data-r="cgu">Conditions générales</a><a data-r="conf">Confidentialité</a>'+
        '<a data-r="cookies">Cookies</a><a data-r="contact">Contact</a></div>'+
@@ -7090,6 +7092,18 @@ function rendreFiche(){
     rp.innerHTML=h;
     Array.prototype.forEach.call(rp.querySelectorAll('[data-r]'),function(a){
       a.onclick=function(){
+        if(a.getAttribute('data-r')==='quitter'){
+          SFX.tap();
+          if(!confirm("Retirer "+(DB.tel||'ton numéro')+" de ce téléphone ?\n\n"+
+            "Les profils, les points et les contes écoutés seront effacés d'ici. "+
+            "Ton abonnement, lui, reste actif chez ton opérateur."))return;
+          DB={profils:[],actif:null};
+          try{localStorage.removeItem('faso_contes_v2');}catch(e){}
+          SAVE=null; VISITEUR.actif=true;
+          rendreVisiteur(); montrer('ecranVisiteur');
+          toast('Numéro retiré de ce téléphone.');
+          return;
+        }
         var k=a.getAttribute('data-r');SFX.tap();
         if(k==='conteurs')rendreConteurs();
         else if(k==='veillee'){chargerCompetition().then(rendreVeillee);}
@@ -8611,7 +8625,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-11-c',
+  build:'2026-09-12-b',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -9333,7 +9347,7 @@ $('mDiag')&&($('mDiag').onclick=function(){fermerMenu();diagnostic();});
 /* Chaque conte a son conteur attitré : on enregistre une fois, et on met la voix en avant.
    Portraits attendus dans contes-images/conteur-<id>.webp (16/9 pour le cadre, carré pour la fiche). */
 /* Contes dont la voix est enregistrée. Les autres passent par la synthèse du navigateur. */
-var VOIX_DISPO={lievre:1,tortue:1,cameleon:1,conseils:1,puits:1,zombre:1,etoiles:1,bazoule:1,balafon:1};
+var VOIX_DISPO={lievre:1,tortue:1,cameleon:1,conseils:1,puits:1,zombre:1,etoiles:1,bazoule:1,balafon:1,pokou:1,abomey:1};
 var CONTEURS=[
  {id:'sanou',nom:'Le vieux Sanou',role:'CONTEUR DE LA BROUSSE',region:'Ouagadougou',
   desc:"Il a passé sa vie sous le karité du quartier, à raconter aux enfants qui rentraient de l'école. Il connaît toutes les ruses du lièvre, et il en a inventé quelques-unes.",

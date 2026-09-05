@@ -87,6 +87,10 @@ button.act{background:var(--or);border:none;color:#241a04;font-family:inherit;
   button.plat{background:var(--v2);border:1px solid var(--bord);color:var(--txt);
     font-family:inherit;font-weight:700;font-size:13.5px;padding:10px 18px;
     border-radius:9px;cursor:pointer;}
+  #pQuitter{background:var(--v2);border:1px solid var(--bord);color:var(--txt);
+    font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 14px;
+    border-radius:8px;cursor:pointer;margin-right:10px;}
+  #pQuitter:hover{background:var(--carte2);}
 footer{padding:20px 26px 40px;font-size:12.5px;color:var(--txt2);}
 @media (max-width:700px){
   header,nav,main{padding-left:14px;padding-right:14px;}
@@ -97,6 +101,7 @@ footer{padding:20px 26px 40px;font-size:12.5px;color:var(--txt2);}
 <header>
   <div class="pastille">C</div>
   <div><b>Portail Partenaire</b><small>AfriKfables</small></div>
+  <button id="pQuitter" style="display:none">Quitter</button>
   <div class="qui" id="qui">Non connecté</div>
 </header>
 
@@ -457,6 +462,16 @@ fetch('/api/sante',{cache:'no-store'})
     if(API.enLigne()){
       API.get('/auth/moi').then(function(a){
         $('qui').textContent=(a.nom||'Partenaire')+' — '+(a.pays||'').toUpperCase();
+        var b=$('pQuitter');
+        if(b){
+          b.style.display='';
+          b.onclick=function(){
+            if(!confirm('Se déconnecter du portail partenaire ?'))return;
+            API.jeton=null;
+            try{sessionStorage.removeItem('faso_partenaire');}catch(e){}
+            location.reload();
+          };
+        }
       }).catch(function(){});
     }
     vuePerf();
