@@ -584,6 +584,13 @@
   .compet .lot em{font-style:normal;color:var(--txt2);font-weight:400;font-size:13px;}
   .compet .reg{font-size:12px;color:var(--txt2);line-height:1.5;margin-top:8px;
     padding-top:8px;border-top:1px solid var(--v3);}
+  .carteAbo{margin:0 0 16px;background:var(--carte);border:1px solid var(--bord);
+    border-radius:16px;padding:16px 18px;}
+  .carteAbo.actif{border-color:var(--vert);}
+  .carteAbo b{display:block;font-size:16px;font-weight:800;margin-bottom:5px;}
+  .carteAbo.actif b{color:var(--vert);}
+  .carteAbo p{font-size:13.5px;color:var(--txt2);line-height:1.5;margin-bottom:12px;}
+  .carteAbo button{width:100%;}
   .carteRang{display:flex;align-items:center;gap:18px;margin:0 14px 16px;
     background:var(--carte);border:1px solid var(--or);border-radius:18px;
     padding:18px 20px;box-shadow:0 3px 12px var(--om1);}
@@ -1226,6 +1233,7 @@
       <div><b id="fLus">0</b><small>CONTES</small></div>
       <div><b id="fPoints">0</b><small>POINTS</small></div>
     </div>
+    <div id="zoneAbo"></div>
     <div class="titreSec">Mes badges</div>
     <div id="zonePays" class="bloc2"></div>
     <div id="reglagesProfil"></div>
@@ -7016,6 +7024,33 @@ function rendreFiche(){
   $('ficheSous').textContent=reste>0?(reste+' conte'+(reste>1?'s':'')+' encore à découvrir')
                                     :'Tous les contes de la veillée écoutés';
   $('fSerie').textContent=SAVE.serie;$('fLus').textContent=nbLus();$('fPoints').textContent=SAVE.points;
+  /* L'état de l'abonnement, là où l'utilisateur le cherche : dans son profil. */
+  var za=$('zoneAbo');
+  if(za){
+    if(libre()){ za.innerHTML=''; }
+    else if(!marcheSousContrat()){
+      za.innerHTML='<div class="carteAbo"><b>Accès ouvert</b>'+
+        '<p>L\'abonnement n\'est pas encore disponible dans ton pays. '+
+        'Tous les contes restent accessibles.</p></div>';
+    }else if(abonne()){
+      var f=DB.compte&&DB.compte.fin?new Date(DB.compte.fin):null;
+      var p=DB.compte&&DB.compte.pass?DB.compte.pass:'';
+      za.innerHTML='<div class="carteAbo actif"><b>Ton pass est actif</b>'+
+        '<p>'+(p?('Pass '+p+'. '):'')+
+        (f?('Valable jusqu\'au '+f.toLocaleDateString('fr-FR')+'.'):'')+'</p>'+
+        '<button class="plat" id="bGererAbo">Gérer mon abonnement</button></div>';
+      var g=$('bGererAbo');
+      if(g)g.onclick=function(){SFX.tap();montrerAbo();};
+    }else{
+      za.innerHTML='<div class="carteAbo"><b>Aucun pass en cours</b>'+
+        '<p>Prends un pass pour écouter toute la bibliothèque, '+
+        'et participer au classement de la veillée.</p>'+
+        '<button class="bouton" id="bPrendreAbo">Prendre un pass</button></div>';
+      var pp=$('bPrendreAbo');
+      if(pp)pp.onclick=function(){SFX.tap();montrerOffre(true);};
+    }
+  }
+
   /* Le pays est facultatif : il ne sert qu'à remonter les contes de chez soi. */
   var zp=$('zonePays');
   if(zp){
@@ -7615,6 +7650,11 @@ $('mic').onclick=function(){
 /* ---- ouverture d'un conte ---- */
 function ouvrir(id){
   if(estInvite() && VISITEUR.conteEcoute && VISITEUR.conteEcoute!==id){inviterCreation();return;}
+  /* Le contrôle est ici, à la source : une carte n'est pas le seul chemin. */
+  if(!libre() && !abonne() && essaiFini() && !(SAVE&&SAVE.lus[id])){
+    montrerOffre(false);
+    return;
+  }
   C=null;for(var i=0;i<CONTES.length;i++)if(CONTES[i].id===id)C=CONTES[i];
   if(!C)return;
   idx=0;pts=0;phase='conte';qIdx=0;qBons=0;serieJustes=0;attenteRep=null;occupe=false;t0=Date.now();tableVoix=indexerVoix(C);
@@ -8571,7 +8611,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-11-a',
+  build:'2026-09-11-c',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
