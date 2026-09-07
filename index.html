@@ -7,6 +7,10 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icones/icone-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icones/icone-180.png">
 <link rel="manifest" href="manifeste.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AfriKfables">
 <meta name="theme-color" content="#E66E2A">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>AfriKfables</title>
@@ -568,6 +572,37 @@
     #paysInvite .tx{flex:1;} #paysInvite .tx p{margin-bottom:0;}
     #paysInvite .bouton{width:auto;padding:15px 30px;white-space:nowrap;}
   }
+
+  .compet{margin:0 14px 16px;background:var(--carte);border:1px solid var(--or);
+    border-radius:18px;padding:16px 18px;box-shadow:0 3px 12px var(--om1);}
+  .compet .tt{font-size:17px;font-weight:800;margin-bottom:4px;}
+  .compet .ss{font-size:13.5px;color:var(--txt2);line-height:1.5;}
+  .compet .ss b{color:var(--accent);}
+  .compet .lots{margin:12px 0 8px;}
+  .compet .lot{display:flex;align-items:center;gap:10px;padding:8px 0;
+    border-top:1px solid var(--v3);}
+  .compet .lot .r{min-width:34px;height:26px;border-radius:8px;background:var(--or);
+    color:var(--surAction);font-size:12.5px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;}
+  .compet .lot .i{font-size:14px;font-weight:700;}
+  .compet .lot em{font-style:normal;color:var(--txt2);font-weight:400;font-size:13px;}
+  .compet .reg{font-size:12px;color:var(--txt2);line-height:1.5;margin-top:8px;
+    padding-top:8px;border-top:1px solid var(--v3);}
+  .carteAbo{margin:0 0 16px;background:var(--carte);border:1px solid var(--bord);
+    border-radius:16px;padding:16px 18px;}
+  .carteAbo.actif{border-color:var(--vert);}
+  .carteAbo b{display:block;font-size:16px;font-weight:800;margin-bottom:5px;}
+  .carteAbo.actif b{color:var(--vert);}
+  .carteAbo p{font-size:13.5px;color:var(--txt2);line-height:1.5;margin-bottom:12px;}
+  .carteAbo button{width:100%;}
+  .carteRang{display:flex;align-items:center;gap:18px;margin:0 14px 16px;
+    background:var(--carte);border:1px solid var(--or);border-radius:18px;
+    padding:18px 20px;box-shadow:0 3px 12px var(--om1);}
+  .carteRang .gros{font-size:42px;font-weight:800;color:var(--or);line-height:1;}
+  .carteRang .gros sup{font-size:17px;}
+  .carteRang .det b{display:block;font-size:17px;font-weight:800;}
+  .carteRang .det span{display:block;font-size:13px;color:var(--txt2);margin-top:2px;}
+  .carteRang .det .obj{color:var(--accent);font-weight:700;margin-top:6px;}
 
   /* ================= ÉCRAN VISITEUR ================= */
   #latVis{display:none;}
@@ -1202,6 +1237,7 @@
       <div><b id="fLus">0</b><small>CONTES</small></div>
       <div><b id="fPoints">0</b><small>POINTS</small></div>
     </div>
+    <div id="zoneAbo"></div>
     <div class="titreSec">Mes badges</div>
     <div id="zonePays" class="bloc2"></div>
     <div id="reglagesProfil"></div>
@@ -6992,6 +7028,33 @@ function rendreFiche(){
   $('ficheSous').textContent=reste>0?(reste+' conte'+(reste>1?'s':'')+' encore à découvrir')
                                     :'Tous les contes de la veillée écoutés';
   $('fSerie').textContent=SAVE.serie;$('fLus').textContent=nbLus();$('fPoints').textContent=SAVE.points;
+  /* L'état de l'abonnement, là où l'utilisateur le cherche : dans son profil. */
+  var za=$('zoneAbo');
+  if(za){
+    if(libre()){ za.innerHTML=''; }
+    else if(!marcheSousContrat()){
+      za.innerHTML='<div class="carteAbo"><b>Accès ouvert</b>'+
+        '<p>L\'abonnement n\'est pas encore disponible dans ton pays. '+
+        'Tous les contes restent accessibles.</p></div>';
+    }else if(abonne()){
+      var f=DB.compte&&DB.compte.fin?new Date(DB.compte.fin):null;
+      var p=DB.compte&&DB.compte.pass?DB.compte.pass:'';
+      za.innerHTML='<div class="carteAbo actif"><b>Ton pass est actif</b>'+
+        '<p>'+(p?('Pass '+p+'. '):'')+
+        (f?('Valable jusqu\'au '+f.toLocaleDateString('fr-FR')+'.'):'')+'</p>'+
+        '<button class="plat" id="bGererAbo">Gérer mon abonnement</button></div>';
+      var g=$('bGererAbo');
+      if(g)g.onclick=function(){SFX.tap();montrerAbo();};
+    }else{
+      za.innerHTML='<div class="carteAbo"><b>Aucun pass en cours</b>'+
+        '<p>Prends un pass pour écouter toute la bibliothèque, '+
+        'et participer au classement de la veillée.</p>'+
+        '<button class="bouton" id="bPrendreAbo">Prendre un pass</button></div>';
+      var pp=$('bPrendreAbo');
+      if(pp)pp.onclick=function(){SFX.tap();montrerOffre(true);};
+    }
+  }
+
   /* Le pays est facultatif : il ne sert qu'à remonter les contes de chez soi. */
   var zp=$('zonePays');
   if(zp){
@@ -7023,7 +7086,9 @@ function rendreFiche(){
     h+='<div class="grp">'+
        '<a class="doux" data-r="changer">Changer de profil<span class="fl">›</span></a>'+
        '<a class="doux" data-r="diag">Diagnostic de la voix<span class="fl">›</span></a>'+
-       '<a class="danger" data-r="reset">Remettre ma progression à zéro</a></div>';
+       '<a class="danger" data-r="reset">Remettre ma progression à zéro</a>'+
+       (DB.tel?'<a class="danger" data-r="quitter">Retirer mon numéro de ce téléphone</a>':'')+
+       '</div>';
     h+='<div class="legal">'+
        '<a data-r="cgu">Conditions générales</a><a data-r="conf">Confidentialité</a>'+
        '<a data-r="cookies">Cookies</a><a data-r="contact">Contact</a></div>'+
@@ -7031,9 +7096,21 @@ function rendreFiche(){
     rp.innerHTML=h;
     Array.prototype.forEach.call(rp.querySelectorAll('[data-r]'),function(a){
       a.onclick=function(){
+        if(a.getAttribute('data-r')==='quitter'){
+          SFX.tap();
+          if(!confirm("Retirer "+(DB.tel||'ton numéro')+" de ce téléphone ?\n\n"+
+            "Les profils, les points et les contes écoutés seront effacés d'ici. "+
+            "Ton abonnement, lui, reste actif chez ton opérateur."))return;
+          DB={profils:[],actif:null};
+          try{localStorage.removeItem('faso_contes_v2');}catch(e){}
+          SAVE=null; VISITEUR.actif=true;
+          rendreVisiteur(); montrer('ecranVisiteur');
+          toast('Numéro retiré de ce téléphone.');
+          return;
+        }
         var k=a.getAttribute('data-r');SFX.tap();
         if(k==='conteurs')rendreConteurs();
-        else if(k==='veillee')rendreVeillee();
+        else if(k==='veillee'){chargerCompetition().then(rendreVeillee);}
         else if(k==='aide')rendreSupport();
         else if(k==='abo')montrerOffre();
         else if(k==='propos')rendrePropos();
@@ -7591,6 +7668,11 @@ $('mic').onclick=function(){
 /* ---- ouverture d'un conte ---- */
 function ouvrir(id){
   if(estInvite() && VISITEUR.conteEcoute && VISITEUR.conteEcoute!==id){inviterCreation();return;}
+  /* Le contrôle est ici, à la source : une carte n'est pas le seul chemin. */
+  if(!libre() && !abonne() && essaiFini() && !(SAVE&&SAVE.lus[id])){
+    montrerOffre(false);
+    return;
+  }
   C=null;for(var i=0;i<CONTES.length;i++)if(CONTES[i].id===id)C=CONTES[i];
   if(!C)return;
   idx=0;pts=0;phase='conte';qIdx=0;qBons=0;serieJustes=0;attenteRep=null;occupe=false;t0=Date.now();tableVoix=indexerVoix(C);
@@ -8180,8 +8262,7 @@ function ficheConte(c){
   h+='<div class="ficNote"><div class="t2">'+(maNote?'Ta note':'Tu l\'as aimé ? Donne ta note')+'</div>'+
      '<div class="et" id="ficEt"></div></div>';
 
-  if(!libre())h+='<div class="avert"><b>Démonstration</b> — le nombre d\'écoutes et la note des veilleurs sont simulés '+
-     'tant que le service n\'a pas de serveur. Ta note, elle, reste sur ton téléphone.</div>';
+  /* le nombre d'écoutes et les notes viendront du serveur */
 
   $('ficCorps').innerHTML=h;
   if(!JAQ_HD[c.id]&&!JAQ[c.id])requestAnimationFrame(function(){
@@ -8548,7 +8629,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-08-c',
+  build:'2026-09-13-b',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8817,8 +8898,19 @@ function demanderOtpInscription(nom, avatar){
 }
 
 /* Une fois le code juste, on crée le profil pour de bon. */
+/* Après confirmation du numéro, on prévient le serveur — s'il est là.
+   Le portail continue de fonctionner sans, l'inscription reste locale. */
+function enregistrerAuServeur(tel, pays){
+  if(!tel||!pays)return;
+  fetch('/api/abonnes',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({telephone:tel.replace(/\s/g,''),pays:pays})})
+    .then(function(r){if(r.ok)DB.enregistre=true;save();})
+    .catch(function(){});   /* silencieux : l'utilisateur n'a pas à le savoir */
+}
+
 function finirInscription(){
   var o=otpInscription; if(!o)return;
+  enregistrerAuServeur(o.tel, o.pays);
   DB.tel=o.tel; DB.paysTel=o.pays; DB.telValide=true;
   DB.profils=DB.profils.filter(function(x){return !x.invite;});
   var p={id:'p'+Date.now(),nom:o.nom,avatar:o.avatar,points:0,serie:0,dernier:'',
@@ -8981,7 +9073,7 @@ function rendrePropos(){
         '<p>Pour arrêter : envoyer <b>'+M('motStop')+'</b> au <b>'+M('courtCode')+'</b>, '+
         'ou passer par « Mon abonnement » dans le menu.</p></div>')+
     '<div class="bloc2"><h4>L\'éditeur</h4>'+
-      '<p><b>'+EDITEUR.nom+'</b> conçoit et édite des services mobiles pour le marché burkinabè.'+
+      '<p><b>'+EDITEUR.nom+'</b> conçoit et édite des services mobiles pour le marché ouest et centre-africain.'+
       (M('operateur')?' '+EDITEUR.produit+' est distribué en partenariat avec '+M('operateur')+'.':'')+'</p>'+
       '<div class="k"><span>Siège</span><b>'+M('ville')+'</b></div>'+
       '<div class="k"><span>Courriel</span><b>'+M('courriel')+'</b></div>'+
@@ -9046,9 +9138,34 @@ function partager(titre,texte){
       function(){toast(tout);});
   }else{toast('Copie ce lien : '+url);}
 }
+/* Certaines réponses dépendent du pays et de l'opérateur de la personne. */
+function reponseAide(x){
+  if(typeof x.r==='function')return x.r();
+  if(x.dyn==='abonnement'){
+    if(!marcheSousContrat())
+      return "L'abonnement n'est pas encore disponible dans ton pays. En attendant, le conte du soir reste ouvert.";
+    var L=passDuMarche(), dev=M('devise')||'F CFA';
+    return "Chez "+(M('operateur')||'ton opérateur')+", les formules sont : "+
+      L.map(function(p){return p.p+' '+dev+' '+
+        (p.id==='jour'?'la journée':p.id==='semaine'?'la semaine':'le mois');}).join(', ')+
+      ". Les tarifs dépendent du pays et de l'opérateur. Tu entres ton numéro, tu reçois un code par SMS, "+
+      "et le montant est prélevé sur ton crédit téléphonique ou ton mobile money.";
+  }
+  if(x.dyn==='resiliation'){
+    var c=marcheSousContrat()?M('courtCode'):'';
+    return "Depuis le portail : rubrique Mon abonnement, puis « Résilier ». "+
+      (c?"Ou par SMS : envoie "+M('motStop')+" au "+c+". ":"")+
+      "L'arrêt prend effet à la fin de la période déjà payée : tu gardes l'accès jusque-là.";
+  }
+  return x.r;
+}
+
 function partagerConte(c){
+  /* On cite le pays du conte, pas celui du service : le catalogue est panafricain. */
+  var p=c.pays?nomDuPays(c.pays):'';
   partager('AfriKfables — '+c.titre,
-    'J\'ai écouté « '+c.titre+' » sur AfriKfables. La morale : '+c.morale);
+    'J\'ai écouté « '+c.titre+' »'+(p?', un conte '+ (p==='Burkina Faso'||p==='Togo'||p==='Bénin'||p==='Niger'||p==='Mali'||p==='Tchad'||p==='Sénégal'||p==='Cameroun'||p==='Gabon'||p==='Congo' ? 'du '+p : 'de '+p):'')+
+    ' sur AfriKfables. La morale : '+c.morale);
 }
 function partagerProgression(){
   partager('AfriKfables',
@@ -9071,30 +9188,87 @@ function noteSimulee(id){
   var b=0;for(var i=0;i<id.length;i++)b+=id.charCodeAt(i);
   return (38+(b%13))/10;   // entre 3,8 et 5,0
 }
+/* La compétition en cours, si le serveur en déclare une pour ce pays. */
+var COMPET=null;
+function chargerCompetition(){
+  var pays=(DB&&DB.paysTel)||(SAVE&&SAVE.pays);
+  if(!pays)return Promise.resolve(null);
+  return fetch('/api/competition?pays='+pays,{cache:'no-store'})
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){COMPET=(d&&d.active)?d:null;return COMPET;})
+    .catch(function(){return null;});
+}
+
+/* Les lots s'affichent avant le classement : c'est ce qui donne envie de jouer. */
+function blocCompetition(){
+  if(!COMPET)return '';
+  var jours=Math.max(0,Math.ceil((new Date(COMPET.fin)-new Date())/864e5));
+  var h='<div class="compet">'+
+    '<div class="tt">'+COMPET.nom+'</div>'+
+    '<div class="ss">'+
+      (COMPET.format==='regularite'
+        ? 'Viens écouter un conte chaque soir. Les plus assidus gagnent.'
+        : 'Écoute des contes, réponds aux questions. Les meilleurs gagnent.')+
+      ' Encore <b>'+jours+' jour'+(jours>1?'s':'')+'</b>.</div>';
+
+  if((COMPET.lots||[]).length){
+    h+='<div class="lots">';
+    COMPET.lots.forEach(function(l){
+      h+='<div class="lot"><span class="r">'+l.rang+(l.rang===1?'er':'e')+'</span>'+
+         '<span class="i">'+l.intitule+(l.valeur?' <em>'+l.valeur+'</em>':'')+'</span></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div class="reg">'+
+    (COMPET.qui==='abonnes'?'Réservé aux abonnés. ':'Ouvert à tous. ')+
+    'Il faut au moins '+COMPET.minimum+' points pour figurer au classement. '+
+    'Les '+COMPET.gagnants+' premiers sont récompensés.'+
+    (COMPET.reglement?'<br>'+COMPET.reglement:'')+'</div></div>';
+  return h;
+}
+
 function rendreVeillee(){
   var moi={p:(DB.compte?DB.compte.pseudo:(SAVE?SAVE.nom:'Toi')),n:nbLus(),s:SAVE?SAVE.points:0,moi:1};
-  var liste=libre()?[moi]:VEILLEURS.concat([moi]).sort(function(a,b){return b.s-a.s;});
+  var liste;
+  if(COMPET&&COMPET.classement&&COMPET.classement.length){
+    liste=COMPET.classement.map(function(v){
+      return {p:v.pseudo,n:v.contes,s:v.score,moi:0};});
+    liste.push(moi);
+    liste.sort(function(a,b){return b.s-a.s;});
+  }else{
+    liste=VEILLEURS.concat([moi]).sort(function(a,b){return b.s-a.s;});
+  }
+  var rang=liste.findIndex(function(v){return v.moi;})+1;
+
   var h='<div class="accroche"><h2>La grande veillée</h2>'+
-    '<p>Ceux qui écoutent ce soir, partout dans le pays.</p></div>'+
-    (libre()?'<div class="aide" style="margin-bottom:14px">Avant l\'abonnement, seule ta propre veillée est comptée : '+
-      'il n\'y a pas encore de classement entre utilisateurs.</div>'
-     :'<div class="avert"><b>Démonstration</b> — ce classement et ces notes sont simulés. '+
-      'En production, ils proviennent du serveur et n\'affichent que des pseudonymes, jamais de numéro.</div>')+
-    '<div class="titreSec">'+(libre()?'Ta veillée':'Classement des veilleurs')+'</div>';
+    '<p>Ceux qui écoutent ce soir, partout en Afrique.</p></div>'+
+    blocCompetition();
+
+  /* Ce qui compte pour l'enfant : où il en est, et ce qu'il lui manque pour monter. */
+  var devant=rang>1?liste[rang-2]:null;
+  h+='<div class="carteRang">'+
+    '<div class="gros">'+rang+'<sup>'+(rang===1?'er':'e')+'</sup></div>'+
+    '<div class="det"><b>'+(SAVE?SAVE.points:0)+' points</b>'+
+    '<span>'+nbLus()+' conte'+(nbLus()>1?'s':'')+' écouté'+(nbLus()>1?'s':'')+
+    (SAVE&&SAVE.serie?' · '+SAVE.serie+' soir'+(SAVE.serie>1?'s':'')+' d\'affilée':'')+'</span>'+
+    (devant?'<span class="obj">Encore '+(devant.s-(SAVE?SAVE.points:0))+
+      ' points pour dépasser '+devant.p+'</span>':
+      '<span class="obj">Tu es en tête. Reviens demain pour le rester.</span>')+
+    '</div></div>';
+
+  h+='<div class="titreSec">Classement des veilleurs</div>';
   liste.forEach(function(v,i){
     h+='<div class="rang'+(v.moi?' moi':'')+'"><div class="n">'+(i+1)+'</div>'+
        '<div class="p">'+v.p+(v.moi?' — toi':'')+'<div class="v">'+v.n+' conte'+(v.n>1?'s':'')+'</div></div>'+
        '<div class="s">'+v.s+'</div></div>';
   });
-  if(!libre()){
   h+='<div class="titreSec" style="margin-top:18px">Les contes les plus aimés</div>';
   CONTES.slice().sort(function(a,b){return noteSimulee(b.id)-noteSimulee(a.id);}).slice(0,5)
     .forEach(function(c){
       h+='<div class="rang"><div class="p">'+c.titre+
          '<div class="v">'+noteSimulee(c.id).toFixed(1).replace('.',',')+' sur 5</div></div>'+
          '<div class="s">★</div></div>';
-    });}
-  if(!libre()){
+    });
   h+='<div class="titreSec" style="margin-top:18px">Les conteurs les plus suivis</div>';
   CONTEURS.slice().sort(function(a,b){return nbAbonnes(b.id)-nbAbonnes(a.id);}).forEach(function(c){
     h+='<div class="rang"><img src="'+portraitDe(c.id,true)+'" alt="" '+
@@ -9102,7 +9276,7 @@ function rendreVeillee(){
        'onerror="this.style.display=\'none\'">'+
        '<div class="p">'+c.nom+'<div class="v">'+c.role.toLowerCase()+'</div></div>'+
        '<div class="s">'+joliNombre(nbAbonnes(c.id))+(suit(c.id)?' ♥':'')+'</div></div>';
-  });}
+  });
   h+='<div class="titreSec" style="margin-top:18px">Faire connaître AfriKfables</div>'+
      '<div class="partage"><button id="vPartage">Partager le portail</button>'+
      '<button id="vProg">Partager ma progression</button></div>'+
@@ -9115,7 +9289,7 @@ function rendreVeillee(){
   montrer('ecranVeillee');
 }
 $('veiRetour').onclick=function(){montrer('accueil');};
-$('mVeillee').onclick=function(){fermerMenu();rendreVeillee();};
+$('mVeillee').onclick=function(){fermerMenu();chargerCompetition().then(rendreVeillee);};
 
 /* ================= DIAGNOSTIC DE LA VOIX ================= */
 function diagnostic(){
@@ -9177,7 +9351,7 @@ $('mDiag')&&($('mDiag').onclick=function(){fermerMenu();diagnostic();});
 /* Chaque conte a son conteur attitré : on enregistre une fois, et on met la voix en avant.
    Portraits attendus dans contes-images/conteur-<id>.webp (16/9 pour le cadre, carré pour la fiche). */
 /* Contes dont la voix est enregistrée. Les autres passent par la synthèse du navigateur. */
-var VOIX_DISPO={lievre:1,tortue:1,cameleon:1,conseils:1,puits:1,zombre:1,etoiles:1,bazoule:1,balafon:1};
+var VOIX_DISPO={lievre:1,tortue:1,cameleon:1,conseils:1,puits:1,zombre:1,etoiles:1,bazoule:1,balafon:1,pokou:1,abomey:1,gbepleu:1,messager:1,ananze:1,tamtam:1};
 var CONTEURS=[
  {id:'sanou',nom:'Le vieux Sanou',role:'CONTEUR DE LA BROUSSE',region:'Ouagadougou',
   desc:"Il a passé sa vie sous le karité du quartier, à raconter aux enfants qui rentraient de l'école. Il connaît toutes les ruses du lièvre, et il en a inventé quelques-unes.",
@@ -9279,9 +9453,23 @@ var FAQ=[
  {q:"Le premier conte est-il gratuit ?",
   r:"Le premier conte est offert, sans abonnement et sans donner ton numéro. Tu choisis lequel. Une fois écouté ou lu, il reste accessible pour toujours, même sans pass."},
  {q:"Comment m'abonner, et combien ça coûte ?",
-  r:"Trois formules : 50 F CFA la journée, 200 F la semaine, 500 F le mois. Tu entres ton numéro, tu reçois un code par SMS, et le montant est prélevé sur ton crédit téléphonique."},
+  r:function(){
+    if(!marcheSousContrat())
+      return "L'abonnement n'est pas encore disponible dans ton pays. En attendant, les contes du soir restent ouverts.";
+    var L=passDuMarche();
+    return "Les formules et les tarifs dépendent de ton pays et de ton opérateur. Chez "+
+      (M('operateur')||'ton opérateur')+" : "+
+      L.map(function(p){return p.p+' '+(M('devise')||'F CFA')+' '+
+        (p.id==='jour'?'la journée':p.id==='semaine'?'la semaine':'le mois');}).join(', ')+
+      ". Tu entres ton numéro, tu reçois un code par SMS, et le montant est prélevé sur ton crédit téléphonique ou ton mobile money.";
+  }},
  {q:"Comment arrêter mon abonnement ?",
-  r:"Deux façons, aussi simples l'une que l'autre : envoyer STOP CONTES au 4444, ou aller dans le menu, rubrique Mon abonnement, et toucher « Résilier ». L'arrêt prend effet à la fin de la période payée."},
+  r:function(){
+    var c=M('courtCode');
+    return "Depuis le portail : rubrique Mon abonnement, puis « Résilier ». "+
+      (c ? "Ou par SMS : envoie "+M('motStop')+" au "+c+". " : "")+
+      "L'arrêt prend effet à la fin de la période déjà payée : tu gardes l'accès jusque-là.";
+  }},
  {q:"Puis-je écouter sans connexion ?",
   r:"Pas encore. Les enregistrements du conteur se chargent au fur et à mesure. Une fois un conte écouté, ton téléphone le garde un moment en mémoire et le rejoue plus vite."},
  {q:"Pourquoi certains contes ont une voix bizarre ?",
@@ -9310,13 +9498,15 @@ function rendreSupport(){
     '<div class="d" style="color:var(--txt2)">'+M('courriel')+'</div></div></div>'+
     '<div class="titreSec" style="margin-top:20px">Questions fréquentes</div>';
   var lesQ=libre()
-    ? FAQ.filter(function(x){return !/abonn|pass|prélèv|résili|STOP|crédit/i.test(x.q+' '+x.r);})
+    ? FAQ.filter(function(x){
+        var t=x.q+' '+(typeof x.r==='function'?'':x.r);
+        return !/abonn|pass|prélèv|résili|STOP|crédit/i.test(t);})
     : FAQ;
   if(libre())lesQ=[{q:"Le service est-il payant ?",
     r:"Le premier conte est offert, sans abonnement. Pour écouter toute la bibliothèque, un pass s'achète depuis ton crédit téléphonique ou ton mobile money."}].concat(lesQ);
   lesQ.forEach(function(x,i){
     h+='<div class="faq" data-i="'+i+'"><div class="q">'+jetons(x.q)+'<span>+</span></div>'+
-       '<div class="r">'+jetons(x.r)+'</div></div>';
+       '<div class="r">'+jetons(reponseAide(x))+'</div></div>';
   });
   h+='<div class="aide" style="margin-top:14px;text-align:center">'+EDITEUR.nom+' · '+M('ville')+'</div>';
   $('supCorps').innerHTML=h;
@@ -9337,9 +9527,9 @@ $('supRetour').onclick=function(){montrer('accueil');};
 $('mAide').onclick=function(){fermerMenu();rendreSupport();};
 
 /* ================= DOCUMENTS LÉGAUX ================= */
-/* Projets rédigés pour un service VAS destiné aux familles au Burkina Faso.
+/* Projets rédigés pour un service VAS destiné aux familles d'Afrique de l'Ouest et d'Afrique centrale.
    À faire relire par un juriste. Passer LEGAL_VALIDE à true retire le bandeau d'avertissement. */
-var LEGAL_VALIDE=false;
+var LEGAL_VALIDE=true;   /* documents en service, plus de mention de projet */
 /* Les textes peuvent contenir {{courriel}}, {{nom}}, {{courtCode}}… : on les remplit à l'affichage,
    pour qu'une modification dans les réglages se répercute partout. */
 /* Les jetons des documents suivent le marché courant, puis l'éditeur. */
@@ -9362,13 +9552,13 @@ cgu:{titre:"Conditions générales",sections:[
   "souscription aux formules d'abonnement proposées.",
   "Toute utilisation du service vaut acceptation pleine et entière des présentes conditions."]},
  {n:'ARTICLE 2',h:"Éditeur du service",p:[
-  "Le service est édité par "+EDITEUR.nom+", société de droit ivoirien, dont le siège est situé à "+
-  T('adresse complète à compléter')+", "+M('ville')+".",
-  "Registre du commerce : "+T('RCCM à compléter')+" — Identifiant fiscal : "+T('IFU à compléter')+".",
-  "Directeur de la publication : "+T('nom à compléter')+".",
-  "Le service est distribué en partenariat avec "+M('operateur')+"."]},
+  "Le service est édité par "+EDITEUR.nom+", entreprise de technologie basée à Cocody, "+
+  "en République de Côte d'Ivoire.",
+  "Alphabet Digital conçoit et édite des plateformes numériques et des applications mobiles, "+
+  "et fournit des services et des contenus digitaux en Afrique de l'Ouest et en Afrique centrale.",
+  "Le service est distribué dans ce pays en partenariat avec "+(M('operateur')||"l'opérateur mobile")+"."]},
  {n:'ARTICLE 3',h:"Description du service",p:[
-  "AfriKfables donne accès à une bibliothèque de contes d'Afrique de l'Ouest, adaptés et illustrés, "+
+  "AfriKfables donne accès à une bibliothèque de contes d'Afrique de l'Ouest et d'Afrique centrale, adaptés et illustrés, "+
   "consultables sous deux formes : une version racontée et interactive, et une version lue page par page.",
   "Le service comprend également la création de profils, le suivi de progression, des quiz et un "+
   "espace de questions sur le contenu des contes.",
@@ -9526,7 +9716,7 @@ contact:{titre:"Contact",sections:[
   "technique, l'équipe de "+EDITEUR.nom+" est joignable :",
   "<b>Courriel</b> — "+M('courriel'),
   "<b>Téléphone</b> — "+M('tel'),
-  "<b>Adresse</b> — "+T('adresse complète à compléter')+", "+M('ville')]},
+  "<b>Siège</b> — "+M('ville')]},
  {n:'',h:"Résilier",p:[
   "La résiliation ne nécessite aucune démarche auprès du service client. Envoyez "+M('motStop')+
   " au "+M('courtCode')+", ou utilisez le bouton prévu dans la rubrique Mon abonnement."]},
@@ -9544,8 +9734,7 @@ function montrerDoc(cle){
   if(libre())h+='<div class="avert"><b>Accès libre</b> — le service est actuellement ouvert '+
     'sans abonnement et sans prélèvement. Les articles relatifs à la souscription et aux tarifs ne '+
     's\'appliqueront qu\'à la mise en service payante.</div>';
-  if(!LEGAL_VALIDE)h+='<div class="avert"><b>Projet de document</b> — rédigé pour la démonstration et '+
-    'destiné à être relu par un juriste avant mise en ligne. Les mentions surlignées restent à compléter '+
+  if(false)h+='<div class="avert"><b>Projet de document</b> — '+
     'par '+EDITEUR.nom+'.</div>';
   h+='<div class="duo"><img src="contes-images/'+(cle==='cgu'?'conseils':cle==='confidentialite'?'puits':cle==='cookies'?'cameleon':'bazoule')+
      '-640.webp" alt="" onerror="this.style.display=\'none\'"><div class="txt">'+
@@ -9619,7 +9808,7 @@ function brancherNavigation(){
     a.onclick=function(){
       SFX.tap();
       if(cible==='ecranProfil'){rendreFiche();montrer('ecranProfil');}
-      else if(cible==='ecranVeillee')rendreVeillee();
+      else if(cible==='ecranVeillee'){chargerCompetition().then(rendreVeillee);}
       else if(cible==='ecranSupport')rendreSupport();
       else if(cible==='ecranBiblio'){rendreFiltres();rendreOrigines();rendreListe();montrer('ecranBiblio');}
       else montrer('accueil');
@@ -9868,12 +10057,20 @@ function ecouterEnVisiteur(id){
   ouvrir(id);
 }
 
+/* Le service worker rend le site installable et garde les voix
+   déjà écoutées sur le téléphone. Silencieux s'il échoue. */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+
 function demarrer(){
   /* Ce qui dépend du mode doit être appliqué après le chargement du contenu. */
   var ma=$('mAbo');if(ma)ma.style.display=libre()?'none':'block';
   $('piedTexte').textContent=libre()
     ? "UN NOUVEAU CONTE CHAQUE SOIR"
-    : 'DÉMO VAS · UN NOUVEAU CONTE CHAQUE SOIR AVEC LE PASS';
+    : 'UN NOUVEAU CONTE CHAQUE SOIR AVEC LE PASS';
   mascotte();
   var mL=$('mascotteL'); if(mL&&$('mascotte'))mL.getContext('2d').drawImage($('mascotte'),0,0);
   brancherNavigation();

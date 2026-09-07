@@ -100,6 +100,14 @@
   #carteCnx .pd{padding:16px 26px 22px;display:flex;gap:10px;justify-content:flex-end;
     border-top:1px solid var(--bord);}
   #cnxErr{font-size:13px;color:var(--rouge);min-height:18px;}
+  button.plat.actif{background:var(--nuit);color:#fff;border-color:var(--nuit);}
+  nav .pied{display:flex!important;align-items:center;gap:10px;flex-direction:row!important;}
+  nav .pied .qui{flex:1 1 auto;min-width:0;}
+  nav .pied .qui b,nav .pied .qui small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #btnQuitter{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+    color:#fff;font-family:inherit;font-size:12px;font-weight:700;padding:7px 12px;
+    border-radius:8px;cursor:pointer;flex:0 0 auto;width:auto;}
+  #btnQuitter:hover{background:rgba(255,255,255,.18);}
   .voileM{position:fixed;inset:0;background:rgba(30,41,63,.45);z-index:60;
     display:flex;align-items:center;justify-content:center;padding:20px;}
   .fenetreM{background:var(--carte);border-radius:12px;width:100%;max-width:520px;
@@ -122,6 +130,10 @@
   .courbe svg{width:100%;height:110px;display:block;}
   .courbe .cx{display:flex;justify-content:space-between;font-size:11px;color:var(--txt2);margin-top:4px;}
   .courbe .cmax{position:absolute;right:0;top:0;font-size:11px;color:var(--txt2);}
+  .k{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding:9px 0;border-bottom:1px solid var(--bord2);font-size:13.5px;}
+  .k span{color:var(--txt2);}
+  .k b{text-align:right;}
   .quatre{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:16px;}
   .kpi{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:15px 17px;
     box-shadow:0 1px 2px var(--om1);}
@@ -228,13 +240,17 @@
 
   <div class="grp">Pilotage</div>
   <button data-v="finances">Finances</button>
+  <button data-v="competitions">Compétitions</button>
   <button data-v="campagnes">Campagnes</button>
   <button data-v="support">Support</button>
 
   <div class="grp">Système</div>
   <button data-v="admin">Administration</button>
 
-  <div class="pied"><b id="navQui">Hors ligne</b><small id="navRole">contenu local</small></div>
+  <div class="pied">
+    <div class="qui"><b id="navQui">Hors ligne</b><small id="navRole">contenu local</small></div>
+    <button id="btnQuitter" title="Se déconnecter" style="display:none">Quitter</button>
+  </div>
 </nav>
 
 <main>
@@ -249,6 +265,7 @@
   <div class="vue" id="v-abonnes"></div>
   <div class="vue" id="v-contenus"></div>
   <div class="vue" id="v-pass"></div>
+  <div class="vue" id="v-competitions"></div>
   <div class="vue" id="v-campagnes"></div>
   <div class="vue" id="v-admin"></div>
   <div id="reserve" style="display:none"></div>
@@ -354,6 +371,7 @@ function telechargerContenu(){
   var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='contenu.json';a.click();
   modifie=false;majEtat();
 }
+function ech(t){var d=document.createElement("div");d.textContent=t==null?"":t;return d.innerHTML;}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
 
 /* ---------- chargement ---------- */
@@ -426,6 +444,19 @@ function enregistrer(section){
    dès qu'elle est jointe, sauf si l'utilisateur choisit de travailler hors ligne. */
 var horsLigneChoisi=false;
 
+function majBoutonQuitter(){
+  var b=$('btnQuitter'); if(!b)return;
+  b.style.display=(API.enLigne()&&API.jeton)?'':'none';
+  b.onclick=function(){
+    if(!confirm("Se déconnecter ?\n\n"+
+      (modifie?"Des modifications ne sont pas publiées : elles resteront dans ce navigateur.\n\n":"")+
+      "Il faudra saisir à nouveau vos identifiants."))return;
+    API.deconnexion();
+    horsLigneChoisi=false;
+    location.reload();
+  };
+}
+
 function demanderConnexion(){
   return new Promise(function(fini){
     var z=$('voileCnx'); if(!z){fini(false);return;}
@@ -441,6 +472,7 @@ function demanderConnexion(){
           z.classList.remove('on');
           $('navQui').textContent=a.nom||a.courriel;
           $('navRole').textContent=a.role;
+          majBoutonQuitter();
           fini(true);
         })
         .catch(function(err){
@@ -483,25 +515,33 @@ function charger(){
       if(API.jeton)return fetch(API.base+'/auth/moi',{headers:API.entetes()})
         .then(function(r){return r.ok?r.json():null;})
         .then(function(a){
-          if(a){$('navQui').textContent=a.nom||a.courriel;$('navRole').textContent=a.role;return true;}
+          if(a){$('navQui').textContent=a.nom||a.courriel;$('navRole').textContent=a.role;
+            majBoutonQuitter();return true;}
           return demanderConnexion();
         }).catch(function(){return demanderConnexion();});
       return demanderConnexion();
     })
     .then(function(){ return API.lire(); })
-    .then(function(d){D=d;
-      ['cats','pays','marches','lexique','docs','jaquettes','aide','descriptions','voixDispo','attribution']
-        .forEach(function(k){if(!D[k])D[k]=(k==='cats'||k==='pays'||k==='marches')?[]:{};});
-      if(!D.marches.length)D.marches=MARCHES_DEFAUT.slice();
-      modifie=false;rendre();})
+    .then(function(d){D=completer(d);modifie=false;rendre();})
     .catch(function(){
-      D={version:1,editeur:{},pass:[],conteurs:[],attribution:{},voixDispo:{},
-         descriptions:{},faq:[],aide:{},cats:[],lexique:{},docs:{},jaquettes:{},
-         contes:[],bientot:[]};
+      D=completer({version:1});
       rendre();
-      toast("contenu.json introuvable — dépose-le dans l'onglet Export.");
+      toast("Contenu introuvable — dépose-le dans Administration, onglet Publication.");
     });
 }
+/* Garantit que toutes les sections existent, quel que soit le chemin de chargement.
+   Sans cela, un contenu partiel fait échouer silencieusement les boutons d'ajout. */
+var LISTES=['cats','pays','marches','conteurs','pass','faq','contes','bientot'];
+var OBJETS=['editeur','lexique','docs','jaquettes','aide','descriptions','voixDispo','attribution'];
+function completer(d){
+  d=d||{};
+  LISTES.forEach(function(k){if(!Array.isArray(d[k]))d[k]=[];});
+  OBJETS.forEach(function(k){if(!d[k]||typeof d[k]!=='object')d[k]={};});
+  if(!d.marches.length)d.marches=MARCHES_DEFAUT.slice();
+  if(d.version==null)d.version=1;
+  return d;
+}
+
 function sauverBrouillon(){
   try{localStorage.setItem('faso_admin',JSON.stringify(D));}catch(e){
     toast('Brouillon trop volumineux pour le navigateur. Exporte souvent.');}
@@ -521,7 +561,7 @@ function rendre(){
   majEtat();
   if(!D)return;
   var v=document.querySelector('nav button.on').getAttribute('data-v');
-  ({bord:vueBord,contes:vueContes,conteurs:vueConteurs,prod:vueProd,cats:vueCats,pays:vuePays,marches:vueMarches,abonnes:vueAbonnes,finances:vueFinances,support:vueSupport,contenus:vueContenus,pass:vuePass,campagnes:vueCampagnes,admin:vueAdmin,
+  ({bord:vueBord,contes:vueContes,conteurs:vueConteurs,prod:vueProd,cats:vueCats,pays:vuePays,marches:vueMarches,abonnes:vueAbonnes,finances:vueFinances,support:vueSupport,contenus:vueContenus,pass:vuePass,campagnes:vueCampagnes,competitions:vueCompetitions,admin:vueAdmin,
     medias:vueMedias,lexique:vueLexique,docs:vueDocs,
     prompts:vuePrompts,reglages:vueReglages,export:vueExport}[v])();
 }
@@ -1250,6 +1290,167 @@ function vuePass(){
   $('v-pass').innerHTML=h+'</div>';
 }
 
+/* ---------------- Compétitions ----------------
+   Classement par mérite uniquement. Pas de tirage au sort :
+   il relèverait du régulateur des jeux dans plusieurs pays. */
+var FORMATS={
+  points:     'Classement par points — total accumulé sur la période',
+  regularite: 'Défi de régularité — nombre de soirs où l\'enfant est venu'
+};
+
+function vueCompetitions(){
+  var h=entete('Compétitions','Pilotage / Compétitions')+'<div class="corpsV">';
+  if(!API.enLigne()||!API.jeton){
+    h+=attenteServeur('Compétitions et classements',
+      'les points, les participants et les palmarès vivent dans la base.');
+    h+='<div class="bloc"><h3>Les règles du dispositif</h3><table>'+
+      '<tr><th>Point</th><th>Choix retenu</th></tr>'+
+      '<tr><td>Format</td><td>Classement par points, ou défi de régularité. '+
+      '<b>Jamais de tirage au sort</b> : il relèverait du régulateur des jeux.</td></tr>'+
+      '<tr><td>Qui participe</td><td>Tous les inscrits, ou seulement les abonnés payants — au choix par pays</td></tr>'+
+      '<tr><td>Barème</td><td>Points par conte écouté, quiz réussi, soir d\'affilée</td></tr>'+
+      '<tr><td>Seuil minimal</td><td>Évite qu\'un compte créé la veille rafle un lot</td></tr>'+
+      '<tr><td>Lots</td><td>Annoncés à l\'avance, obligatoires avant activation</td></tr>'+
+      '<tr><td>Palmarès</td><td>Figé à la clôture, jamais recalculé</td></tr></table></div>';
+    $('v-competitions').innerHTML=h+'</div>';
+    return;
+  }
+  $('v-competitions').innerHTML=h+'<div id="corpsComp">Chargement…</div></div>';
+  chargerCompetitions();
+}
+
+function chargerCompetitions(){
+  appelAPI('/admin/competitions').then(function(L){
+    var h='<div class="barre" style="margin:0 0 16px">'+
+      '<button class="act" id="addComp">Nouvelle compétition</button></div>';
+
+    if(!L.length){
+      h+='<div class="bloc"><div class="sous">Aucune compétition. '+
+        'Créez-en une par pays : les règles et les lots peuvent différer d\'un opérateur à l\'autre.</div></div>';
+    }else{
+      h+='<div class="bloc"><h3>'+L.length+' compétition'+(L.length>1?'s':'')+'</h3><table>'+
+        '<tr><th>Nom</th><th>Pays</th><th>Format</th><th>Période</th>'+
+        '<th>Participants</th><th>Lots</th><th>État</th><th></th></tr>';
+      L.forEach(function(c){
+        var enCours=c.active&&new Date(c.fin)>=new Date();
+        h+='<tr><td><b>'+ech(c.nom)+'</b></td>'+
+          '<td>'+ech(nomPays(c.pays))+'</td>'+
+          '<td>'+(c.format==='regularite'?'Régularité':'Points')+'</td>'+
+          '<td>'+new Date(c.debut).toLocaleDateString('fr-FR')+' → '+
+                 new Date(c.fin).toLocaleDateString('fr-FR')+'</td>'+
+          '<td>'+c.participants+'</td>'+
+          '<td>'+(c.nb_lots||'<span style="color:var(--rouge)">aucun</span>')+'</td>'+
+          '<td><span class="pastille '+(enCours?'ok':'att')+'">'+
+            (enCours?'en cours':c.active?'terminée':'brouillon')+'</span></td>'+
+          '<td style="text-align:right">'+
+          '<button class="plat mini" data-lots="'+c.id+'">Lots</button> '+
+          (c.active
+            ? '<button class="plat mini" data-clot="'+c.id+'">Clôturer</button>'
+            : '<button class="plat mini" data-act="'+c.id+'">Activer</button>')+
+          '</td></tr>';
+      });
+      h+='</table></div>';
+    }
+
+    h+='<div class="bloc"><h3>Pourquoi pas de tirage au sort</h3><div class="sous">'+
+      'Un tirage relève de la réglementation des jeux dans plusieurs pays, avec '+
+      'déclaration préalable et huissier. Le classement par mérite y échappe : '+
+      'on récompense une performance mesurable, pas la chance. '+
+      'C\'est aussi plus lisible pour les familles.</div></div>';
+
+    $('corpsComp').innerHTML=h;
+    brancherCompetitions(L);
+  }).catch(function(e){
+    $('corpsComp').innerHTML='<div class="avert">'+ech(e.message)+'</div>';
+  });
+}
+
+function brancherCompetitions(L){
+  var z=$('corpsComp');
+  var a=z.querySelector('#addComp');
+  if(a)a.onclick=function(){
+    var optPays=(D.marches||[]).map(function(m){return {v:m.pays,t:m.nom+' — '+m.operateur};});
+    if(!optPays.length){toast('Déclarez d\'abord un marché.');return;}
+    var d=new Date(), f=new Date(Date.now()+7*864e5);
+    modale('Nouvelle compétition',
+      'Classement par mérite. Les lots s\'ajoutent ensuite, avant activation.',[
+      {cle:'nom',lbl:'Nom affiché aux familles',exemple:'Le défi de la semaine',requis:true},
+      {cle:'pays',lbl:'Pays',type:'select',options:optPays},
+      {cle:'format',lbl:'Format',type:'select',options:[
+        {v:'points',t:'Points — total accumulé'},
+        {v:'regularite',t:'Régularité — soirs de présence'}]},
+      {cle:'qui',lbl:'Qui participe',type:'select',options:[
+        {v:'abonnes',t:'Les abonnés payants seulement'},
+        {v:'tous',t:'Tous les inscrits'}]},
+      {cle:'debut',lbl:'Début (AAAA-MM-JJ)',valeur:d.toISOString().slice(0,10),requis:true},
+      {cle:'fin',lbl:'Fin (AAAA-MM-JJ)',valeur:f.toISOString().slice(0,10),requis:true},
+      {cle:'gagnants',lbl:'Nombre de gagnants',valeur:'3'},
+      {cle:'minimum',lbl:'Minimum de points pour figurer au classement',valeur:'5'}
+    ],function(v){
+      fetch(API.base+'/admin/competitions',{method:'POST',headers:API.entetes(),
+        body:JSON.stringify({nom:v.nom,pays:v.pays,format:v.format,qui:v.qui,
+          debut:v.debut,fin:v.fin,gagnants:+v.gagnants||3,minimum:+v.minimum||5})})
+        .then(function(r){return r.json().then(function(d){
+          if(!r.ok)throw new Error(d.erreur||'Création refusée');return d;});})
+        .then(function(){chargerCompetitions();
+          toast('Compétition créée. Ajoutez les lots, puis activez-la.');})
+        .catch(function(e){toast('Échec : '+e.message);});
+    });
+  };
+
+  Array.prototype.forEach.call(z.querySelectorAll('[data-lots]'),function(b){
+    b.onclick=function(){gererLots(b.getAttribute('data-lots'),L);};
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-act]'),function(b){
+    b.onclick=function(){
+      fetch(API.base+'/admin/competitions/'+b.getAttribute('data-act'),
+        {method:'POST',headers:API.entetes(),body:JSON.stringify({active:true})})
+        .then(function(r){return r.json().then(function(d){
+          if(!r.ok)throw new Error(d.erreur||'Activation refusée');return d;});})
+        .then(function(){chargerCompetitions();toast('Compétition activée.');})
+        .catch(function(e){toast(e.message);});
+    };
+  });
+  Array.prototype.forEach.call(z.querySelectorAll('[data-clot]'),function(b){
+    b.onclick=function(){
+      if(!confirm("Clôturer figera le palmarès définitivement. Continuer ?"))return;
+      fetch(API.base+'/admin/competitions/'+b.getAttribute('data-clot')+'/cloturer',
+        {method:'POST',headers:API.entetes()})
+        .then(function(r){return r.json();})
+        .then(function(d){chargerCompetitions();
+          toast(d.erreur||('Palmarès figé : '+d.gagnants+' gagnant(s).'));})
+        .catch(function(e){toast(e.message);});
+    };
+  });
+}
+
+function gererLots(id,L){
+  var c=(L||[]).filter(function(x){return String(x.id)===String(id);})[0]||{};
+  var n=c.gagnants||3;
+  var champs=[];
+  for(var i=1;i<=n;i++){
+    champs.push({cle:'lot'+i,lbl:'Lot du '+i+(i===1?'er':'e')+' — intitulé',
+      exemple:i===1?'Un téléphone':'Du crédit de communication'});
+  }
+  champs.push({cle:'finance',lbl:'Financé par',type:'select',options:[
+    {v:'partage',t:'Partagé — plateforme et opérateur'},
+    {v:'operateur',t:'L\'opérateur'},
+    {v:'plateforme',t:'AfriKfables'}]});
+
+  modale('Lots de « '+(c.nom||'')+' »',
+    'Ils seront affichés aux familles avant le début. Une compétition sans lot ne peut pas être activée.',
+    champs,function(v){
+      var faits=0;
+      for(var i=1;i<=n;i++){
+        if(!v['lot'+i])continue;
+        fetch(API.base+'/admin/competitions/'+id+'/lots',{method:'POST',headers:API.entetes(),
+          body:JSON.stringify({rang:i,intitule:v['lot'+i],finance_par:v.finance})})
+          .then(function(){faits++;});
+      }
+      setTimeout(function(){chargerCompetitions();toast('Lots enregistrés.');},600);
+    });
+}
+
 /* ---------------- Campagnes ---------------- */
 function vueCampagnes(){
   var h='<div class="barreH"><div><h2>Campagnes</h2>'+
@@ -1288,38 +1489,152 @@ function appelAPI(chemin){
     if(!r.ok)throw new Error('réponse '+r.status);return r.json();});
 }
 
-/* ---------------- Abonnés ---------------- */
+/* ---------------- Abonnés ----------------
+   Les segments servent aux campagnes : on ne s'adresse pas de la même façon
+   à quelqu'un qui vient de s'inscrire et à un ancien abonné qui a résilié. */
+var SEGMENTS={
+  nouveau:        {lbl:'Nouveaux',        aide:'inscrits depuis moins de 7 jours, jamais payé'},
+  nouveau_payant: {lbl:'Nouveaux payants',aide:'premier pass en cours'},
+  fidele:         {lbl:'Fidèles',         aide:'plusieurs pass, abonnement en cours'},
+  ancien:         {lbl:'Anciens',         aide:'ont payé, ne sont plus abonnés'},
+  echec_paiement: {lbl:'Échecs de paiement',aide:'prélèvement refusé ce mois-ci'},
+  inscrit_dormant:{lbl:'Dormants',        aide:'inscrits depuis plus de 7 jours, jamais payé'}
+};
+var segmentActif='';
+
 function vueAbonnes(){
-  var h=entete('Abonnés','Réseau / Abonnés');
-  h+='<div class="corpsV">';
-  if(!API.enLigne()){
-    h+=attenteServeur('Liste des abonnés',
-      'les abonnés, leur pays, leur opérateur et leur abonnement en cours viennent du serveur.');
-    h+='<div class="bloc"><h3>Ce que ce module montrera</h3><table>'+
-      '<tr><th>Colonne</th><th>Source</th></tr>'+
-      '<tr><td>Numéro et pays</td><td>déduit de l\'indicatif à l\'inscription</td></tr>'+
-      '<tr><td>Opérateur</td><td>marché correspondant au pays</td></tr>'+
-      '<tr><td>Pass en cours et échéance</td><td>table des abonnements</td></tr>'+
-      '<tr><td>Statut</td><td>essai, actif, suspendu, résilié</td></tr></table>'+
-      '<div class="sous" style="margin-top:10px">Route : <code>GET /admin/abonnes</code></div></div>';
+  var h=entete('Utilisateurs','Opérations / Utilisateurs')+'<div class="corpsV">';
+  if(!API.enLigne()||!API.jeton){
+    h+=attenteServeur('Comptes et segments',
+      'les inscrits, leurs pass et leurs paiements viennent du serveur.');
+    h+='<div class="bloc"><h3>Les segments prévus</h3><table>'+
+      '<tr><th>Segment</th><th>Définition</th></tr>'+
+      Object.keys(SEGMENTS).map(function(k){
+        return '<tr><td><b>'+SEGMENTS[k].lbl+'</b></td><td>'+SEGMENTS[k].aide+'</td></tr>';
+      }).join('')+'</table>'+
+      '<div class="sous" style="margin-top:10px">Seuls le numéro, le pays et la date sont '+
+      'conservés. Le prénom de l\'enfant et son écoute restent sur son téléphone.</div></div>';
+    $('v-abonnes').innerHTML=h+'</div>';
+    return;
   }
-  h+='</div>';
-  $('v-abonnes').innerHTML=h;
-  if(!API.enLigne())return;
-  appelAPI('/admin/abonnes').then(function(L){
-    var t='<div class="bloc"><h3>'+L.length+' abonnés</h3><table>'+
-      '<tr><th>Numéro</th><th>Pays</th><th>Opérateur</th><th>Pass</th><th>Échéance</th><th>Statut</th></tr>';
+  $('v-abonnes').innerHTML=h+'<div id="corpsAbo">Chargement…</div></div>';
+  chargerAbonnes();
+}
+
+function chargerAbonnes(){
+  appelAPI('/admin/abonnes'+(segmentActif?'?segment='+segmentActif:'')).then(function(d){
+    var seg=d.segments||{}, L=d.abonnes||[], tot=d.total||0;
+    var payants=(seg.nouveau_payant||0)+(seg.fidele||0);
+    var taux=tot?(payants/tot*100):0;
+
+    var h='<div class="quatre">'+
+      kpi('Inscrits',tot,'ont confirmé leur numéro')+
+      kpi('Abonnés en cours',payants,'')+
+      kpi('Taux de conversion',taux.toFixed(1)+' %',
+        tot<30?'trop peu d\'inscrits pour être fiable':'')+
+      kpi('Échecs de paiement',seg.echec_paiement||0,'ce mois-ci')+
+      '</div>';
+
+    /* filtres par segment */
+    h+='<div class="barre" style="margin:0 0 14px;flex-wrap:wrap">'+
+      '<button class="plat mini'+(segmentActif?'':' actif')+'" data-seg="">Tous ('+tot+')</button>'+
+      Object.keys(SEGMENTS).map(function(k){
+        var n=seg[k]||0;
+        return '<button class="plat mini'+(segmentActif===k?' actif':'')+'" data-seg="'+k+'" '+
+          'title="'+ech(SEGMENTS[k].aide)+'">'+SEGMENTS[k].lbl+' ('+n+')</button>';
+      }).join('')+'</div>';
+
+    if(segmentActif)h+='<div class="sous" style="margin:-6px 0 12px">'+
+      ech(SEGMENTS[segmentActif].aide)+'</div>';
+
+    h+='<div class="bloc"><h3>'+L.length+' compte'+(L.length>1?'s':'')+'</h3>'+
+      '<table><tr><th>Numéro</th><th>Pays</th><th>Segment</th><th>Pass</th>'+
+      '<th>Échéance</th><th>Payé</th><th></th></tr>';
     L.forEach(function(a){
-      t+='<tr><td>'+esc(a.telephone)+'</td><td>'+esc(a.pays)+'</td>'+
-         '<td>'+esc(a.operateur||'—')+'</td><td>'+esc(a.pass||'—')+'</td>'+
-         '<td>'+(a.fin?new Date(a.fin).toLocaleDateString('fr-FR'):'—')+'</td>'+
-         '<td><span class="pastille '+(a.statut==='actif'?'ok':'att')+'">'+esc(a.statut)+'</span></td></tr>';
+      var cl=a.segment==='fidele'||a.segment==='nouveau_payant'?'ok'
+            :a.segment==='echec_paiement'?'ko':'att';
+      h+='<tr><td>'+ech(a.telephone)+'</td>'+
+        '<td>'+ech(nomPays(a.pays))+'</td>'+
+        '<td><span class="pastille '+cl+'">'+(SEGMENTS[a.segment]?SEGMENTS[a.segment].lbl:a.segment)+'</span></td>'+
+        '<td>'+ech(a.pass||'—')+'</td>'+
+        '<td>'+(a.fin?new Date(a.fin).toLocaleDateString('fr-FR'):'—')+'</td>'+
+        '<td>'+(a.total_paye?a.total_paye+' F':'—')+'</td>'+
+        '<td style="text-align:right"><button class="plat mini" data-fiche="'+a.id+'">Voir</button></td></tr>';
     });
-    $('v-abonnes').querySelector('.corpsV').innerHTML=t+'</table></div>';
+    if(!L.length)h+='<tr><td colspan="7" style="color:var(--txt2)">'+
+      (segmentActif?'Aucun compte dans ce segment.':'Aucun compte pour l\'instant.')+'</td></tr>';
+    h+='</table></div>';
+
+    h+='<div class="bloc"><h3>Utiliser ces segments</h3><div class="sous">'+
+      'Ces groupes sont ceux du module <b>Campagnes</b> : relancer les dormants, '+
+      'réactiver les anciens, prévenir les échecs de paiement. '+
+      'L\'envoi passe par les canaux des opérateurs et se facture — à cadrer au contrat.</div></div>';
+
+    $('corpsAbo').innerHTML=h;
+    Array.prototype.forEach.call($('corpsAbo').querySelectorAll('[data-seg]'),function(b){
+      b.onclick=function(){segmentActif=b.getAttribute('data-seg');chargerAbonnes();};
+    });
+    Array.prototype.forEach.call($('corpsAbo').querySelectorAll('[data-fiche]'),function(b){
+      b.onclick=function(){ficheAbonne(b.getAttribute('data-fiche'));};
+    });
   }).catch(function(e){
-    $('v-abonnes').querySelector('.corpsV').innerHTML=
-      '<div class="avert">Le serveur n\'a pas répondu : '+esc(e.message)+'</div>';
+    $('corpsAbo').innerHTML='<div class="avert">'+ech(e.message)+'</div>';
   });
+}
+
+/* La fiche d'un abonné : ce que le support regarde quand quelqu'un appelle. */
+function ficheAbonne(id){
+  appelAPI('/admin/abonnes/'+id).then(function(a){
+    var r=a.resume||{};
+    var h='<div class="hM"><b>'+ech(a.telephone)+'</b>'+
+      '<small>'+ech(nomPays(a.pays))+' · '+ech(a.operateur||'opérateur inconnu')+'</small></div>'+
+      '<div class="cM">'+
+      '<div class="quatre" style="margin-bottom:16px">'+
+        kpi('Abonnements',r.nb_abonnements||0,'')+
+        kpi('Paiements',r.nb_paiements||0,'')+
+        kpi('Total payé',(r.total_paye||0)+' F CFA','')+
+        kpi('Échecs',r.echecs||0,'')+
+      '</div>'+
+      '<div class="k"><span>Inscrit le</span><b>'+
+        (a.cree_le?new Date(a.cree_le).toLocaleDateString('fr-FR'):'—')+'</b></div>'+
+      '<div class="k"><span>Dernière visite</span><b>'+
+        (a.vu_le?new Date(a.vu_le).toLocaleDateString('fr-FR'):'jamais')+'</b></div>'+
+      '<div class="k"><span>Statut</span><b>'+ech(a.statut)+'</b></div>';
+
+    h+='<h3 style="margin:18px 0 8px;font-size:14px;color:var(--or)">Abonnements</h3>';
+    if((a.abonnements||[]).length){
+      h+='<table><tr><th>Pass</th><th>Prix</th><th>Du</th><th>Au</th><th>État</th></tr>';
+      a.abonnements.forEach(function(x){
+        h+='<tr><td>'+ech(x.pass)+'</td><td>'+x.prix+' '+ech(x.devise)+'</td>'+
+          '<td>'+new Date(x.debut).toLocaleDateString('fr-FR')+'</td>'+
+          '<td>'+new Date(x.fin).toLocaleDateString('fr-FR')+'</td>'+
+          '<td>'+ech(x.statut)+(x.reconduction?' · reconduit':'')+'</td></tr>';
+      });
+      h+='</table>';
+    }else h+='<div class="sous">Aucun abonnement.</div>';
+
+    h+='<h3 style="margin:18px 0 8px;font-size:14px;color:var(--or)">Prélèvements</h3>';
+    if((a.prelevements||[]).length){
+      h+='<table><tr><th>Date</th><th>Montant</th><th>Référence</th><th>État</th></tr>';
+      a.prelevements.forEach(function(x){
+        h+='<tr><td>'+new Date(x.cree_le).toLocaleDateString('fr-FR')+'</td>'+
+          '<td>'+x.montant+' '+ech(x.devise)+'</td>'+
+          '<td style="font-size:12px">'+ech(x.reference||'—')+'</td>'+
+          '<td><span class="pastille '+(x.statut==='reussi'?'ok':x.statut==='echec'?'ko':'att')+'">'+
+          ech(x.statut)+'</span></td></tr>';
+      });
+      h+='</table>';
+    }else h+='<div class="sous">Aucun prélèvement.</div>';
+
+    h+='</div><div class="pM"><button class="act" data-fermer>Fermer</button></div>';
+
+    var z=document.createElement('div');
+    z.className='voileM';
+    z.innerHTML='<div class="fenetreM" style="max-width:680px">'+h+'</div>';
+    document.body.appendChild(z);
+    z.querySelector('[data-fermer]').onclick=function(){z.remove();};
+    z.onclick=function(e){if(e.target===z)z.remove();};
+  }).catch(function(e){toast('Lecture impossible : '+e.message);});
 }
 
 /* ---------------- Finances ---------------- */
@@ -1475,6 +1790,23 @@ function vueMarches(){
       ch(m,'courriel','Courriel du service client')+ch(m,'tel','Téléphone')+
       ch(m,'whatsapp','WhatsApp')+
       '</div>'+
+      '</div><div class="deux" style="margin-top:12px">'+
+      '<div><label>Parcours de paiement</label><select data-mtype="1">'+
+        [['direct','Prélèvement direct — nous appelons leur interface'],
+         ['code','Code par SMS — l\'abonné envoie un mot-clé au numéro court'],
+         ['redirection','Redirection — l\'abonné paie sur leur page']]
+         .map(function(o){return '<option value="'+o[0]+'"'+
+           ((m.type||'direct')===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+
+      '</select></div>'+
+      ((m.type==='code')
+        ? '<div><label>Mots-clés par pass (jour, semaine, mois)</label>'+
+          '<input data-mmots="1" value="'+esc([(m.motsCles||{}).jour,(m.motsCles||{}).semaine,
+            (m.motsCles||{}).mois].filter(Boolean).join(', '))+
+          '" placeholder="JOUR, SEM, MOIS"></div>'
+        : '<div><label>&nbsp;</label><div class="sous" style="padding-top:10px">'+
+          (m.type==='redirection'
+            ? 'L\'adresse de paiement vient des accès opérateur.'
+            : 'Les accès opérateur se renseignent dans le fichier .env du serveur.')+'</div></div>')+
       '<div style="margin-top:12px"><label>État</label><select data-mact="1">'+
         '<option value="1"'+(m.actif?' selected':'')+'>Actif — visible pour ce pays</option>'+
         '<option value="0"'+(!m.actif?' selected':'')+'>Suspendu — retombe sur le marché par défaut</option>'+
@@ -1613,6 +1945,14 @@ function brancherMarches(){
   });
   var a=z.querySelector('[data-mact]');
   if(a)a.onchange=function(){m.actif=+a.value;enregistrer('marches').then(rendre);};
+  var ty=z.querySelector('[data-mtype]');
+  if(ty)ty.onchange=function(){m.type=ty.value;enregistrer('marches').then(rendre);};
+  var mo=z.querySelector('[data-mmots]');
+  if(mo)mo.oninput=function(){
+    var p=mo.value.split(',').map(function(x){return x.trim();});
+    m.motsCles={jour:p[0]||'',semaine:p[1]||'',mois:p[2]||''};
+    enregistrer('marches');
+  };
   Array.prototype.forEach.call(z.querySelectorAll('[data-mp]'),function(e){
     e.oninput=function(){
       var id=e.getAttribute('data-mp');
@@ -2211,7 +2551,8 @@ function vueReglages(){
     ['build','Numéro de version détaillé'],['courriel','Courriel'],['tel','Téléphone'],
     ['whatsapp','WhatsApp'],['ville','Ville et pays'],['operateur','Opérateur partenaire'],
     ['motStop','Mot-clé de résiliation'],['courtCode','Numéro court']];
-  var h='<h2>Réglages</h2><div class="sous">Ces valeurs apparaissent dans les documents légaux, l\'aide et la page À propos.</div>'+
+  var h='<h2>Réglages</h2>'+
+    '<div class="sous">Ces valeurs apparaissent dans les documents légaux, l\'aide et la page À propos.</div>'+
     '<div class="bloc"><h3>Mode de fonctionnement</h3>'+
     '<select id="rMode">'+
     '<option value="libre"'+(e.mode==='libre'?' selected':'')+'>Essai public — tout ouvert, sans paiement ni opérateur</option>'+
@@ -2328,11 +2669,36 @@ $('publier').onclick=function(){
   $('modale').classList.add('on');
 };
 
+/* Refuse de publier un contenu manifestement vide : une publication accidentelle
+   écraserait la base et effacerait le catalogue. */
+function contenuSuspect(){
+  var pb=[];
+  if(!(D.contes||[]).length)pb.push('aucun conte');
+  if(!(D.bientot||[]).length)pb.push('aucun conte annoncé');
+  if(!(D.cats||[]).length)pb.push('aucune catégorie');
+  if(!Object.keys(D.docs||{}).length)pb.push('aucun document légal');
+  return pb;
+}
+
 function publierEnLigne(){
+  var pb=contenuSuspect();
+  if(pb.length){
+    if(!confirm("Ce contenu semble incomplet : "+pb.join(', ')+".\n\n"+
+      "Publier maintenant écraserait ce qui est en ligne. "+
+      "Recharge la page pour récupérer le contenu du serveur.\n\n"+
+      "Publier quand même ?"))return;
+  }
   var b=$('publier'), texte=b.textContent;
   b.disabled=true;
   var faites=0, ratees=[];
-  var aFaire=SECTIONS_PUB.filter(function(k){return D[k]!=null;});
+  var aFaire=SECTIONS_PUB.filter(function(k){
+    var v=D[k];
+    if(v==null)return false;
+    /* une liste vide ou un objet vide n'écrase rien : on la saute */
+    if(Array.isArray(v)&&!v.length)return false;
+    if(!Array.isArray(v)&&typeof v==='object'&&!Object.keys(v).length)return false;
+    return true;
+  });
 
   var suivant=function(i){
     if(i>=aFaire.length){

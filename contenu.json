@@ -100,7 +100,13 @@
   "zombre": 1,
   "etoiles": 1,
   "bazoule": 1,
-  "balafon": 1
+  "balafon": 1,
+  "pokou": 1,
+  "abomey": 1,
+  "gbepleu": 1,
+  "messager": 1,
+  "ananze": 1,
+  "tamtam": 1
  },
  "descriptions": {
   "lievre": "Saison sèche, greniers vides, et deux animaux que tout oppose : l'un a la force, l'autre a la tête. Un conte de ruse où le plus malin n'est pas forcément celui qui gagne le plus.",
@@ -120,11 +126,13 @@
   },
   {
    "q": "Comment m'abonner, et combien ça coûte ?",
-   "r": "Trois formules : 50 F CFA la journée, 200 F la semaine, 500 F le mois. Tu entres ton numéro, tu reçois un code par SMS, et le montant est prélevé sur ton crédit téléphonique."
+   "r": "Les formules et les tarifs dépendent de ton pays et de ton opérateur. Tu entres ton numéro, tu reçois un code par SMS, et le montant est prélevé sur ton crédit téléphonique ou ton mobile money.",
+   "dyn": "abonnement"
   },
   {
    "q": "Comment arrêter mon abonnement ?",
-   "r": "Deux façons, aussi simples l'une que l'autre : envoyer {{motStop}} au {{courtCode}}, ou aller dans le menu, rubrique Mon abonnement, et toucher « Résilier ». L'arrêt prend effet à la fin de la période payée."
+   "r": "Depuis le portail : rubrique Mon abonnement, puis « Résilier ». L'arrêt prend effet à la fin de la période déjà payée : tu gardes l'accès jusque-là.",
+   "dyn": "resiliation"
   },
   {
    "q": "Puis-je écouter sans connexion ?",
