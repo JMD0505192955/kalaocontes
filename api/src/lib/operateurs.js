@@ -13,42 +13,26 @@ async function marche(pays) {
   return L.find(m => m.pays === pays && m.actif !== 0) || null;
 }
 
-/* ---- Demande de prélèvement ----
-   Chaque opérateur a sa propre interface. Tant qu'elle n'est pas connue,
-   on reste en simulation : rien n'est encaissé, tout est tracé. */
+/* ---- Le parcours dépend de l'opérateur ----
+   Le socle ne connaît que trois verbes : instructions, démarrer, lire un rappel.
+   Chaque adaptateur traduit les particularités de son opérateur. */
+const adaptateurs = require('../adaptateurs');
+
+function adaptateur(marche) { return adaptateurs.pour(marche); }
+
+/* Ce que le portail affiche après le choix du pass. */
+function instructions(marche, pass) {
+  return adaptateur(marche).instructions(marche, pass);
+}
+
 async function prelever(marche, telephone, montant, pass) {
-  const conf = configuration(marche);
+  return adaptateur(marche).demarrer(marche, telephone, montant, pass, configuration(marche));
+}
 
-  if (!conf.url) {
-    /* Mode simulation : le rappel devra être déclenché à la main. */
-    return {
-      reference: 'sim-' + crypto.randomUUID(),
-      statut: 'en_attente',
-      simulation: true
-    };
-  }
-
-  const r = await fetch(conf.url + '/paiements', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + conf.cle
-    },
-    body: JSON.stringify({
-      msisdn: telephone,
-      amount: montant,
-      currency: marche.devise === 'F CFA' ? 'XOF' : marche.devise,
-      reference: crypto.randomUUID(),
-      description: 'Contes Faso — pass ' + pass
-    })
-  });
-
-  if (!r.ok) throw new Error('passerelle ' + marche.operateur + ' : ' + r.status);
-  const d = await r.json();
-  return {
-    reference: d.reference || d.transactionId,
-    statut: d.status === 'SUCCESS' ? 'reussi' : 'en_attente'
-  };
+/* Pour les parcours par code : vérifie celui que l'abonné saisit. */
+async function verifierCode(marche, telephone, code) {
+  const a = adaptateur(marche);
+  return a.verifierCode ? a.verifierCode(marche, telephone, code) : null;
 }
 
 function configuration(marche) {
@@ -63,28 +47,16 @@ function configuration(marche) {
 }
 
 /* ---- Rappels entrants ----
-   Chaque opérateur nomme ses champs à sa façon. On traduit ici, une fois,
-   plutôt que partout ailleurs. */
-function lireRappel(operateur, corps) {
+   L'adaptateur du marché traduit ; le socle ne voit qu'un vocabulaire commun. */
+async function lireRappel(cle, corps) {
   if (!corps) return null;
-  const commun = {
-    reference: corps.reference || corps.transactionId || corps.txnId,
-    statut: normaliser(corps.status || corps.statut),
-    pass: corps.pass || (corps.description || '').split('pass ')[1],
-    message: corps.message || corps.reason
-  };
-  if (!commun.reference) return null;
-  commun.operateur = operateur === 'orange-bf' ? 'Orange Burkina Faso'
-                   : operateur === 'moov-tg'   ? 'Moov Africa Togo'
-                   : operateur;
-  return commun;
-}
-
-function normaliser(s) {
-  const v = String(s || '').toUpperCase();
-  if (['SUCCESS','SUCCESSFUL','OK','COMPLETED','REUSSI'].includes(v)) return 'reussi';
-  if (['FAILED','ERROR','REJECTED','ECHEC'].includes(v)) return 'echec';
-  return 'en_attente';
+  /* la clé du rappel désigne le marché : 'orange-bf', 'moov-tg'… */
+  const pays = String(cle || '').split('-').pop();
+  const m = await marche(pays);
+  const lu = adaptateur(m).lireRappel(corps);
+  if (!lu) return null;
+  lu.operateur = (m && m.operateur) || cle;
+  return lu;
 }
 
 /* ---- Signature des rappels ----
@@ -105,4 +77,25 @@ function signatureValide(req) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
-module.exports = { marche, prelever, lireRappel, garderBrut, signatureValide };
+/* Retrouve le marché à partir de l'indicatif d'un numéro.
+   C'est la seule façon fiable de savoir qui peut facturer ce numéro :
+   un pays déclaré se change, un indicatif non. */
+async function marcheParIndicatif(telephone) {
+  const t = String(telephone || '').replace(/\s/g, '');
+  if (!t.startsWith('+')) return null;
+  const { rows } = await q(
+    `SELECT valeur FROM contenu WHERE section='marches'`);
+  const L = rows[0] ? rows[0].valeur : [];
+  /* l'indicatif le plus long qui correspond gagne : +225 avant +22 */
+  let trouve = null;
+  for (const m of L) {
+    if (!m.ind) continue;
+    const ind = String(m.ind).replace(/\s/g, '');
+    if (t.startsWith(ind) && (!trouve || ind.length > String(trouve.ind).length))
+      trouve = m;
+  }
+  return trouve;
+}
+
+module.exports = { marche, marcheParIndicatif, prelever, lireRappel, instructions, verifierCode,
+                   garderBrut, signatureValide, adaptateur };
