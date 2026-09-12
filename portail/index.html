@@ -7,6 +7,10 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icones/icone-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icones/icone-180.png">
 <link rel="manifest" href="manifeste.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AfriKfables">
 <meta name="theme-color" content="#E66E2A">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>AfriKfables</title>
@@ -591,6 +595,15 @@
   .carteAbo.actif b{color:var(--vert);}
   .carteAbo p{font-size:13.5px;color:var(--txt2);line-height:1.5;margin-bottom:12px;}
   .carteAbo button{width:100%;}
+  .choixBloc{margin:16px 0 0;}
+  .choixBloc .lb{font-size:12px;font-weight:800;letter-spacing:.8px;color:var(--txt2);
+    text-transform:uppercase;margin-bottom:8px;}
+  .choixBloc .opts{display:flex;gap:9px;flex-wrap:wrap;}
+  .choixBloc .opt{flex:1;min-width:140px;background:var(--carte);border:1px solid var(--bord);
+    border-radius:14px;padding:12px 14px;cursor:pointer;}
+  .choixBloc .opt.on{border-color:var(--or);box-shadow:0 0 0 2px var(--or) inset;}
+  .choixBloc .opt b{display:block;font-size:14px;font-weight:800;}
+  .choixBloc .opt small{display:block;font-size:12px;color:var(--txt2);margin-top:3px;line-height:1.4;}
   .carteRang{display:flex;align-items:center;gap:18px;margin:0 14px 16px;
     background:var(--carte);border:1px solid var(--or);border-radius:18px;
     padding:18px 20px;box-shadow:0 3px 12px var(--om1);}
@@ -1273,6 +1286,8 @@
     <div class="accroche"><h2 id="offTitre">Ta veillée gratuite est finie</h2>
       <p id="offSous">Prends un pass pour ouvrir toute la bibliothèque, et un nouveau conte chaque soir.</p></div>
     <div id="listePass"></div>
+    <div id="zoneMode"></div>
+    <div id="zoneCanal"></div>
     <button class="bouton" id="offSuivant">Continuer</button>
     <div class="aide" style="margin-top:14px;text-align:center" id="offMention"></div>
   </div>
@@ -7033,14 +7048,29 @@ function rendreFiche(){
         '<p>L\'abonnement n\'est pas encore disponible dans ton pays. '+
         'Tous les contes restent accessibles.</p></div>';
     }else if(abonne()){
-      var f=DB.compte&&DB.compte.fin?new Date(DB.compte.fin):null;
+      var f=DB.compte&&DB.compte.echeance?new Date(DB.compte.echeance):null;
       var p=DB.compte&&DB.compte.pass?DB.compte.pass:'';
+      var rec=DB.compte&&DB.compte.reconduction!==false;
+      var tf=DB.telFacturation||DB.tel;
       za.innerHTML='<div class="carteAbo actif"><b>Ton pass est actif</b>'+
         '<p>'+(p?('Pass '+p+'. '):'')+
-        (f?('Valable jusqu\'au '+f.toLocaleDateString('fr-FR')+'.'):'')+'</p>'+
-        '<button class="plat" id="bGererAbo">Gérer mon abonnement</button></div>';
-      var g=$('bGererAbo');
-      if(g)g.onclick=function(){SFX.tap();montrerAbo();};
+        (f?('Valable jusqu\'au '+f.toLocaleDateString('fr-FR')+'. '):'')+
+        (rec?'Il se reconduit tout seul à cette date.':'Il s\'arrêtera à cette date.')+
+        (tf?'<br><span style="font-size:12.5px">Prélevé sur le '+tf+'</span>':'')+'</p>'+
+        (rec?'<button class="plat" id="bArretRec">Arrêter la reconduction</button>':'')+
+        '<button class="plat" id="bChgTel" style="margin-top:8px">Changer le numéro facturé</button>'+
+        '</div>';
+
+      var ar=$('bArretRec');
+      if(ar)ar.onclick=function(){
+        SFX.tap();
+        if(!confirm("Arrêter la reconduction ?\n\n"+
+          "Ton accès reste ouvert jusqu'au "+(f?f.toLocaleDateString('fr-FR'):'terme')+
+          ". Aucun nouveau prélèvement ne sera fait."))return;
+        arreterReconduction();
+      };
+      var ch=$('bChgTel');
+      if(ch)ch.onclick=function(){SFX.tap();changerNumeroFacture();};
     }else{
       za.innerHTML='<div class="carteAbo"><b>Aucun pass en cours</b>'+
         '<p>Prends un pass pour écouter toute la bibliothèque, '+
@@ -8625,7 +8655,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-12-b',
+  build:'2026-09-13-c',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8792,6 +8822,46 @@ function passDuMarche(){
     return c;
   });
 }
+/* Le mode d'abonnement et le canal de paiement sont des choix de l'abonné.
+   Le mot-clé porte les deux : FABLE30R pour renouvelable, FABLE30 sinon. */
+var modeAbo='renouvelable', canalAbo='web';
+
+function rendreChoixAbo(){
+  var zm=$('zoneMode'), zc=$('zoneCanal');
+  if(!zm||!zc)return;
+  if(libre()||!marcheSousContrat()){zm.innerHTML='';zc.innerHTML='';return;}
+
+  zm.innerHTML='<div class="choixBloc"><div class="lb">Mode d\'abonnement</div><div class="opts">'+
+    [['renouvelable','Renouvelable','Se reconduit à l\'échéance. Tu peux l\'arrêter quand tu veux.'],
+     ['unique','Une seule fois','Se termine à l\'échéance, sans reconduction.']]
+    .map(function(o){return '<div class="opt'+(modeAbo===o[0]?' on':'')+'" data-mode="'+o[0]+'">'+
+      '<b>'+o[1]+'</b><small>'+o[2]+'</small></div>';}).join('')+'</div></div>';
+
+  /* Les canaux disponibles viennent du marché. Moov Togo en propose trois. */
+  var canaux=(marche().canaux)||['web'];
+  if(canaux.length>1){
+    var lbl={web:['Depuis ce téléphone','Ton numéro, un code par SMS, et c\'est réglé.'],
+             ussd:['Par code USSD','Tu composes un code sur ton clavier téléphone.'],
+             sms:['Par SMS','Tu envoies un mot-clé au numéro court.']};
+    zc.innerHTML='<div class="choixBloc"><div class="lb">Comment payer</div><div class="opts">'+
+      canaux.map(function(c){return '<div class="opt'+(canalAbo===c?' on':'')+'" data-canal="'+c+'">'+
+        '<b>'+lbl[c][0]+'</b><small>'+lbl[c][1]+'</small></div>';}).join('')+'</div></div>';
+  }else{ zc.innerHTML=''; canalAbo=canaux[0]||'web'; }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-mode]'),function(e){
+    e.onclick=function(){SFX.tap();modeAbo=e.getAttribute('data-mode');rendreChoixAbo();};});
+  Array.prototype.forEach.call(document.querySelectorAll('[data-canal]'),function(e){
+    e.onclick=function(){SFX.tap();canalAbo=e.getAttribute('data-canal');rendreChoixAbo();};});
+}
+
+/* Le mot-clé du marché, selon le pass et le mode choisis. */
+function motCleAbo(){
+  var m=marche(), mc=m.motsCles||{};
+  var base=mc[passChoisi];
+  if(!base)return null;
+  return modeAbo==='renouvelable' ? base+'R' : base;
+}
+
 function montrerOffre(depuisMenu){
   var om=$('offMention');
   if(om){
@@ -8801,6 +8871,7 @@ function montrerOffre(depuisMenu){
         "En attendant, les contes restent ouverts.";
     else om.textContent='Prélevé sur ton crédit téléphonique ou ton mobile money. Résiliable à tout moment.';
   }
+  rendreChoixAbo();
   $('offTitre').textContent=depuisMenu?'Choisis ton pass':(contesLus()?'Ta veillée gratuite est finie':'Ouvre toute la bibliothèque');
   $('offSous').textContent=contesLus()&&!depuisMenu
     ? 'Tu as écouté ton conte offert. Prends un pass pour ouvrir les six autres et recevoir un nouveau conte chaque soir.'
@@ -9223,6 +9294,56 @@ function blocCompetition(){
   return h;
 }
 
+/* Arrêter la reconduction : l'accès court jusqu'au terme déjà payé.
+   On ne coupe pas et on ne rembourse pas — c'est ce que l'abonné comprend. */
+function arreterReconduction(){
+  if(!DB.tel){toast('Numéro inconnu.');return;}
+  fetch('/api/abonnements/arreter',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({telephone:DB.tel})})
+    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.erreur);return d;});})
+    .then(function(d){
+      if(DB.compte)DB.compte.reconduction=false;
+      save(); rendreFiche();
+      toast(d.message||'Reconduction arrêtée.');
+    })
+    .catch(function(e){
+      /* Sans serveur, on note l'intention localement : elle partira à la reconnexion. */
+      if(DB.compte)DB.compte.reconduction=false;
+      save(); rendreFiche();
+      toast('Reconduction arrêtée sur ce téléphone.');
+    });
+}
+
+/* Le numéro facturé peut différer de celui de l'inscription :
+   une famille a plusieurs lignes, et seule celle d'un opérateur
+   partenaire peut être prélevée. */
+function changerNumeroFacture(){
+  var m=marche();
+  var actuel=(DB.telFacturation||DB.tel||'').replace(/^\+\d+\s*/,'');
+  var n=prompt("Sur quel numéro veux-tu que l'abonnement soit prélevé ?\n\n"+
+    "Ce doit être une ligne "+(M('operateur')||'d\'un opérateur partenaire')+".\n"+
+    "Indicatif "+(m.ind||'')+".", actuel);
+  if(n===null)return;
+  var net=chiffres(n);
+  var re=new RegExp('^['+(m.debuts||'0-9')+']');
+  if(net.length!==(m.longueur||8)||!re.test(net)){
+    toast("Ce numéro ne correspond pas au format "+(M('operateur')||'attendu')+'.');
+    return;
+  }
+  var complet=(m.ind||'')+' '+n.trim();
+  fetch('/api/abonnes/facturation',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({telephone:DB.tel,tel_facturation:complet})})
+    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.erreur);return d;});})
+    .then(function(d){
+      DB.telFacturation=complet; save(); rendreFiche();
+      toast('Le '+complet+' sera prélevé.');
+    })
+    .catch(function(e){
+      DB.telFacturation=complet; save(); rendreFiche();
+      toast('Numéro enregistré sur ce téléphone.');
+    });
+}
+
 function rendreVeillee(){
   var moi={p:(DB.compte?DB.compte.pseudo:(SAVE?SAVE.nom:'Toi')),n:nbLus(),s:SAVE?SAVE.points:0,moi:1};
   var liste;
@@ -9347,7 +9468,7 @@ $('mDiag')&&($('mDiag').onclick=function(){fermerMenu();diagnostic();});
 /* Chaque conte a son conteur attitré : on enregistre une fois, et on met la voix en avant.
    Portraits attendus dans contes-images/conteur-<id>.webp (16/9 pour le cadre, carré pour la fiche). */
 /* Contes dont la voix est enregistrée. Les autres passent par la synthèse du navigateur. */
-var VOIX_DISPO={lievre:1,tortue:1,cameleon:1,conseils:1,puits:1,zombre:1,etoiles:1,bazoule:1,balafon:1,pokou:1,abomey:1};
+var VOIX_DISPO={lievre:1,tortue:1,cameleon:1,conseils:1,puits:1,zombre:1,etoiles:1,bazoule:1,balafon:1,pokou:1,abomey:1,gbepleu:1,messager:1,ananze:1,tamtam:1};
 var CONTEURS=[
  {id:'sanou',nom:'Le vieux Sanou',role:'CONTEUR DE LA BROUSSE',region:'Ouagadougou',
   desc:"Il a passé sa vie sous le karité du quartier, à raconter aux enfants qui rentraient de l'école. Il connaît toutes les ruses du lièvre, et il en a inventé quelques-unes.",
@@ -10053,6 +10174,14 @@ function ecouterEnVisiteur(id){
   ouvrir(id);
 }
 
+/* Le service worker rend le site installable et garde les voix
+   déjà écoutées sur le téléphone. Silencieux s'il échoue. */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+
 function demarrer(){
   /* Ce qui dépend du mode doit être appliqué après le chargement du contenu. */
   var ma=$('mAbo');if(ma)ma.style.display=libre()?'none':'block';
@@ -10113,6 +10242,9 @@ window.__contes={
   doc:montrerDoc,
   tel:function(){return {num:DB.tel||null,pays:DB.paysTel||null,valide:!!DB.telValide};},
   otp:function(){return otpAttendu;},
+  etatAbo:function(){return DB.compte||null;},
+  simulerAbo:function(){DB.compte={pass:'mois',actif:true,echeance:Date.now()+20*864e5,reconduction:true};save();rendreFiche();},
+  motCle:function(pass,mode){passChoisi=pass||passChoisi;modeAbo=mode||modeAbo;return motCleAbo();},
   lien:function(){return LIEN_SERVICE;},
   marche:function(){var m=marche();return {nom:m.nom,operateur:M("operateur"),tel:M("tel"),court:M("courtCode"),stop:M("motStop"),pass:passDuMarche().map(function(x){return x.id+":"+x.p;}).join(" ")};},
   taux:function(){return audioVoix?audioVoix.playbackRate:null;},

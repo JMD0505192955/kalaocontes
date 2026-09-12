@@ -102,7 +102,11 @@
   "bazoule": 1,
   "balafon": 1,
   "pokou": 1,
-  "abomey": 1
+  "abomey": 1,
+  "gbepleu": 1,
+  "messager": 1,
+  "ananze": 1,
+  "tamtam": 1
  },
  "descriptions": {
   "lievre": "Saison sèche, greniers vides, et deux animaux que tout oppose : l'un a la force, l'autre a la tête. Un conte de ruse où le plus malin n'est pas forcément celui qui gagne le plus.",
@@ -6226,7 +6230,7 @@
    "longueur": 8,
    "debuts": "79",
    "operateur": "Moov Africa Togo",
-   "courtCode": "5050",
+   "courtCode": "XXX",
    "motStop": "STOP CONTES",
    "devise": "F CFA",
    "courriel": "contact@alphabet-digital.com",
@@ -6238,19 +6242,30 @@
    "pass": [
     {
      "id": "jour",
-     "p": 50
+     "p": 100
     },
     {
      "id": "semaine",
-     "p": 200
+     "p": 300
     },
     {
      "id": "mois",
-     "p": 500
+     "p": 1000
     }
    ],
    "produit": "AfriKfables",
-   "siegeLocal": "Lomé, Togo"
+   "siegeLocal": "Lomé, Togo",
+   "motsCles": {
+    "jour": "FABLE1",
+    "semaine": "FABLE7",
+    "mois": "FABLE30"
+   },
+   "canaux": [
+    "web",
+    "ussd",
+    "sms"
+   ],
+   "type": "code"
   }
  ]
 }
