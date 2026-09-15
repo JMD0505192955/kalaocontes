@@ -257,92 +257,138 @@ r.post('/abonnements/code', async (req, res) => {
   }
 });
 
-/* ---- Le numéro de facturation ----
-   Distinct de celui de l'inscription : une famille a plusieurs lignes,
-   et seule celle d'un opérateur sous contrat peut être prélevée. */
-r.post('/abonnes/facturation', async (req, res) => {
-  const { telephone, tel_facturation } = req.body || {};
-  if (!telephone || !tel_facturation)
-    return res.status(400).json({ erreur: 'Numéros attendus' });
+/* ================= ACHAT DÉFINITIF D'UN CONTE =================
+   Là où le prélèvement récurrent n'existe pas, un paiement unique
+   doit donner quelque chose de définitif. Un conte acheté reste
+   acquis : aucune échéance, aucune révocation. */
 
-  const net = String(tel_facturation).replace(/\s/g, '');
-  /* L'indicatif dit le pays : on refuse un numéro qu'aucun opérateur ne facture. */
-  const m = await ops.marcheParIndicatif(net);
-  if (!m || m.actif === 0)
-    return res.status(400).json({
-      erreur: "Ce numéro n'est pas celui d'un opérateur partenaire. " +
-              "Utilise une ligne sur laquelle l'abonnement peut être prélevé."
-    });
+r.post('/achats/demarrer', async (req, res) => {
+  const { telephone, pays, conte, portefeuille } = req.body || {};
+  if (!telephone || !pays || !conte)
+    return res.status(400).json({ erreur: 'Numéro, pays et conte attendus' });
 
   try {
-    const { rowCount } = await q(
-      `UPDATE abonnes SET tel_facturation=$1, tel_facturation_valide=TRUE
-        WHERE telephone=$2`,
-      [net, String(telephone).replace(/\s/g, '')]);
-    if (!rowCount) return res.status(404).json({ erreur: 'Compte inconnu' });
-    res.json({ tel_facturation: net, operateur: m.operateur, pays: m.pays });
-  } catch (e) {
-    console.error('[abonnes] facturation :', e.message);
-    res.status(500).json({ erreur: 'Enregistrement impossible' });
-  }
-});
+    const m = await ops.marche(pays);
+    if (!m) return res.status(400).json({ erreur: 'Pays non desservi' });
+    const prix = (m.prixConte != null) ? m.prixConte : 200;
 
-/* ---- Arrêter la reconduction ----
-   L'accès court jusqu'à la fin de la période déjà payée : on ne rembourse pas,
-   on ne coupe pas. C'est ce que l'abonné comprend et ce que le régulateur attend. */
-r.post('/abonnements/arreter', async (req, res) => {
-  const { telephone } = req.body || {};
-  if (!telephone) return res.status(400).json({ erreur: 'Numéro attendu' });
-  try {
-    const { rows } = await q(
-      `UPDATE abonnements ab
-          SET reconduction=FALSE, arret_demande_le=now()
-         FROM abonnes a
-        WHERE ab.abonne_id=a.id
-          AND a.telephone=$1
-          AND ab.statut='actif' AND ab.fin > now()
-          AND ab.reconduction=TRUE
-        RETURNING ab.fin, ab.pass`,
-      [String(telephone).replace(/\s/g, '')]);
+    const tel = String(telephone).replace(/\s/g, '');
+    const { rows } = await q('SELECT id FROM abonnes WHERE telephone=$1', [tel]);
+    if (!rows.length) return res.status(404).json({ erreur: 'Compte inconnu' });
+    const abonneId = rows[0].id;
 
-    if (!rows.length)
-      return res.status(404).json({ erreur: "Aucun abonnement renouvelable en cours" });
+    /* Déjà acheté : on ne fait pas payer deux fois. */
+    const deja = await q('SELECT 1 FROM achats WHERE abonne_id=$1 AND conte=$2',
+      [abonneId, conte]);
+    if (deja.rowCount)
+      return res.json({ deja: true, message: 'Tu possèdes déjà ce conte.' });
+
+    const conf = Object.assign({}, ops.configuration ? ops.configuration(m) : {},
+      { portefeuille });
+    const d = await ops.adaptateur(m).demarrer(m, tel, prix, 'conte:' + conte, conf);
+
+    await q(
+      `INSERT INTO prelevements (abonne_id, montant, devise, operateur, reference, statut, message)
+       VALUES ($1,$2,$3,$4,$5,'en_attente',$6)`,
+      [abonneId, prix, m.devise === 'F CFA' ? 'XOF' : m.devise,
+       m.operateur || 'agrégateur', d.reference, 'achat conte ' + conte]);
 
     res.json({
-      arrete: true,
-      fin: rows[0].fin,
-      message: `La reconduction est arrêtée. Ton accès reste ouvert jusqu'au ` +
-               new Date(rows[0].fin).toLocaleDateString('fr-FR') + `.`
+      reference: d.reference, jeton: d.jeton, url: d.url,
+      statut: d.statut, prix, devise: 'XOF',
+      simulation: !!d.simulation, portefeuille: d.portefeuille
     });
   } catch (e) {
-    console.error('[abonnements] arret :', e.message);
-    res.status(500).json({ erreur: 'Arrêt impossible' });
+    console.error('[achats] démarrage :', e.message);
+    res.status(500).json({ erreur: 'Paiement impossible pour le moment' });
   }
 });
 
-/* ---- L'état de l'abonnement, pour le profil ---- */
-r.get('/abonnements/etat', async (req, res) => {
+/* Le paiement a abouti : on inscrit l'achat. Appelé par le rappel,
+   ou par la vérification de statut si le rappel s'est perdu. */
+async function inscrireAchat(reference) {
+  const { rows } = await q(
+    `SELECT p.abonne_id, p.montant, p.devise, p.message, a.pays
+       FROM prelevements p JOIN abonnes a ON a.id=p.abonne_id
+      WHERE p.reference=$1`, [reference]);
+  if (!rows.length) return null;
+  const x = rows[0];
+  const m = /achat conte (.+)$/.exec(x.message || '');
+  if (!m) return null;
+
+  await q(
+    `INSERT INTO achats (abonne_id, conte, prix, devise, reference, pays)
+     VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT (abonne_id, conte) DO NOTHING`,
+    [x.abonne_id, m[1], x.montant, x.devise, reference, x.pays]);
+  await q(`UPDATE prelevements SET statut='reussi' WHERE reference=$1`, [reference]);
+  return m[1];
+}
+
+/* Le portail demande où en est son paiement. */
+r.get('/achats/statut', async (req, res) => {
+  const { reference, jeton, pays } = req.query;
+  if (!reference) return res.status(400).json({ erreur: 'Référence attendue' });
+  try {
+    const { rows } = await q('SELECT statut FROM prelevements WHERE reference=$1', [reference]);
+    if (!rows.length) return res.status(404).json({ erreur: 'Référence inconnue' });
+
+    if (rows[0].statut === 'reussi') {
+      const c = await q('SELECT conte FROM achats WHERE reference=$1', [reference]);
+      return res.json({ statut: 'reussi', conte: c.rows[0] && c.rows[0].conte });
+    }
+
+    /* Toujours en attente : on interroge l'agrégateur, le rappel a pu se perdre. */
+    if (jeton && pays) {
+      const m = await ops.marche(pays);
+      const a = ops.adaptateur(m);
+      if (a.verifierStatut) {
+        const v = await a.verifierStatut(jeton,
+          ops.configuration ? ops.configuration(m) : {});
+        if (v && v.statut === 'reussi') {
+          const conte = await inscrireAchat(reference);
+          return res.json({ statut: 'reussi', conte });
+        }
+        if (v && v.statut === 'echec') {
+          await q(`UPDATE prelevements SET statut='echec' WHERE reference=$1`, [reference]);
+          return res.json({ statut: 'echec' });
+        }
+      }
+    }
+    res.json({ statut: 'en_attente' });
+  } catch (e) {
+    console.error('[achats] statut :', e.message);
+    res.status(500).json({ erreur: 'Vérification impossible' });
+  }
+});
+
+/* La liste des contes possédés, que le portail consulte au démarrage. */
+r.get('/achats', async (req, res) => {
   const tel = String(req.query.telephone || '').replace(/\s/g, '');
   if (!tel) return res.status(400).json({ erreur: 'Numéro attendu' });
   const { rows } = await q(
-    `SELECT a.tel_facturation, ab.pass, ab.prix, ab.devise, ab.debut, ab.fin,
-            ab.reconduction, ab.canal, ab.arret_demande_le, ab.statut
-       FROM abonnes a
-       LEFT JOIN LATERAL (
-         SELECT * FROM abonnements WHERE abonne_id=a.id AND fin > now()
-          ORDER BY fin DESC LIMIT 1) ab ON TRUE
-      WHERE a.telephone=$1`, [tel]);
-  if (!rows.length) return res.json({ abonne: false });
-  const x = rows[0];
-  res.json({
-    abonne: !!x.pass,
-    tel_facturation: x.tel_facturation,
-    pass: x.pass, prix: x.prix, devise: x.devise,
-    debut: x.debut, fin: x.fin,
-    reconduction: x.reconduction,
-    canal: x.canal,
-    arret_demande: !!x.arret_demande_le
-  });
+    `SELECT ac.conte, ac.cree_le FROM achats ac
+       JOIN abonnes a ON a.id=ac.abonne_id
+      WHERE a.telephone=$1 ORDER BY ac.cree_le DESC`, [tel]);
+  res.json({ contes: rows.map(x => x.conte), detail: rows });
+});
+
+/* Le rappel de l'agrégateur. */
+r.post('/rappel/agregateur', async (req, res) => {
+  try {
+    const a = require('../adaptateurs/agregateur');
+    const lu = a.lireRappel(req.body);
+    if (!lu) return res.status(400).json({ erreur: 'Rappel illisible' });
+
+    if (lu.statut === 'reussi') await inscrireAchat(lu.reference);
+    else if (lu.statut === 'echec')
+      await q(`UPDATE prelevements SET statut='echec', message=COALESCE($2,message)
+                WHERE reference=$1`, [lu.reference, lu.message]);
+
+    res.json({ recu: true });
+  } catch (e) {
+    console.error('[rappel] agrégateur :', e.message);
+    res.status(500).json({ erreur: 'Traitement impossible' });
+  }
 });
 
 module.exports = r;

@@ -83,8 +83,7 @@ function signatureValide(req) {
 async function marcheParIndicatif(telephone) {
   const t = String(telephone || '').replace(/\s/g, '');
   if (!t.startsWith('+')) return null;
-  const { rows } = await q(
-    `SELECT valeur FROM contenu WHERE section='marches'`);
+  const { rows } = await q(`SELECT valeur FROM contenu WHERE section='marches'`);
   const L = rows[0] ? rows[0].valeur : [];
   /* l'indicatif le plus long qui correspond gagne : +225 avant +22 */
   let trouve = null;
@@ -97,5 +96,6 @@ async function marcheParIndicatif(telephone) {
   return trouve;
 }
 
-module.exports = { marche, marcheParIndicatif, prelever, lireRappel, instructions, verifierCode,
+module.exports = { marche, marcheParIndicatif, configuration, prelever,
+                   lireRappel, instructions, verifierCode,
                    garderBrut, signatureValide, adaptateur };
