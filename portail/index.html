@@ -8675,7 +8675,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-14-c',
+  build:'2026-09-14-d',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -10440,6 +10440,10 @@ window.__contes={
   motCle:function(pass,mode){passChoisi=pass||passChoisi;modeAbo=mode||modeAbo;return motCleAbo();},
   lien:function(){return LIEN_SERVICE;},
   marche:function(){var m=marche();return {nom:m.nom,operateur:M("operateur"),tel:M("tel"),court:M("courtCode"),stop:M("motStop"),pass:passDuMarche().map(function(x){return x.id+":"+x.p;}).join(" ")};},
+  marcheBrut:function(){return marche();},
+  diagAchat:function(){var m=marche();return {pays:m.pays,type:m.type,prixConte:m.prixConte,
+    nbPass:(m.pass||[]).length,achatPossible:achatPossible(),essaiFini:essaiFini(),
+    contesLus:contesLus(),abonne:abonne(),libre:libre(),sousContrat:marcheSousContrat()};},
   taux:function(){return audioVoix?audioVoix.playbackRate:null;},
   paysTel:function(c){if(SAVE){SAVE.paysTel=c||null;save();indChoisi=c||null;rendreListe();rendreDecouverte();}return SAVE?SAVE.paysTel:null;},
   pays:function(c){if(SAVE){SAVE.pays=c||null;save();rendreOrigines();rendreListe();rendreVedette();}return SAVE?SAVE.pays:null;},
