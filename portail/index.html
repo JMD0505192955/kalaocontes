@@ -595,6 +595,24 @@
   .carteAbo.actif b{color:var(--vert);}
   .carteAbo p{font-size:13.5px;color:var(--txt2);line-height:1.5;margin-bottom:12px;}
   .carteAbo button{width:100%;}
+  .verrou.amoi{background:var(--vert);color:#fff;}
+  .achatConte{background:var(--carte);border:1px solid var(--or);border-radius:18px;
+    padding:18px;margin:0 0 18px;box-shadow:0 3px 12px var(--om1);}
+  .achatConte .lb{font-size:11.5px;font-weight:800;letter-spacing:.8px;color:var(--txt2);
+    text-transform:uppercase;margin-bottom:6px;}
+  .achatConte .tt{font-size:18px;font-weight:800;margin-bottom:6px;}
+  .achatConte .ss{font-size:13.5px;color:var(--txt2);line-height:1.5;}
+  .achatConte .pr{font-size:30px;font-weight:800;color:var(--or);margin-top:10px;}
+  .achatConte .pr span{font-size:14px;font-weight:700;}
+  .achatConte .pfs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .achatConte .pf{flex:1;min-width:104px;text-align:center;background:var(--carte2);
+    border:1px solid var(--bord);border-radius:11px;padding:10px 8px;
+    font-size:13px;font-weight:700;cursor:pointer;}
+  .achatConte .pf.on{border-color:var(--or);background:var(--or);color:var(--surAction);}
+  .achatConte .bouton{width:100%;}
+  .achatConte .ou{text-align:center;font-size:12.5px;color:var(--txt2);margin-top:12px;}
+  .achatConte.attente{text-align:center;}
+  .achatConte .pts{font-size:26px;color:var(--or);letter-spacing:4px;margin-top:12px;height:30px;}
   .choixBloc{margin:16px 0 0;}
   .choixBloc .lb{font-size:12px;font-weight:800;letter-spacing:.8px;color:var(--txt2);
     text-transform:uppercase;margin-bottom:8px;}
@@ -1285,6 +1303,7 @@
   <div class="centre">
     <div class="accroche"><h2 id="offTitre">Ta veillée gratuite est finie</h2>
       <p id="offSous">Prends un pass pour ouvrir toute la bibliothèque, et un nouveau conte chaque soir.</p></div>
+    <div id="zoneAchat"></div>
     <div id="listePass"></div>
     <div id="zoneMode"></div>
     <div id="zoneCanal"></div>
@@ -7213,7 +7232,7 @@ function conteDuSoir(){
 }
 function carte(c,soir,i){
   var ouvert=libre()||abonne(),lu=SAVE&&SAVE.lus[c.id];
-  var bloque=!ouvert&&!lu&&essaiFini();
+  var bloque=!ouvert&&!lu&&!possede(c.id)&&essaiFini();
   var offert=!ouvert&&lu;
   var e=document.createElement('div');
   e.className='carte'+(soir?' soir':'')+(bloque?' bloque':'');
@@ -7228,7 +7247,8 @@ function carte(c,soir,i){
     'onerror="this.style.display=\'none\'"><span>'+conteurDe(c.id).nom+
     (suit(conteurDe(c.id).id)?' ♥':'')+'</span></div></div>'+
     (soir?'<div class="ru">CE SOIR</div>':'')+
-    (bloque?'<div class="verrou"><svg class="ic" style="width:1em;height:1em"><use href="#ic-etoile"/></svg> PREMIUM</div>'
+    (possede(c.id)?'<div class="verrou amoi"><svg class="ic" style="width:1em;height:1em"><use href="#ic-etoile"/></svg> À MOI</div>'
+     :bloque?'<div class="verrou"><svg class="ic" style="width:1em;height:1em"><use href="#ic-etoile"/></svg> PREMIUM</div>'
            :offert?'<div class="offert">OFFERT</div>'
            :(ouvert&&lu)?'<div class="ok">✓</div>':'');
   e.onclick=function(){SFX.tap();proposerMode(c.id);};
@@ -7695,8 +7715,8 @@ $('mic').onclick=function(){
 function ouvrir(id){
   if(estInvite() && VISITEUR.conteEcoute && VISITEUR.conteEcoute!==id){inviterCreation();return;}
   /* Le contrôle est ici, à la source : une carte n'est pas le seul chemin. */
-  if(!libre() && !abonne() && essaiFini() && !(SAVE&&SAVE.lus[id])){
-    montrerOffre(false);
+  if(!libre() && !abonne() && !possede(id) && essaiFini() && !(SAVE&&SAVE.lus[id])){
+    montrerOffre(false, id);
     return;
   }
   C=null;for(var i=0;i<CONTES.length;i++)if(CONTES[i].id===id)C=CONTES[i];
@@ -8655,7 +8675,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-13-c',
+  build:'2026-09-14-a',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8755,6 +8775,30 @@ var PASS=[
 ];
 if(!DB.compte)DB.compte=null;
 var passChoisi='semaine',otpAttendu='',otpDelai=null;
+
+/* Un conte acheté reste acquis : aucune échéance, aucune révocation.
+   Là où le mobile money ne sait pas prélever chaque mois, c'est
+   la seule offre qui tienne debout. */
+function possede(id){
+  return !!(DB.achats && DB.achats.indexOf(id)>=0);
+}
+function achatPossible(){
+  var m=marche();
+  return !libre() && marcheSousContrat() && m && m.prixConte>0;
+}
+function prixConte(){
+  var m=marche();
+  return (m && m.prixConte) || 200;
+}
+
+/* Les contes déjà payés, rechargés au démarrage. */
+function chargerAchats(){
+  if(!DB.tel)return Promise.resolve();
+  return fetch('/api/achats?telephone='+encodeURIComponent(DB.tel))
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){ if(d&&d.contes){DB.achats=d.contes;save();} })
+    .catch(function(){});
+}
 
 function abonne(){
   if(!DB.compte||!DB.compte.actif)return false;
@@ -8862,7 +8906,118 @@ function motCleAbo(){
   return modeAbo==='renouvelable' ? base+'R' : base;
 }
 
-function montrerOffre(depuisMenu){
+/* Là où l'on ne peut pas prélever chaque mois, l'achat d'un conte
+   passe avant le pass : 200 francs pour un conte que l'enfant réclame,
+   c'est une décision sans réflexion. */
+var conteVise=null, portefeuilleChoisi='wave';
+
+function rendreAchatConte(){
+  var z=$('zoneAchat');
+  if(!z)return;
+  if(!achatPossible()||!conteVise){z.innerHTML='';return;}
+
+  var c=parConte(conteVise);
+  if(!c){z.innerHTML='';return;}
+  var dev=M('devise')||'F CFA';
+
+  var h='<div class="achatConte">'+
+    '<div class="lb">Ce conte seulement</div>'+
+    '<div class="tt">'+c.titre+'</div>'+
+    '<div class="ss">Tu le paies une fois, il est à toi pour toujours. '+
+    'Ton enfant le réécoute autant qu\'il veut.</div>'+
+    '<div class="pr">'+prixConte()+' <span>'+dev+'</span></div>'+
+    '<div class="lb" style="margin-top:14px">Avec quoi paies-tu ?</div>'+
+    '<div class="pfs">'+
+      [['wave','Wave'],['om','Orange Money'],['mtn','MTN MoMo'],['moov','Moov Money']]
+      .map(function(o){return '<div class="pf'+(portefeuilleChoisi===o[0]?' on':'')+
+        '" data-pf="'+o[0]+'">'+o[1]+'</div>';}).join('')+
+    '</div>'+
+    '<button class="bouton" id="bAchat">Acheter ce conte</button>'+
+    '<div class="ou">ou prends un pass pour tout écouter</div></div>';
+  z.innerHTML=h;
+
+  Array.prototype.forEach.call(z.querySelectorAll('[data-pf]'),function(e){
+    e.onclick=function(){SFX.tap();portefeuilleChoisi=e.getAttribute('data-pf');rendreAchatConte();};
+  });
+  $('bAchat').onclick=function(){SFX.tap();acheterConte(conteVise);};
+}
+
+function parConte(id){
+  for(var i=0;i<CONTES.length;i++)if(CONTES[i].id===id)return CONTES[i];
+  return null;
+}
+
+/* L'achat : on demande le paiement, puis on attend la confirmation.
+   Wave redirige ; les autres poussent une demande sur le téléphone. */
+function acheterConte(id){
+  if(!DB.tel){toast('Numéro inconnu.');return;}
+  var b=$('bAchat'); if(b){b.disabled=true;b.textContent='Un instant…';}
+
+  fetch('/api/achats/demarrer',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({telephone:DB.tel,pays:(DB.paysTel||SAVE.pays),
+      conte:id,portefeuille:portefeuilleChoisi})})
+    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.erreur);return d;});})
+    .then(function(d){
+      if(d.deja){ DB.achats=(DB.achats||[]).concat([id]); save(); toast(d.message); ouvrir(id); return; }
+      if(d.url){ window.location.href=d.url; return; }   /* Wave */
+      attendrePaiement(d, id);
+    })
+    .catch(function(e){
+      if(b){b.disabled=false;b.textContent='Acheter ce conte';}
+      toast('Paiement impossible : '+e.message);
+    });
+}
+
+/* Orange, MTN et Moov poussent la demande sur le téléphone :
+   on attend que l'abonné valide, sans le laisser devant un écran muet. */
+function attendrePaiement(d, id){
+  var z=$('zoneAchat');
+  if(z)z.innerHTML='<div class="achatConte attente">'+
+    '<div class="tt">Valide sur ton téléphone</div>'+
+    '<div class="ss">Une demande de '+prixConte()+' '+(M('devise')||'F CFA')+
+    ' vient de partir sur ton '+(d.portefeuille||'portefeuille')+'. '+
+    'Saisis ton code secret, puis reviens ici.</div>'+
+    '<div class="pts" id="ptsAttente">…</div></div>';
+
+  var essais=0;
+  var tic=setInterval(function(){
+    essais++;
+    var p=$('ptsAttente');
+    if(p)p.textContent=Array(essais%4+1).join('•')||'•';
+
+    fetch('/api/achats/statut?reference='+encodeURIComponent(d.reference)+
+          (d.jeton?'&jeton='+encodeURIComponent(d.jeton):'')+
+          '&pays='+encodeURIComponent(DB.paysTel||SAVE.pays))
+      .then(function(r){return r.json();})
+      .then(function(x){
+        if(x.statut==='reussi'){
+          clearInterval(tic);
+          DB.achats=(DB.achats||[]).concat([id]); save();
+          toast('Le conte est à toi.');
+          montrer('accueil'); rendreListe(); ouvrir(id);
+        }else if(x.statut==='echec'){
+          clearInterval(tic);
+          if(z)z.innerHTML='<div class="achatConte"><div class="tt">Le paiement n\'a pas abouti</div>'+
+            '<div class="ss">Rien n\'a été prélevé. Tu peux réessayer.</div>'+
+            '<button class="bouton" id="bReessai">Réessayer</button></div>';
+          var rr=$('bReessai'); if(rr)rr.onclick=function(){rendreAchatConte();};
+        }
+      }).catch(function(){});
+
+    /* Deux minutes suffisent ; au-delà, l'abonné a abandonné. */
+    if(essais>40){
+      clearInterval(tic);
+      if(z)z.innerHTML='<div class="achatConte"><div class="tt">Toujours rien</div>'+
+        '<div class="ss">Si tu as validé, le conte s\'ouvrira tout seul dans un moment. '+
+        'Sinon, tu peux recommencer.</div>'+
+        '<button class="bouton" id="bReessai">Recommencer</button></div>';
+      var r2=$('bReessai'); if(r2)r2.onclick=function(){rendreAchatConte();};
+    }
+  },3000);
+}
+
+function montrerOffre(depuisMenu, conteId){
+  conteVise = conteId || null;
   var om=$('offMention');
   if(om){
     if(libre())om.textContent='Découverte libre : tout est ouvert, sans paiement.';
@@ -8872,6 +9027,7 @@ function montrerOffre(depuisMenu){
     else om.textContent='Prélevé sur ton crédit téléphonique ou ton mobile money. Résiliable à tout moment.';
   }
   rendreChoixAbo();
+  rendreAchatConte();
   $('offTitre').textContent=depuisMenu?'Choisis ton pass':(contesLus()?'Ta veillée gratuite est finie':'Ouvre toute la bibliothèque');
   $('offSous').textContent=contesLus()&&!depuisMenu
     ? 'Tu as écouté ton conte offert. Prends un pass pour ouvrir les six autres et recevoir un nouveau conte chaque soir.'
@@ -8978,6 +9134,7 @@ function enregistrerAuServeur(tel, pays){
 function finirInscription(){
   var o=otpInscription; if(!o)return;
   enregistrerAuServeur(o.tel, o.pays);
+  setTimeout(chargerAchats, 800);
   DB.tel=o.tel; DB.paysTel=o.pays; DB.telValide=true;
   DB.profils=DB.profils.filter(function(x){return !x.invite;});
   var p={id:'p'+Date.now(),nom:o.nom,avatar:o.avatar,points:0,serie:0,dernier:'',
@@ -10182,7 +10339,30 @@ if('serviceWorker' in navigator){
   });
 }
 
+/* Retour depuis la page de paiement Wave : on vérifie et on ouvre le conte. */
+function retourPaiement(){
+  var p=new URLSearchParams(location.search);
+  var ref=p.get('ref');
+  if(!ref)return false;
+  var ok=location.pathname.indexOf('/paiement/ok')>=0;
+  history.replaceState({},'','/');
+  if(!ok){toast("Le paiement n'a pas abouti. Rien n'a été prélevé.");return false;}
+
+  toast('Paiement reçu. Un instant…');
+  fetch('/api/achats/statut?reference='+encodeURIComponent(ref)+
+        '&pays='+encodeURIComponent(DB.paysTel||''))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.statut==='reussi'&&d.conte){
+        DB.achats=(DB.achats||[]).concat([d.conte]); save();
+        rendreListe(); toast('Le conte est à toi.'); ouvrir(d.conte);
+      }else toast("Le paiement est en cours de validation.");
+    }).catch(function(){});
+  return true;
+}
+
 function demarrer(){
+  retourPaiement();
   /* Ce qui dépend du mode doit être appliqué après le chargement du contenu. */
   var ma=$('mAbo');if(ma)ma.style.display=libre()?'none':'block';
   $('piedTexte').textContent=libre()
@@ -10192,6 +10372,7 @@ function demarrer(){
   var mL=$('mascotteL'); if(mL&&$('mascotte'))mL.getContext('2d').drawImage($('mascotte'),0,0);
   brancherNavigation();
   rendreFiltres();rendreOrigines();
+  if(DB.tel)chargerAchats();
   if(!DB.profils.length){
     VISITEUR.actif=true;
     rendreVisiteur();
@@ -10242,6 +10423,8 @@ window.__contes={
   doc:montrerDoc,
   tel:function(){return {num:DB.tel||null,pays:DB.paysTel||null,valide:!!DB.telValide};},
   otp:function(){return otpAttendu;},
+  achats:function(){return DB.achats||[];},
+  marquerLu:function(id){SAVE.lus[id]=1;save();},
   etatAbo:function(){return DB.compte||null;},
   simulerAbo:function(){DB.compte={pass:'mois',actif:true,echeance:Date.now()+20*864e5,reconduction:true};save();rendreFiche();},
   motCle:function(pass,mode){passChoisi=pass||passChoisi;modeAbo=mode||modeAbo;return motCleAbo();},

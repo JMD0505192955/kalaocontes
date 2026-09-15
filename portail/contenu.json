@@ -13,7 +13,7 @@
   "motStop": "STOP CONTES",
   "courtCode": "4444",
   "whatsapp": "+225 07 00 00 00",
-  "mode": "libre",
+  "mode": "vas",
   "forme": "société par actions simplifiée",
   "slogan": "Écoute, joue et découvre l'Afrique",
   "siege": "Cocody, Abidjan, Côte d’Ivoire",
@@ -6266,6 +6266,36 @@
     "sms"
    ],
    "type": "code"
+  },
+  {
+   "pays": "ci",
+   "nom": "Côte d'Ivoire",
+   "ind": "+225",
+   "longueur": 10,
+   "debuts": "01578",
+   "drapeau": "",
+   "devise": "F CFA",
+   "motStop": "STOP CONTES",
+   "courtCode": "",
+   "courriel": "",
+   "tel": "",
+   "whatsapp": "",
+   "ville": "",
+   "regulateur": "l'ARTCI",
+   "operateur": "Babimo",
+   "type": "agregateur",
+   "actif": 1,
+   "reconduction": false,
+   "prixConte": 200,
+   "pass": [
+    {
+     "id": "mois",
+     "p": 2000
+    }
+   ],
+   "canaux": [
+    "agregateur"
+   ]
   }
  ]
 }
