@@ -8675,7 +8675,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-14-a',
+  build:'2026-09-14-c',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8910,6 +8910,7 @@ function motCleAbo(){
    passe avant le pass : 200 francs pour un conte que l'enfant réclame,
    c'est une décision sans réflexion. */
 var conteVise=null, portefeuilleChoisi='wave';
+var NOMS_PF={wave:'Wave',om:'Orange Money',mtn:'MTN MoMo',moov:'Moov Money'};
 
 function rendreAchatConte(){
   var z=$('zoneAchat');
@@ -8928,9 +8929,9 @@ function rendreAchatConte(){
     '<div class="pr">'+prixConte()+' <span>'+dev+'</span></div>'+
     '<div class="lb" style="margin-top:14px">Avec quoi paies-tu ?</div>'+
     '<div class="pfs">'+
-      [['wave','Wave'],['om','Orange Money'],['mtn','MTN MoMo'],['moov','Moov Money']]
-      .map(function(o){return '<div class="pf'+(portefeuilleChoisi===o[0]?' on':'')+
-        '" data-pf="'+o[0]+'">'+o[1]+'</div>';}).join('')+
+      portefeuillesDuMarche().map(function(o){
+        return '<div class="pf'+(portefeuilleChoisi===o.id?' on':'')+
+          '" data-pf="'+o.id+'">'+o.nom+'</div>';}).join('')+
     '</div>'+
     '<button class="bouton" id="bAchat">Acheter ce conte</button>'+
     '<div class="ou">ou prends un pass pour tout écouter</div></div>';
@@ -8940,6 +8941,15 @@ function rendreAchatConte(){
     e.onclick=function(){SFX.tap();portefeuilleChoisi=e.getAttribute('data-pf');rendreAchatConte();};
   });
   $('bAchat').onclick=function(){SFX.tap();acheterConte(conteVise);};
+}
+
+/* Les portefeuilles disponibles viennent du marché : un pays qui n'aurait
+   ni MTN ni Moov ne doit pas les proposer. */
+function portefeuillesDuMarche(){
+  var m=marche();
+  var L=(m && m.portefeuilles) || ['wave','om','mtn','moov'];
+  return L.filter(function(k){return NOMS_PF[k];})
+          .map(function(k){return {id:k,nom:NOMS_PF[k]};});
 }
 
 function parConte(id){
@@ -8975,7 +8985,7 @@ function attendrePaiement(d, id){
   if(z)z.innerHTML='<div class="achatConte attente">'+
     '<div class="tt">Valide sur ton téléphone</div>'+
     '<div class="ss">Une demande de '+prixConte()+' '+(M('devise')||'F CFA')+
-    ' vient de partir sur ton '+(d.portefeuille||'portefeuille')+'. '+
+    ' vient de partir sur ton '+(NOMS_PF[portefeuilleChoisi]||d.portefeuille||'portefeuille')+'. '+
     'Saisis ton code secret, puis reviens ici.</div>'+
     '<div class="pts" id="ptsAttente">…</div></div>';
 

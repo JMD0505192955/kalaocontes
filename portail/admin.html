@@ -1794,11 +1794,16 @@ function vueMarches(){
       '<div><label>Parcours de paiement</label><select data-mtype="1">'+
         [['direct','Prélèvement direct — nous appelons leur interface'],
          ['code','Code par SMS — l\'abonné envoie un mot-clé au numéro court'],
-         ['redirection','Redirection — l\'abonné paie sur leur page']]
+         ['redirection','Redirection — l\'abonné paie sur leur page'],
+         ['agregateur','Agrégateur mobile money — Wave, Orange Money, MTN, Moov']]
          .map(function(o){return '<option value="'+o[0]+'"'+
            ((m.type||'direct')===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+
       '</select></div>'+
-      ((m.type==='code')
+      ((m.type==='agregateur')
+        ? '<div><label>Prix d\'un conte à l\'unité ('+esc(m.devise||'F CFA')+')</label>'+
+          '<input data-mpc="1" type="number" min="0" value="'+(m.prixConte||200)+'" '+
+          'placeholder="200"></div>'
+        : (m.type==='code')
         ? '<div><label>Mots-clés par pass (jour, semaine, mois)</label>'+
           '<input data-mmots="1" value="'+esc([(m.motsCles||{}).jour,(m.motsCles||{}).semaine,
             (m.motsCles||{}).mois].filter(Boolean).join(', '))+
@@ -1945,6 +1950,8 @@ function brancherMarches(){
   });
   var a=z.querySelector('[data-mact]');
   if(a)a.onchange=function(){m.actif=+a.value;enregistrer('marches').then(rendre);};
+  var pc=z.querySelector('[data-mpc]');
+  if(pc)pc.oninput=function(){m.prixConte=+pc.value||0;enregistrer('marches');};
   var ty=z.querySelector('[data-mtype]');
   if(ty)ty.onchange=function(){m.type=ty.value;enregistrer('marches').then(rendre);};
   var mo=z.querySelector('[data-mmots]');
