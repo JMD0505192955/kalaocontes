@@ -8675,7 +8675,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-14-d',
+  build:'2026-09-15-a',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8813,6 +8813,7 @@ function contesLus(){var n=0;DB.profils.forEach(function(p){for(var k in p.lus)i
 function essaiFini(){
   /* Là où l'abonnement n'existe pas encore, on ne bloque personne. */
   if(!marcheSousContrat())return false;
+  /* Un seul conte offert. Ensuite, tout est payant. */
   return !abonne()&&contesLus()>=1;
 }
 
@@ -8857,14 +8858,19 @@ function rendrePass(){
 /* Les tarifs affichés viennent du marché : un pays peut avoir sa propre grille. */
 function passDuMarche(){
   var m=marche(), t=(m&&m.pass)?m.pass:null;
-  return PASS.map(function(p){
-    var q=t?t.filter(function(x){return x.id===p.id;})[0]:null;
-    if(!q)return p;
+  /* Le marché décide quels pass existent, pas seulement leur prix.
+     La Côte d'Ivoire n'en propose qu'un ; le Burkina en propose trois. */
+  if(!t||!t.length)return PASS;
+  var out=[];
+  t.forEach(function(q){
+    var p=PASS.filter(function(x){return x.id===q.id;})[0];
+    if(!p)return;
     var c={}; for(var k in p)c[k]=p[k];
     c.p=q.p;
     c.u=(m.devise||'F CFA')+' / '+(p.id==='jour'?'jour':p.id==='semaine'?'semaine':'mois');
-    return c;
+    out.push(c);
   });
+  return out.length?out:PASS;
 }
 /* Le mode d'abonnement et le canal de paiement sont des choix de l'abonné.
    Le mot-clé porte les deux : FABLE30R pour renouvelable, FABLE30 sinon. */
@@ -8915,10 +8921,13 @@ var NOMS_PF={wave:'Wave',om:'Orange Money',mtn:'MTN MoMo',moov:'Moov Money'};
 function rendreAchatConte(){
   var z=$('zoneAchat');
   if(!z)return;
-  if(!achatPossible()||!conteVise){z.innerHTML='';return;}
+  if(!achatPossible()){z.innerHTML='';return;}
 
-  var c=parConte(conteVise);
+  /* Sans conte visé — depuis le menu — on propose celui du soir :
+     l'utilisateur doit voir les moyens de paiement, pas les chercher. */
+  var c=parConte(conteVise) || conteDuSoir();
   if(!c){z.innerHTML='';return;}
+  conteVise=c.id;
   var dev=M('devise')||'F CFA';
 
   var h='<div class="achatConte">'+

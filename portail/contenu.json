@@ -6286,7 +6286,7 @@
    "type": "agregateur",
    "actif": 1,
    "reconduction": false,
-   "prixConte": 200,
+   "prixConte": 250,
    "pass": [
     {
      "id": "mois",
