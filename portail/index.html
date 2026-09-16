@@ -605,10 +605,16 @@
   .achatConte .pr{font-size:30px;font-weight:800;color:var(--or);margin-top:10px;}
   .achatConte .pr span{font-size:14px;font-weight:700;}
   .achatConte .pfs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-  .achatConte .pf{flex:1;min-width:104px;text-align:center;background:var(--carte2);
-    border:1px solid var(--bord);border-radius:11px;padding:10px 8px;
-    font-size:13px;font-weight:700;cursor:pointer;}
-  .achatConte .pf.on{border-color:var(--or);background:var(--or);color:var(--surAction);}
+  .achatConte .pf{flex:1;min-width:112px;background:var(--carte2);
+    border:1px solid var(--bord);border-radius:12px;padding:10px 8px;
+    cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;
+    transition:border-color .12s;}
+  .achatConte .pf .mk{width:38px;height:38px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;letter-spacing:.3px;}
+  .achatConte .pf .nm{font-size:12.5px;font-weight:700;text-align:center;line-height:1.2;}
+  .achatConte .pf.on{border-color:var(--or);box-shadow:0 0 0 2px var(--or) inset;}
+  .achatConte .pf.on .nm{color:var(--or);}
   .achatConte .bouton{width:100%;}
   .achatConte .ou{text-align:center;font-size:12.5px;color:var(--txt2);margin-top:12px;}
   .achatConte.attente{text-align:center;}
@@ -1241,6 +1247,7 @@
     </div>
     <div class="aide" id="creaAideTel">Il sert à l'abonnement et au renouvellement. L'indicatif nous dit
       aussi quels contes te proposer en premier.</div>
+    <div class="aide" id="creaFormat" style="color:var(--accent);display:none"></div>
 
     <div class="titreSec">Choisis ton animal</div>
     <div id="avatars"></div>
@@ -1323,8 +1330,10 @@
     <div class="accroche"><h2>Quel est ton numéro ?</h2>
       <p>On t'envoie un code par SMS pour confirmer que c'est bien toi.</p></div>
     <div class="tel"><select id="champInd" class="ind"></select>
-      <input id="champTel" type="tel" inputmode="numeric" maxlength="11" placeholder="70 00 00 00"></div>
+      <input id="champTel" type="tel" inputmode="numeric" maxlength="16" placeholder="70 00 00 00"></div>
     <div class="aide">Ton numéro sert à l'abonnement et au renouvellement. Rien d'autre.</div>
+    <div class="aide" id="telFormat" style="color:var(--accent);display:none"></div>
+    <div class="aide" id="aideNumCI" style="color:var(--vert);font-weight:700;min-height:18px"></div>
     <button class="bouton" id="numSuivant" disabled>Recevoir le code</button>
   </div>
 </div>
@@ -7006,8 +7015,18 @@ function majCreaValider(){
   var ok=!!nom;
   if(besoinTel){
     var m=indicatifDe(indChoisi)||marche(), n=chiffres($('creaTel').value);
-    var re=new RegExp('^['+(m.debuts||'0-9')+']');
-    ok = ok && n.length===(m.longueur||8) && re.test(n);
+    ok = ok && numeroValide(m,n);
+    /* Dire ce qu'on attend, plutôt que de griser un bouton sans explication. */
+    var f=$('creaFormat');
+    if(f){
+      if(n.length&&!numeroValide(m,n)){
+        f.style.display='';
+        f.textContent = (m.prefixes&&m.prefixes.length)
+          ? 'Un numéro de '+(m.longueur||8)+' chiffres commençant par '+
+            m.prefixes.join(', ')+'.'
+          : 'Un numéro de '+(m.longueur||8)+' chiffres.';
+      }else f.style.display='none';
+    }
   }
   $('creaValider').disabled=!ok;
 }
@@ -8675,7 +8694,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-15-a',
+  build:'2026-09-15-c',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8715,7 +8734,8 @@ var indChoisi=null;
    L'indicatif sert alors au tri des contes ; la facturation attend un marché. */
 var INDICATIFS=[
  {pays:'bf', ind:'+226', longueur:8,  debuts:'0257',  ex:'70 00 00 00'},
- {pays:'ci', ind:'+225', longueur:10, debuts:'01578', ex:'07 00 00 00 00'},
+ {pays:'ci', ind:'+225', longueur:10, debuts:'0', prefixes:['01','05','07'],
+  operateursNum:{'07':'om','05':'mtn','01':'moov'}, ex:'07 00 00 00 00'},
  {pays:'tg', ind:'+228', longueur:8,  debuts:'79',    ex:'90 00 00 00'},
  {pays:'bj', ind:'+229', longueur:10, debuts:'01',    ex:'01 00 00 00 00'},
  {pays:'ml', ind:'+223', longueur:8,  debuts:'679',   ex:'70 00 00 00'},
@@ -8804,7 +8824,13 @@ function abonne(){
   if(!DB.compte||!DB.compte.actif)return false;
   return Date.now()<DB.compte.echeance;
 }
-function passDe(id){var L=passDuMarche();for(var i=0;i<L.length;i++)if(L[i].id===id)return L[i];return L[1];}
+function passDe(id){
+  var L=passDuMarche();
+  for(var i=0;i<L.length;i++)if(L[i].id===id)return L[i];
+  /* Un marché peut n'avoir qu'un seul pass : le repli prend le deuxième
+     s'il existe, sinon le premier. Sans ça, le tunnel se bloque en silence. */
+  return L[1]||L[0]||PASS[1]||PASS[0];
+}
 function dateFr(ms){var d=new Date(ms);
   return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();}
 function telJoli(n){return '+226 '+n.replace(/(\d{2})(?=\d)/g,'$1 ').trim();}
@@ -8916,7 +8942,61 @@ function motCleAbo(){
    passe avant le pass : 200 francs pour un conte que l'enfant réclame,
    c'est une décision sans réflexion. */
 var conteVise=null, portefeuilleChoisi='wave';
+/* ============================================================
+   Validation des numéros ivoiriens.
+   Règles : 10 chiffres, préfixe connu.
+   Wave est transversal : il accepte tout numéro valide.
+   OM, MTN, Moov exigent que le préfixe corresponde.
+   ============================================================ */
+var CI_OPERATEURS={
+  '07':{id:'om',  nom:'Orange Money'},
+  '05':{id:'mtn', nom:'MTN MoMo'},
+  '01':{id:'moov',nom:'Moov Money'}
+};
+
+/* Normalise un numéro ivoirien et retourne {net, operateur, erreur}.
+   `net` est le numéro sans espaces, 10 chiffres.
+   `operateur` est l'objet CI_OPERATEURS correspondant, ou null si Wave. */
+function validerNumeroCI(saisie){
+  var n=chiffres(saisie||'');
+  if(n.length!==10)
+    return {erreur:'Un numéro ivoirien compte exactement 10 chiffres.'};
+  var pref=n.slice(0,2);
+  var op=CI_OPERATEURS[pref];
+  if(!op)
+    return {erreur:'Ce préfixe ('+pref+'…) n\'est pas reconnu. '+
+      'Les préfixes valides sont 07 (Orange), 05 (MTN) et 01 (Moov).'};
+  return {net:n, operateur:op};
+}
+
+/* Vérifie la compatibilité entre un numéro et un portefeuille.
+   Wave accepte tout. Les autres exigent la correspondance de préfixe. */
+function compatiblePF(saisie, portefeuille){
+  /* Wave est transversal mais exige quand même un numéro valide. */
+  if(portefeuille==='wave'){
+    var vw=validerNumeroCI(saisie);
+    return vw.erreur?{ok:false,erreur:vw.erreur}:{ok:true};
+  }
+  var v=validerNumeroCI(saisie);
+  if(v.erreur)return {ok:false,erreur:v.erreur};
+  if(!v.operateur)return {ok:false,erreur:'Opérateur non reconnu.'};
+  if(v.operateur.id!==portefeuille)
+    return {ok:false,
+      erreur:'Ton numéro commence par '+chiffres(saisie).slice(0,2)+
+        ' — c\'est une ligne '+v.operateur.nom+
+        '. Pour payer avec ce moyen, utilise le bon numéro, ou choisis Wave qui accepte tous les opérateurs.'};
+  return {ok:true};
+}
+
 var NOMS_PF={wave:'Wave',om:'Orange Money',mtn:'MTN MoMo',moov:'Moov Money'};
+/* Les couleurs de marque, dessinées plutôt que chargées : pas de logo
+   externe à héberger, et rien à télécharger sur un forfait compté. */
+var PF_STYLE={
+  wave:{fond:'#1DC8F2',texte:'#fff',sigle:'W'},
+  om:  {fond:'#FF7900',texte:'#000',sigle:'OM'},
+  mtn: {fond:'#FFCC00',texte:'#000',sigle:'MTN'},
+  moov:{fond:'#00A0E3',texte:'#fff',sigle:'M'}
+};
 
 function rendreAchatConte(){
   var z=$('zoneAchat');
@@ -8939,8 +9019,10 @@ function rendreAchatConte(){
     '<div class="lb" style="margin-top:14px">Avec quoi paies-tu ?</div>'+
     '<div class="pfs">'+
       portefeuillesDuMarche().map(function(o){
-        return '<div class="pf'+(portefeuilleChoisi===o.id?' on':'')+
-          '" data-pf="'+o.id+'">'+o.nom+'</div>';}).join('')+
+        var st=PF_STYLE[o.id]||{fond:'#888',texte:'#fff',sigle:'?'};
+        return '<div class="pf'+(portefeuilleChoisi===o.id?' on':'')+'" data-pf="'+o.id+'">'+
+          '<span class="mk" style="background:'+st.fond+';color:'+st.texte+'">'+st.sigle+'</span>'+
+          '<span class="nm">'+o.nom+'</span></div>';}).join('')+
     '</div>'+
     '<button class="bouton" id="bAchat">Acheter ce conte</button>'+
     '<div class="ou">ou prends un pass pour tout écouter</div></div>';
@@ -8972,6 +9054,24 @@ function acheterConte(id){
   if(!DB.tel){toast('Numéro inconnu.');return;}
   var b=$('bAchat'); if(b){b.disabled=true;b.textContent='Un instant…';}
 
+  /* En Côte d'Ivoire, vérifier la compatibilité avant d'appeler Babimo. */
+  var tel=DB.telFacturation||DB.tel||'';
+  if(marche().pays==='ci'&&portefeuilleChoisi!=='wave'){
+    var verif=compatiblePF(tel.replace(/^\+225\s*/,''),portefeuilleChoisi);
+    if(!verif.ok){
+      if(b){b.disabled=false;b.textContent='Acheter ce conte';}
+      var ze=$('zoneAchat');
+      if(ze){
+        var msg=document.createElement('div');
+        msg.style.cssText='background:#FFF3CD;border:1px solid #FFB700;border-radius:10px;'+
+          'padding:12px;font-size:13px;color:#333;margin-top:10px;line-height:1.5';
+        msg.textContent=verif.erreur;
+        ze.appendChild(msg);
+        setTimeout(function(){if(msg.parentNode)msg.parentNode.removeChild(msg);},6000);
+      }
+      return;
+    }
+  }
   fetch('/api/achats/demarrer',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({telephone:DB.tel,pays:(DB.paysTel||SAVE.pays),
       conte:id,portefeuille:portefeuilleChoisi})})
@@ -9037,6 +9137,11 @@ function attendrePaiement(d, id){
 
 function montrerOffre(depuisMenu, conteId){
   conteVise = conteId || null;
+  /* Le pass préselectionné doit exister ici : la Côte d'Ivoire n'a pas
+     de pass semaine, et le retenir bloquerait la validation. */
+  var L=passDuMarche();
+  if(!L.some(function(x){return x.id===passChoisi;}))
+    passChoisi=(L[1]||L[0]||{}).id||'mois';
   var om=$('offMention');
   if(om){
     if(libre())om.textContent='Découverte libre : tout est ouvert, sans paiement.';
@@ -9095,14 +9200,55 @@ function rendreIndicatifs(){
     verifTel();
   };
 }
+/* Un numéro est valide s'il a la bonne longueur et commence par un préfixe
+   du pays. La Côte d'Ivoire en a trois : 01 Moov, 05 MTN, 07 Orange. */
+function numeroValide(m,n){
+  /* En Côte d'Ivoire, on passe par le moteur de validation dédié. */
+  if(m.pays==='ci'){
+    var vv=validerNumeroCI(n);
+    /* Mettre à jour l'indicateur de l'opérateur pendant la saisie. */
+    var aNC=$('aideNumCI');
+    if(aNC){
+      if(!vv.erreur&&vv.operateur){
+        aNC.textContent='Ligne '+vv.operateur.nom+' détectée.';
+        aNC.style.color='var(--vert)';
+      }else{
+        aNC.textContent=n.length===10?'Préfixe non reconnu.':'';
+        aNC.style.color='var(--rouge,#c00)';
+      }
+    }
+    return !vv.erreur;
+  }
+  var lg=m.longueur||8;
+  if(n.length!==lg)return false;
+  if(m.prefixes&&m.prefixes.length)
+    return m.prefixes.some(function(p){return n.indexOf(p)===0;});
+  var re=new RegExp('^['+(m.debuts||'0-9')+']');
+  return re.test(n);
+}
 function verifTel(){
   var m=marche(), n=chiffres($('champTel').value);
-  var lg=m.longueur||8;
-  var re=new RegExp('^['+(m.debuts||'0-9')+']');
-  $('numSuivant').disabled=!(n.length===lg&&re.test(n));
+  $('numSuivant').disabled=!numeroValide(m,n);
+  var f=$('telFormat');
+  if(f){
+    if(n.length&&!numeroValide(m,n)){
+      f.style.display='';
+      f.textContent=(m.prefixes&&m.prefixes.length)
+        ? 'Un numéro de '+(m.longueur||8)+' chiffres commençant par '+m.prefixes.join(', ')+'.'
+        : 'Un numéro de '+(m.longueur||8)+' chiffres.';
+    }else f.style.display='none';
+  }
+  /* Le préfixe dit déjà quel portefeuille utiliser : on le présélectionne. */
+  if(m.operateursNum){
+    var k=m.operateursNum[n.slice(0,2)];
+    if(k&&NOMS_PF[k])portefeuilleChoisi=k;
+  }
 }
 $('champTel').addEventListener('input',function(){
-  var n=chiffres(this.value).slice(0,8);
+  /* La longueur dépend du pays : huit chiffres au Burkina, dix en
+     Côte d'Ivoire. Couper à huit bloquait la validation. */
+  var m=marche(), lg=m.longueur||8;
+  var n=chiffres(this.value).slice(0,lg);
   this.value=n.replace(/(\d{2})(?=\d)/g,'$1 ').trim();
   verifTel();
 });
@@ -10450,6 +10596,8 @@ window.__contes={
   lien:function(){return LIEN_SERVICE;},
   marche:function(){var m=marche();return {nom:m.nom,operateur:M("operateur"),tel:M("tel"),court:M("courtCode"),stop:M("motStop"),pass:passDuMarche().map(function(x){return x.id+":"+x.p;}).join(" ")};},
   marcheBrut:function(){return marche();},
+  validerNumeroCI:function(n){return validerNumeroCI(n);},
+  compatiblePF:function(n,pf){return compatiblePF(n,pf);},
   diagAchat:function(){var m=marche();return {pays:m.pays,type:m.type,prixConte:m.prixConte,
     nbPass:(m.pass||[]).length,achatPossible:achatPossible(),essaiFini:essaiFini(),
     contesLus:contesLus(),abonne:abonne(),libre:libre(),sousContrat:marcheSousContrat()};},

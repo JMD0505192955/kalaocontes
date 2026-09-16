@@ -6272,7 +6272,7 @@
    "nom": "Côte d'Ivoire",
    "ind": "+225",
    "longueur": 10,
-   "debuts": "01578",
+   "debuts": "0",
    "drapeau": "",
    "devise": "F CFA",
    "motStop": "STOP CONTES",
@@ -6295,7 +6295,17 @@
    ],
    "canaux": [
     "agregateur"
-   ]
+   ],
+   "prefixes": [
+    "01",
+    "05",
+    "07"
+   ],
+   "operateursNum": {
+    "07": "om",
+    "05": "mtn",
+    "01": "moov"
+   }
   }
  ]
 }
