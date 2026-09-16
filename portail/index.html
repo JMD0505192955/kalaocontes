@@ -609,15 +609,25 @@
     border:1px solid var(--bord);border-radius:12px;padding:10px 8px;
     cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;
     transition:border-color .12s;}
-  .achatConte .pf .mk{width:38px;height:38px;border-radius:10px;
+  .achatConte .pf .mk-img{width:44px;height:44px;border-radius:10px;object-fit:contain;}
+  .achatConte .pf .mk-txt{width:44px;height:44px;border-radius:10px;
     display:flex;align-items:center;justify-content:center;
-    font-size:13px;font-weight:800;letter-spacing:.3px;}
+    font-size:12px;font-weight:800;background:#eee;}
   .achatConte .pf .nm{font-size:12.5px;font-weight:700;text-align:center;line-height:1.2;}
   .achatConte .pf.on{border-color:var(--or);box-shadow:0 0 0 2px var(--or) inset;}
   .achatConte .pf.on .nm{color:var(--or);}
   .achatConte .bouton{width:100%;}
   .achatConte .ou{text-align:center;font-size:12.5px;color:var(--txt2);margin-top:12px;}
-  .achatConte.attente{text-align:center;}
+  .achatConte.attente{text-align:left;}
+  .achatConte .choixParcours{display:flex;flex-direction:column;gap:10px;margin:10px 0;}
+  .achatConte .parcoursBloc{background:var(--carte2);border-radius:10px;padding:12px;
+    font-size:13px;line-height:1.5;}
+  .achatConte .parcoursBloc b{display:block;margin-bottom:4px;}
+  .achatConte .parcoursBloc p{margin:0;color:var(--txt2);}
+  .achatConte .ouSep{text-align:center;font-size:12px;color:var(--txt2);font-weight:700;}
+  .achatConte .ussdBtn{display:inline-block;background:var(--or);color:var(--surAction);
+    padding:3px 10px;border-radius:6px;text-decoration:none;font-weight:800;font-size:13px;}
+  .achatConte.attente{text-align:left;}
   .achatConte .pts{font-size:26px;color:var(--or);letter-spacing:4px;margin-top:12px;height:30px;}
   .choixBloc{margin:16px 0 0;}
   .choixBloc .lb{font-size:12px;font-weight:800;letter-spacing:.8px;color:var(--txt2);
@@ -8694,7 +8704,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-15-c',
+  build:'2026-09-15-e',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8991,12 +9001,9 @@ function compatiblePF(saisie, portefeuille){
 var NOMS_PF={wave:'Wave',om:'Orange Money',mtn:'MTN MoMo',moov:'Moov Money'};
 /* Les couleurs de marque, dessinées plutôt que chargées : pas de logo
    externe à héberger, et rien à télécharger sur un forfait compté. */
-var PF_STYLE={
-  wave:{fond:'#1DC8F2',texte:'#fff',sigle:'W'},
-  om:  {fond:'#FF7900',texte:'#000',sigle:'OM'},
-  mtn: {fond:'#FFCC00',texte:'#000',sigle:'MTN'},
-  moov:{fond:'#00A0E3',texte:'#fff',sigle:'M'}
-};
+/* Les logos réels remplacent les pastilles CSS. */
+var PF_LOGO={wave:'icones/pf-wave.webp',om:'icones/pf-om.webp',
+             mtn:'icones/pf-mtn.webp',moov:'icones/pf-moov.webp'};
 
 function rendreAchatConte(){
   var z=$('zoneAchat');
@@ -9017,11 +9024,16 @@ function rendreAchatConte(){
     'Ton enfant le réécoute autant qu\'il veut.</div>'+
     '<div class="pr">'+prixConte()+' <span>'+dev+'</span></div>'+
     '<div class="lb" style="margin-top:14px">Avec quoi paies-tu ?</div>'+
+    '<div style="font-size:12.5px;color:var(--txt2);margin-bottom:10px;">'+
+    'Prélevé sur <b>'+telJoli((DB.telFacturation||DB.tel||'').replace(/^\+225\s*/,''))+
+    '</b> <span style="color:var(--or);cursor:pointer;text-decoration:underline;" '+
+    'onclick="changerNumeroFacture()">Changer</span></div>'+
     '<div class="pfs">'+
       portefeuillesDuMarche().map(function(o){
-        var st=PF_STYLE[o.id]||{fond:'#888',texte:'#fff',sigle:'?'};
+        var logo=PF_LOGO[o.id]||'';
         return '<div class="pf'+(portefeuilleChoisi===o.id?' on':'')+'" data-pf="'+o.id+'">'+
-          '<span class="mk" style="background:'+st.fond+';color:'+st.texte+'">'+st.sigle+'</span>'+
+          (logo?'<img class="mk-img" src="'+logo+'" alt="'+o.nom+'">':
+                '<span class="mk-txt">'+o.id.toUpperCase()+'</span>')+
           '<span class="nm">'+o.nom+'</span></div>';}).join('')+
     '</div>'+
     '<button class="bouton" id="bAchat">Acheter ce conte</button>'+
@@ -9062,7 +9074,10 @@ function acheterConte(id){
       if(b){b.disabled=false;b.textContent='Acheter ce conte';}
       var ze=$('zoneAchat');
       if(ze){
+        var ancien=ze.querySelector('.errPF');
+        if(ancien)ancien.parentNode.removeChild(ancien);
         var msg=document.createElement('div');
+        msg.className='errPF';
         msg.style.cssText='background:#FFF3CD;border:1px solid #FFB700;border-radius:10px;'+
           'padding:12px;font-size:13px;color:#333;margin-top:10px;line-height:1.5';
         msg.textContent=verif.erreur;
@@ -9087,15 +9102,55 @@ function acheterConte(id){
     });
 }
 
-/* Orange, MTN et Moov poussent la demande sur le téléphone :
-   on attend que l'abonné valide, sans le laisser devant un écran muet. */
+/* Instructions spécifiques à chaque opérateur.
+   L'objectif : que l'abonné sache exactement quoi faire,
+   sans avoir à chercher. */
+function instructionsPF(pf, prix, devise){
+  var pr=prix+' '+(devise||'F CFA');
+  if(pf==='om'){
+    var ussd='#144*82#';
+    return '<div class="tt">Valide avec Orange Money</div>'+
+      '<div class="ss">Deux façons de valider :</div>'+
+      '<div class="choixParcours">'+
+        '<div class="parcoursBloc"><b>Via l&#39;appli MaxIt ou OM</b>'+
+          '<p>Ouvre l&#39;application MaxIt ou Orange Money, choisis Payer et entre le code SMS reçu.</p></div>'+
+        '<div class="ouSep">ou</div>'+
+        '<div class="parcoursBloc"><b>Via USSD</b>'+
+          '<p>Compose <a href="tel:'+ussd.replace(/#/g,'%23')+'" class="ussdBtn">'+ussd+'</a> sur ton téléphone, puis entre le code reçu par SMS.</p></div>'+
+      '</div>'+
+      '<div class="ss" style="margin-top:14px">Entre le code reçu par SMS :</div>'+
+      '<div style="display:flex;gap:8px;margin-top:8px">'+
+        '<input id="codeOM" type="tel" inputmode="numeric" maxlength="6" placeholder="Code SMS" '+
+          'style="flex:1;padding:12px;border-radius:10px;border:1px solid var(--bord);'+
+          'background:var(--carte);color:var(--txt);font-size:16px;font-weight:700">'+
+        '<button onclick="confirmerCodeOM()" style="padding:12px 18px;border-radius:10px;'+
+          'background:var(--or);color:var(--surAction);border:none;font-weight:800;cursor:pointer">'+
+          'Confirmer</button></div>';
+  }
+  if(pf==='mtn'){
+    return '<div class="tt">Valide avec MTN MoMo</div>'+
+      '<div class="ss">Une demande de '+pr+' a été envoyée sur ton numéro MTN. Tu vas recevoir une notification push sur ton téléphone — approuve-la en saisissant ton code PIN MoMo.</div><div class="ss" style="margin-top:10px;background:var(--carte2);border-radius:10px;padding:10px;font-size:12.5px;">Si tu ne reçois pas de notification, contacte MTN MoMo ou essaie depuis leur application.</div>';
+      'Tu vas recevoir une notification sur ton téléphone — approuve-la en saisissant ton code PIN MoMo.</div>';
+  }
+  if(pf==='moov'){
+    return '<div class="tt">Valide avec Moov Money</div>'+
+      '<div class="ss">Une demande de '+pr+' a été envoyée sur ton numéro Moov. Tu vas recevoir une notification push sur ton téléphone — approuve-la en saisissant ton code PIN Moov Money.</div><div class="ss" style="margin-top:10px;background:var(--carte2);border-radius:10px;padding:10px;font-size:12.5px;">Si tu ne reçois pas de notification, contacte Moov Money ou essaie depuis leur application.</div>';
+      '<div class="ss">Une demande de '+pr+' a été envoyée sur ton numéro Moov. Tu vas recevoir une notification push sur ton téléphone — approuve-la en saisissant ton code PIN Moov Money.</div><div class="ss" style="margin-top:10px;background:var(--carte2);border-radius:10px;padding:10px;font-size:12.5px;">Si tu ne reçois pas de notification, contacte Moov Money ou essaie depuis leur application.</div>';
+  }
+  return '<div class="tt">Paiement en cours</div>'+
+    '<div class="ss">En attente de ta validation…</div>';
+}
+
+/* Confirmation du code Orange Money saisi manuellement. */
+function confirmerCodeOM(){
+  var v=$('codeOM'); if(!v||!v.value.trim())return toast('Entre le code reçu par SMS.');
+  toast('Code transmis. Un instant…');
+}
+
 function attendrePaiement(d, id){
   var z=$('zoneAchat');
   if(z)z.innerHTML='<div class="achatConte attente">'+
-    '<div class="tt">Valide sur ton téléphone</div>'+
-    '<div class="ss">Une demande de '+prixConte()+' '+(M('devise')||'F CFA')+
-    ' vient de partir sur ton '+(NOMS_PF[portefeuilleChoisi]||d.portefeuille||'portefeuille')+'. '+
-    'Saisis ton code secret, puis reviens ici.</div>'+
+    instructionsPF(portefeuilleChoisi, prixConte(), M('devise'))+
     '<div class="pts" id="ptsAttente">…</div></div>';
 
   var essais=0;
