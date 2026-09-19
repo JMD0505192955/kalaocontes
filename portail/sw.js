@@ -9,15 +9,23 @@
    Principe : on ne met en cache que ce qui ne change jamais
    (voix, images, icônes). Le portail et le contenu passent
    toujours par le réseau, sinon une publication resterait invisible.
+
+   La VERSION change à chaque déploiement — l'ancien cache est
+   supprimé, le bandeau de mise à jour s'affiche.
    ============================================================ */
-const VERSION = 'afrikfables-v1';
+
+/* La version est passée dans l'URL : /sw.js?v=2026-09-16-a.
+   Si le paramètre est absent, on utilise 'v1' comme avant. */
+const VERSION = 'afrikfables-' + (new URL(self.location).searchParams.get('v') || 'v1');
 const DURABLE = /\.(mp3|webp|png|ico|woff2)$/i;
 
 self.addEventListener('install', (e) => {
+  /* Forcer l'activation immédiate sans attendre que les onglets se ferment. */
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
+  /* Supprimer les anciens caches dès l'activation. */
   e.waitUntil(
     caches.keys().then((noms) =>
       Promise.all(noms.filter((n) => n !== VERSION).map((n) => caches.delete(n)))

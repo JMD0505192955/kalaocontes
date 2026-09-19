@@ -618,6 +618,12 @@
   .achatConte .pf.on .nm{color:var(--or);}
   .achatConte .bouton{width:100%;}
   .achatConte .ou{text-align:center;font-size:12.5px;color:var(--txt2);margin-top:12px;}
+  .achatConte .upsell{background:var(--or);border-radius:12px;padding:12px 14px;
+    margin-top:4px;cursor:pointer;color:var(--surAction);}
+  .achatConte .upsell-badge{display:inline-block;background:rgba(0,0,0,.15);
+    border-radius:20px;padding:2px 10px;font-size:11px;font-weight:800;margin-bottom:6px;}
+  .achatConte .upsell b{display:block;font-size:15px;font-weight:800;}
+  .achatConte .upsell p{margin:4px 0 0;font-size:12.5px;opacity:.9;}
   .achatConte.attente{text-align:left;}
   .achatConte .choixParcours{display:flex;flex-direction:column;gap:10px;margin:10px 0;}
   .achatConte .parcoursBloc{background:var(--carte2);border-radius:10px;padding:12px;
@@ -625,8 +631,17 @@
   .achatConte .parcoursBloc b{display:block;margin-bottom:4px;}
   .achatConte .parcoursBloc p{margin:0;color:var(--txt2);}
   .achatConte .ouSep{text-align:center;font-size:12px;color:var(--txt2);font-weight:700;}
+  .deepBtn{display:inline-flex;align-items:center;gap:7px;background:#eee;color:#111;
+    padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:800;font-size:14px;
+    margin-bottom:8px;border:none;cursor:pointer;}
   .achatConte .ussdBtn{display:inline-block;background:var(--or);color:var(--surAction);
     padding:3px 10px;border-radius:6px;text-decoration:none;font-weight:800;font-size:13px;}
+  .achatConte .upsell{background:var(--or);border-radius:12px;padding:12px 14px;
+    margin-top:4px;cursor:pointer;color:var(--surAction);}
+  .achatConte .upsell-badge{display:inline-block;background:rgba(0,0,0,.15);
+    border-radius:20px;padding:2px 10px;font-size:11px;font-weight:800;margin-bottom:6px;}
+  .achatConte .upsell b{display:block;font-size:15px;font-weight:800;}
+  .achatConte .upsell p{margin:4px 0 0;font-size:12.5px;opacity:.9;}
   .achatConte.attente{text-align:left;}
   .achatConte .pts{font-size:26px;color:var(--or);letter-spacing:4px;margin-top:12px;height:30px;}
   .choixBloc{margin:16px 0 0;}
@@ -1368,7 +1383,7 @@
 <!-- ============ PSEUDO ============ -->
 <div id="ecranPseudo" class="ecran off">
   <div class="entete">
-    <div style="width:34px"></div>
+    <button id="pseudoRetour" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--bord);background:none;color:var(--txt);font-size:16px;cursor:pointer">←</button>
     <div style="flex:1;text-align:center;font-size:15px;font-weight:800">Ton pseudo</div>
     <div style="width:34px"></div>
   </div>
@@ -1421,7 +1436,7 @@
     <a data-vis="pays"><span class="ic">🌍</span> Pays</a>
     <a data-vis="biblio"><span class="ic">📖</span> Bibliothèque</a>
     <a data-vis="propos"><span class="ic">ℹ️</span> À propos</a>
-    <a id="latVisCreer" class="cadeau"><span class="ic">🔥</span> Créer ma veillée</a>
+    <a id="latVisCreer" class="cadeau"><span class="ic">🔥</span> Créer un compte</a>
   </nav>
   <div id="corpsVis">
     <div id="banniereVis">
@@ -1446,7 +1461,7 @@
         <b>Crée ta veillée quand tu es prêt.</b>
         <p>Pour garder tes points, retrouver tes contes et en découvrir un nouveau chaque soir.</p>
       </div>
-      <button class="bouton" id="visCreer">Créer ma veillée</button>
+      <button class="bouton" id="visCreer">Créer un compte</button>
     </div>
     <div class="pied" id="piedVis"></div>
   </div>
@@ -7103,7 +7118,7 @@ function rendreFiche(){
       za.innerHTML='<div class="carteAbo actif"><b>Ton pass est actif</b>'+
         '<p>'+(p?('Pass '+p+'. '):'')+
         (f?('Valable jusqu\'au '+f.toLocaleDateString('fr-FR')+'. '):'')+
-        (rec?'Il se reconduit tout seul à cette date.':'Il s\'arrêtera à cette date.')+
+        (rec&&marche().type!='agregateur'?'Il se reconduit tout seul à cette date.':'')+
         (tf?'<br><span style="font-size:12.5px">Prélevé sur le '+tf+'</span>':'')+'</p>'+
         (rec?'<button class="plat" id="bArretRec">Arrêter la reconduction</button>':'')+
         '<button class="plat" id="bChgTel" style="margin-top:8px">Changer le numéro facturé</button>'+
@@ -7229,6 +7244,10 @@ $('avatarBtn').onclick=function(){SFX.tap();rendreFiche();montrer('ecranProfil')
 $('ficheRetour').onclick=function(){montrer('accueil');majHud();};
 $('ficheEdit').onclick=function(){ouvrirCreation(SAVE);};
 $('ficheChanger').onclick=function(){rendreProfils();montrer('ecranProfils');};
+if($('pseudoRetour'))$('pseudoRetour').onclick=function(){
+  /* Retour context-dépendant : si on vient du profil, on y retourne. */
+  if(DB.tel)montrer('ecranProfil'); else montrer('accueil');
+};
 
 /* ================= ACCUEIL ================= */
 /* Les pays couverts. Zone 'ouest' ou 'centre'. */
@@ -7746,6 +7765,8 @@ function ouvrir(id){
   /* Le contrôle est ici, à la source : une carte n'est pas le seul chemin. */
   if(!libre() && !abonne() && !possede(id) && essaiFini() && !(SAVE&&SAVE.lus[id])){
     montrerOffre(false, id);
+    /* S'assurer que la carte d'achat se rend avec le bon conte. */
+    conteVise=id; rendreAchatConte();
     return;
   }
   C=null;for(var i=0;i<CONTES.length;i++)if(CONTES[i].id===id)C=CONTES[i];
@@ -8070,7 +8091,7 @@ function finale(){
       '<b>Voilà. C\'était ton conte offert.</b>'+
       '<p>Crée ta veillée pour garder tes points, retrouver ce conte '+
       'et en découvrir un nouveau chaque soir.</p>'+
-      '<button id="fCreer">Créer ma veillée</button>'+
+      '<button id="fCreer">Créer un compte</button>'+
       '<button class="plat" id="fPlusTard">Plus tard</button></div>';
     $('fil').appendChild(e);bas();
     $('fCreer').onclick=function(){
@@ -8704,7 +8725,7 @@ var EDITEUR={
   nom:'Alphabet Digital',
   produit:'AfriKfables',
   version:'1.0',
-  build:'2026-09-15-e',
+  build:'2026-09-16-b',
   courriel:'contact@alphabet-digital.com',   // à corriger avec la vraie adresse
   tel:'+226 00 00 00 00',                  // à corriger
   ville:'Cocody, Abidjan, Côte d’Ivoire',
@@ -8843,8 +8864,14 @@ function passDe(id){
 }
 function dateFr(ms){var d=new Date(ms);
   return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();}
-function telJoli(n){return '+226 '+n.replace(/(\d{2})(?=\d)/g,'$1 ').trim();}
-function telMasque(n){return '+226 •• •• •• '+n.slice(-2);}
+function telJoli(n,ind){
+  var i=ind||marche().ind||'+226';
+  return i+' '+String(n||'').replace(/(\d{2})(?=\d)/g,'$1 ').trim();
+}
+function telMasque(n,ind){
+  var i=ind||marche().ind||'+226';
+  return i+' •• •• •• '+String(n||'').slice(-2);
+}
 function contesLus(){var n=0;DB.profils.forEach(function(p){for(var k in p.lus)if(p.lus[k])n++;});return n;}
 function essaiFini(){
   /* Là où l'abonnement n'existe pas encore, on ne bloque personne. */
@@ -8958,25 +8985,259 @@ var conteVise=null, portefeuilleChoisi='wave';
    Wave est transversal : il accepte tout numéro valide.
    OM, MTN, Moov exigent que le préfixe corresponde.
    ============================================================ */
-var CI_OPERATEURS={
-  '07':{id:'om',  nom:'Orange Money'},
-  '05':{id:'mtn', nom:'MTN MoMo'},
-  '01':{id:'moov',nom:'Moov Money'}
+/* ============================================================
+   Référentiel de validation des numéros — multi-pays.
+   Remplace la validation CI codée en dur.
+   Couvre : CI, TG, BF, CF, NE, ML, SN, BJ, GN, GA, CD, CG, CM
+   ============================================================ */
+/**
+ * Validation des numéros de téléphone mobile — Afrique de l'Ouest et centrale
+ * Référentiel centralisé par pays : indicatif, longueur, préfixes opérateurs.
+ *
+ * Gère 3 variantes structurelles, unifiées par un seul moteur de détection :
+ *  - "simple"        : préfixe (2 ou 3 chiffres) directement en tête, pas de 0.
+ *  - "zéro optionnel" : un 0 initial est présent en national mais absent en
+ *                       international (Gabon, RDC, Congo-Brazzaville).
+ *  - "préfixe fixe"   : un bloc fixe identique pour tous les opérateurs, suivi
+ *                       d'un sous-préfixe qui identifie l'opérateur (Bénin).
+ *
+ * La longueur des préfixes n'a pas besoin d'être déclarée séparément : elle
+ * est déduite des préfixes eux-mêmes, et la correspondance la plus longue
+ * (3 chiffres avant 2) est essayée en premier — utile pour le Cameroun, où
+ * MTN/Orange utilisent des préfixes à 3 chiffres alors que Nexttel/Camtel
+ * en utilisent 2.
+ */
+
+// --- Référentiel pays -------------------------------------------------------
+
+const COUNTRIES = {
+  CI: {
+    name: "Côte d'Ivoire", callingCode: '225', nationalLength: 10,
+    operators: [
+      { code: 'ORANGE', label: 'Orange', prefixes: ['07'] },
+      { code: 'MTN', label: 'MTN', prefixes: ['05'] },
+      { code: 'MOOV', label: 'Moov', prefixes: ['01'] },
+    ],
+  },
+  TG: {
+    name: 'Togo', callingCode: '228', nationalLength: 8,
+    operators: [
+      { code: 'YAS', label: 'Yas Togo (Togocom)', prefixes: ['90', '91', '92', '93', '70', '71'] },
+      { code: 'MOOV', label: 'Moov Africa Togo', prefixes: ['96', '97', '98', '99', '78', '79'] },
+    ],
+  },
+  BF: {
+    name: 'Burkina Faso', callingCode: '226', nationalLength: 8,
+    operators: [
+      { code: 'ORANGE', label: 'Orange Burkina Faso', prefixes: ['05', '06', '07', '54', '55', '56', '57', '74', '75', '76', '77'] },
+      { code: 'MOOV', label: 'Moov Africa Burkina Faso (Onatel)', prefixes: ['01', '02', '03', '60', '61', '62', '63', '70', '71', '72', '73'] },
+      { code: 'TELECEL', label: 'Telecel Faso', prefixes: ['08', '09', '58', '64', '65', '66', '67', '68', '78', '79'] },
+    ],
+  },
+  CF: {
+    name: 'République centrafricaine', callingCode: '236', nationalLength: 8,
+    operators: [
+      { code: 'TELECEL', label: 'Telecel Centrafrique', prefixes: ['70', '75'] },
+      { code: 'ORANGE', label: 'Orange Centrafrique', prefixes: ['72'] },
+      { code: 'MOOV', label: 'Moov Africa RCA', prefixes: ['77'] },
+    ],
+  },
+  NE: {
+    name: 'Niger', callingCode: '227', nationalLength: 8,
+    operators: [
+      { code: 'AIRTEL', label: 'Airtel Niger', prefixes: ['90', '91', '92', '96', '97', '98', '99'] },
+      { code: 'ORANGE', label: 'Orange Niger (Zamani Telecom)', prefixes: ['93', '94', '95'] },
+      { code: 'MOOV', label: 'Moov Africa Niger (Atlantique Telecom)', prefixes: ['88', '89'] },
+      { code: 'SAHELCOM', label: 'SahelCom / Niger Telecoms', prefixes: ['80', '83'] },
+    ],
+  },
+  ML: {
+    name: 'Mali', callingCode: '223', nationalLength: 8,
+    operators: [
+      // NB : chevauchement possible avec Malitel sur le bloc "5" — Telecel
+      // (50, 51) est volontairement testé avant Malitel pour éviter un
+      // mauvais classement ; à vérifier auprès d'un opérateur/source locale
+      // si un conflit apparaît en pratique.
+      { code: 'TELECEL', label: 'Telecel Mali', prefixes: ['50', '51'] },
+      { code: 'MALITEL', label: 'Malitel / Moov Africa', prefixes: ['60', '61', '62', '63', '64', '65', '66', '67', '68', '69'] },
+      { code: 'ORANGE', label: 'Orange Mali', prefixes: ['70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '82', '83', '84', '90', '91', '92', '93', '94'] },
+    ],
+  },
+  SN: {
+    name: 'Sénégal', callingCode: '221', nationalLength: 9,
+    operators: [
+      { code: 'ORANGE', label: 'Orange (Sonatel)', prefixes: ['77', '78'] },
+      { code: 'FREE', label: 'Free Sénégal (ex-Tigo)', prefixes: ['76'] },
+      { code: 'EXPRESSO', label: 'Expresso Sénégal', prefixes: ['70'] },
+      { code: 'MVNO', label: 'Promobile / Hayo (MVNO)', prefixes: ['75', '72'] },
+    ],
+  },
+  BJ: {
+    name: 'Bénin', callingCode: '229', nationalLength: 10,
+    fixedPrefix: '01',
+    operators: [
+      { code: 'MTN', label: 'MTN Bénin', prefixes: ['97', '96', '61', '62', '51'] },
+      { code: 'MOOV', label: 'Moov Africa Bénin', prefixes: ['95', '94', '66', '67'] },
+      { code: 'CELTIIS', label: 'Celtiis (SBIN)', prefixes: ['40', '41', '42'] },
+    ],
+  },
+  GN: {
+    name: 'Guinée', callingCode: '224', nationalLength: 9,
+    operators: [
+      { code: 'ORANGE', label: 'Orange Guinée', prefixes: ['61', '62'] },
+      { code: 'MTN', label: 'MTN Areeba Guinée', prefixes: ['66'] },
+      { code: 'CELLCOM', label: 'Cellcom Guinée', prefixes: ['65'] },
+    ],
+  },
+  GA: {
+    name: 'Gabon', callingCode: '241', nationalLength: 9, hasLeadingZero: true,
+    operators: [
+      { code: 'MOOV', label: 'Moov Africa Gabon (Libertis)', prefixes: ['62', '65', '66'] },
+      { code: 'AIRTEL', label: 'Airtel Gabon', prefixes: ['74', '76', '77'] },
+    ],
+  },
+  CD: {
+    name: 'RD Congo', callingCode: '243', nationalLength: 9, hasLeadingZero: true,
+    operators: [
+      { code: 'VODACOM', label: 'Vodacom RDC', prefixes: ['81', '82'] },
+      { code: 'ORANGE', label: 'Orange RDC', prefixes: ['84', '85', '89'] },
+      { code: 'AIRTEL', label: 'Airtel RDC', prefixes: ['97', '98', '99'] },
+      { code: 'AFRICELL', label: 'Africell RDC', prefixes: ['90', '91'] },
+    ],
+  },
+  CG: {
+    name: 'Congo-Brazzaville', callingCode: '242', nationalLength: 9, hasLeadingZero: true,
+    operators: [
+      { code: 'MTN', label: 'MTN Congo', prefixes: ['06', '09'] },
+      { code: 'AIRTEL', label: 'Airtel Congo', prefixes: ['04', '05', '07'] },
+    ],
+  },
+  CM: {
+    name: 'Cameroun', callingCode: '237', nationalLength: 9,
+    operators: [
+      { code: 'MTN', label: 'MTN Cameroon', prefixes: ['650', '651', '652', '653', '654', '67', '680', '681', '682', '683'] },
+      { code: 'ORANGE', label: 'Orange Cameroun', prefixes: ['655', '656', '657', '658', '659', '69', '640', '641', '642'] },
+      { code: 'NEXTTEL', label: 'Nexttel (Viettel)', prefixes: ['66'] },
+      { code: 'CAMTEL', label: 'Camtel (mobile)', prefixes: ['620'] },
+    ],
+  },
 };
 
-/* Normalise un numéro ivoirien et retourne {net, operateur, erreur}.
-   `net` est le numéro sans espaces, 10 chiffres.
-   `operateur` est l'objet CI_OPERATEURS correspondant, ou null si Wave. */
+// --- Détection d'opérateur (longueur de préfixe déduite automatiquement) ---
+
+function detectOperator(core, operators) {
+  const lengths = [...new Set(operators.flatMap((o) => o.prefixes.map((p) => p.length)))]
+    .sort((a, b) => b - a); // plus long préfixe d'abord (utile pour le Cameroun)
+
+  for (const len of lengths) {
+    const candidate = core.slice(0, len);
+    const operator = operators.find((o) => o.prefixes.includes(candidate));
+    if (operator) return operator;
+  }
+  return null;
+}
+
+// --- Normalisation -----------------------------------------------------------
+
+/**
+ * Nettoie la saisie et isole les chiffres nationaux, en retirant un éventuel
+ * indicatif pays (avec ou sans "00" devant) déjà présent dans la saisie.
+ */
+function stripCountryCode(digits, callingCode) {
+  if (digits.startsWith('00' + callingCode)) return digits.slice(2 + callingCode.length);
+  if (digits.startsWith(callingCode)) return digits.slice(callingCode.length);
+  return digits;
+}
+
+// --- Validation ---------------------------------------------------------------
+
+/**
+ * Valide un numéro pour un pays donné et identifie l'opérateur.
+ * @param {string|number} input
+ * @param {string} countryCode - clé du référentiel COUNTRIES (ex: 'CI', 'BJ').
+ * @returns {{valid: boolean, country: string|null, operator: string|null,
+ *            national: string|null, e164: string|null, error: string|null}}
+ */
+function validatePhone(input, countryCode) {
+  const country = COUNTRIES[countryCode];
+  const fail = (error) => ({ valid: false, country: countryCode, operator: null, national: null, e164: null, error });
+
+  if (!country) return fail('Pays inconnu du référentiel.');
+  if (typeof input !== 'string' && typeof input !== 'number') return fail('Numéro invalide.');
+
+  let digits = stripCountryCode(String(input).replace(/[^\d]/g, ''), country.callingCode);
+
+  // --- Cas "préfixe fixe" (Bénin) : pas de 0, longueur fixe, bloc fixe en tête.
+  if (country.fixedPrefix) {
+    if (digits.length !== country.nationalLength) {
+      return fail(`Le numéro doit comporter ${country.nationalLength} chiffres.`);
+    }
+    if (!digits.startsWith(country.fixedPrefix)) {
+      return fail(`Les numéros de ${country.name} commencent par ${country.fixedPrefix}.`);
+    }
+    const subCore = digits.slice(country.fixedPrefix.length);
+    const operator = detectOperator(subCore, country.operators);
+    if (!operator) return fail('Préfixe opérateur inconnu.');
+    return {
+      valid: true, country: countryCode, operator: operator.code,
+      national: digits, e164: `+${country.callingCode}${digits}`, error: null,
+    };
+  }
+
+  // --- Cas "0 optionnel" (Gabon, RDC, Congo-Brazzaville) et cas "simple"
+  // (tous les autres) : on ramène tout à un "core" sans 0 pour la détection
+  // et le format E.164 ; le 0 est réintroduit uniquement pour l'affichage
+  // national si le pays en a un.
+  let core;
+  if (country.hasLeadingZero) {
+    if (digits.length === country.nationalLength && digits.startsWith('0')) {
+      core = digits.slice(1);
+    } else if (digits.length === country.nationalLength - 1) {
+      core = digits; // déjà saisi sans le 0 (ex: copié depuis un format +xxx)
+    } else {
+      return fail(`Le numéro doit comporter ${country.nationalLength} chiffres (avec le 0 initial).`);
+    }
+  } else {
+    if (digits.length !== country.nationalLength) {
+      return fail(`Le numéro doit comporter ${country.nationalLength} chiffres.`);
+    }
+    core = digits;
+  }
+
+  const operator = detectOperator(core, country.operators);
+  if (!operator) return fail('Préfixe opérateur inconnu pour ce pays.');
+
+  const national = country.hasLeadingZero ? `0${core}` : core;
+  return {
+    valid: true, country: countryCode, operator: operator.code,
+    national, e164: `+${country.callingCode}${core}`, error: null,
+  };
+}
+
+// --- Utilitaires ---------------------------------------------------------------
+
+/** Longueur (nombre de chiffres à saisir) attendue pour un pays — utile pour
+ *  brider un champ de saisie (maxLength dynamique selon le pays choisi). */
+function expectedLength(countryCode) {
+  const country = COUNTRIES[countryCode];
+  return country ? country.nationalLength : null;
+}
+
+/** Liste des pays du référentiel, pour peupler un sélecteur. */
+function listCountries() {
+  return Object.entries(COUNTRIES).map(([code, c]) => ({
+    code, name: c.name, callingCode: c.callingCode, length: c.nationalLength,
+  }));
+}
+
+/* Rétrocompatibilité avec l'existant qui appelle validerNumeroCI(). */
 function validerNumeroCI(saisie){
   var n=chiffres(saisie||'');
-  if(n.length!==10)
-    return {erreur:'Un numéro ivoirien compte exactement 10 chiffres.'};
-  var pref=n.slice(0,2);
-  var op=CI_OPERATEURS[pref];
-  if(!op)
-    return {erreur:'Ce préfixe ('+pref+'…) n\'est pas reconnu. '+
-      'Les préfixes valides sont 07 (Orange), 05 (MTN) et 01 (Moov).'};
-  return {net:n, operateur:op};
+  var r=validatePhone(n,'CI');
+  if(!r.valid)return{erreur:r.error};
+  var ops=COUNTRIES.CI.operators;
+  var op=ops.find(function(o){return o.code===r.operator;});
+  return{net:n,operateur:{id:r.operator.toLowerCase()==='orange'?'om':r.operator.toLowerCase(),nom:op?op.label:''}};
 }
 
 /* Vérifie la compatibilité entre un numéro et un portefeuille.
@@ -9037,7 +9298,14 @@ function rendreAchatConte(){
           '<span class="nm">'+o.nom+'</span></div>';}).join('')+
     '</div>'+
     '<button class="bouton" id="bAchat">Acheter ce conte</button>'+
-    '<div class="ou">ou prends un pass pour tout écouter</div></div>';
+    '<div class="ou">ou</div>'+
+    '<div class="upsell" id="zoneUpsell">'+
+      '<span class="upsell-badge">&#11088; Meilleur choix</span>'+
+      '<b>Accès illimité à tous les contes</b>'+
+      (function(){var L=passDuMarche();return L.length?
+        '<p>Pour seulement '+L[0].p+'&nbsp;'+(M('devise')||'F CFA')+
+        ' — y compris ce conte et tous les autres.</p>':'';})()+
+    '</div></div>';
   z.innerHTML=h;
 
   Array.prototype.forEach.call(z.querySelectorAll('[data-pf]'),function(e){
@@ -9112,8 +9380,11 @@ function instructionsPF(pf, prix, devise){
     return '<div class="tt">Valide avec Orange Money</div>'+
       '<div class="ss">Deux façons de valider :</div>'+
       '<div class="choixParcours">'+
-        '<div class="parcoursBloc"><b>Via l&#39;appli MaxIt ou OM</b>'+
-          '<p>Ouvre l&#39;application MaxIt ou Orange Money, choisis Payer et entre le code SMS reçu.</p></div>'+
+        '<div class="parcoursBloc">'+
+          '<a href="maxitci://" class="deepBtn" style="background:#FF7900">'+
+            '<img src="icones/pf-om.webp" style="width:22px;height:22px;border-radius:6px;vertical-align:middle"> '+
+            'Ouvrir Max It</a>'+
+          '<p style="font-size:12px;color:var(--txt2);margin-top:6px">Ou depuis l’appli Orange Money, choisis &laquo;&nbsp;Payer&nbsp;&raquo; et entre le code SMS reçu.</p></div>'+
         '<div class="ouSep">ou</div>'+
         '<div class="parcoursBloc"><b>Via USSD</b>'+
           '<p>Compose <a href="tel:'+ussd.replace(/#/g,'%23')+'" class="ussdBtn">'+ussd+'</a> sur ton téléphone, puis entre le code reçu par SMS.</p></div>'+
@@ -9258,6 +9529,21 @@ function rendreIndicatifs(){
 /* Un numéro est valide s'il a la bonne longueur et commence par un préfixe
    du pays. La Côte d'Ivoire en a trois : 01 Moov, 05 MTN, 07 Orange. */
 function numeroValide(m,n){
+  /* Utiliser le référentiel centralisé si le pays est connu. */
+  var codeISO={'ci':'CI','tg':'TG','bf':'BF','ml':'ML','sn':'SN','bj':'BJ',
+               'gn':'GN','ne':'NE','ga':'GA','cd':'CD','cg':'CG','cm':'CM','cf':'CF'};
+  var iso=codeISO[m.pays];
+  if(iso&&iso!='CI'){
+    var vv=validatePhone(n,iso);
+    var aNC=$('aideNumCI');
+    if(aNC){
+      if(n.length===(expectedLength(iso)||m.longueur||8)){
+        aNC.textContent=vv.valid?'Ligne '+vv.operator+' détectée.':'Préfixe non reconnu.';
+        aNC.style.color=vv.valid?'var(--vert)':'var(--rouge,#c00)';
+      }else{ aNC.textContent=''; }
+    }
+    return vv.valid;
+  }
   /* En Côte d'Ivoire, on passe par le moteur de validation dédié. */
   if(m.pays==='ci'){
     var vv=validerNumeroCI(n);
@@ -9305,6 +9591,8 @@ $('champTel').addEventListener('input',function(){
   var m=marche(), lg=m.longueur||8;
   var n=chiffres(this.value).slice(0,lg);
   this.value=n.replace(/(\d{2})(?=\d)/g,'$1 ').trim();
+  var elg=expectedLength(marche().pays)||marche().longueur||8;
+  $('champTel').maxLength=elg+Math.ceil(elg/2);
   verifTel();
 });
 $('numRetour').onclick=function(){montrer('ecranOffre');};
@@ -9696,30 +9984,75 @@ function arreterReconduction(){
    partenaire peut être prélevée. */
 function changerNumeroFacture(){
   var m=marche();
-  var actuel=(DB.telFacturation||DB.tel||'').replace(/^\+\d+\s*/,'');
-  var n=prompt("Sur quel numéro veux-tu que l'abonnement soit prélevé ?\n\n"+
-    "Ce doit être une ligne "+(M('operateur')||'d\'un opérateur partenaire')+".\n"+
-    "Indicatif "+(m.ind||'')+".", actuel);
-  if(n===null)return;
-  var net=chiffres(n);
-  var re=new RegExp('^['+(m.debuts||'0-9')+']');
-  if(net.length!==(m.longueur||8)||!re.test(net)){
-    toast("Ce numéro ne correspond pas au format "+(M('operateur')||'attendu')+'.');
-    return;
-  }
-  var complet=(m.ind||'')+' '+n.trim();
-  fetch('/api/abonnes/facturation',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({telephone:DB.tel,tel_facturation:complet})})
-    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.erreur);return d;});})
-    .then(function(d){
-      DB.telFacturation=complet; save(); rendreFiche();
-      toast('Le '+complet+' sera prélevé.');
-    })
-    .catch(function(e){
-      DB.telFacturation=complet; save(); rendreFiche();
-      toast('Numéro enregistré sur ce téléphone.');
-    });
+  /* Afficher un mini-écran plutôt qu'un prompt() — bloqué sur mobile. */
+  var actuel=chiffres((DB.telFacturation||DB.tel||'').replace(/^\+\d+\s*/,''));
+  var ze=$('zoneAchat')||$('zoneChgTel');
+  if(!ze)ze=$('zoneAbo');
+  if(!ze){toast('Fonctionnalité indisponible ici.'); return;}
+
+  var lg=m.longueur||8;
+  var ancien=ze.querySelector('.boiteChgTel');
+  if(ancien){ancien.parentNode.removeChild(ancien);return;}  /* toggle */
+
+  var boite=document.createElement('div');
+  boite.className='boiteChgTel';
+  boite.style.cssText='background:var(--carte);border:1px solid var(--or);border-radius:14px;'+
+    'padding:16px;margin-top:12px;';
+  boite.innerHTML='<div style="font-size:13.5px;font-weight:800;margin-bottom:10px;">'+
+    'Numéro à prélever</div>'+
+    '<div style="display:flex;gap:8px">'+
+      '<div style="background:var(--carte2);border:1px solid var(--bord);border-radius:10px;'+
+        'padding:12px 10px;font-size:14px;font-weight:700;white-space:nowrap">'+
+        (m.ind||'+226')+'</div>'+
+      '<input id="champChgTel" type="tel" inputmode="numeric" maxlength="'+(lg+Math.ceil(lg/2))+'" '+
+        'value="'+actuel.replace(/(\d{2})(?=\d)/g,'$1 ').trim()+'" '+
+        'style="flex:1;padding:12px;border-radius:10px;border:1px solid var(--bord);'+
+        'background:var(--carte);color:var(--txt);font-size:16px;font-weight:700">'+
+    '</div>'+
+    '<div id="aideChgTel" style="font-size:12.5px;min-height:16px;margin:6px 0;color:var(--vert)"></div>'+
+    '<button id="btnChgTel" class="bouton" style="width:100%;margin-top:8px" disabled>Confirmer</button>';
+  ze.appendChild(boite);
+
+  var inp=$('champChgTel'), btn=$('btnChgTel'), aide=$('aideChgTel');
+  inp.oninput=function(){
+    var n=chiffres(this.value).slice(0,lg);
+    this.value=n.replace(/(\d{2})(?=\d)/g,'$1 ').trim();
+    var ok=false;
+    if(m.pays==='ci'){
+      var v=validerNumeroCI(n);
+      ok=!v.erreur;
+      aide.textContent=ok?'Ligne '+v.operateur.nom+' détectée.':
+        (n.length===lg?'Préfixe non reconnu.':'');
+      aide.style.color=ok?'var(--vert)':'var(--rouge,#c00)';
+    }else{
+      var re=new RegExp('^['+(m.debuts||'0-9')+']');
+      ok=n.length===lg&&re.test(n);
+      aide.textContent='';
+    }
+    btn.disabled=!ok;
+  };
+  btn.onclick=function(){
+    var n=chiffres(inp.value);
+    var complet=(m.ind||'')+' '+n.replace(/(\d{2})(?=\d)/g,'$1 ').trim();
+    fetch('/api/abonnes/facturation',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({telephone:DB.tel,tel_facturation:complet})})
+      .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.erreur);return d;});})
+      .then(function(d){
+        DB.telFacturation=complet; save(); rendreFiche(); rendreCarte();
+        boite.parentNode.removeChild(boite);
+        toast('Prélevé sur le '+complet+'.');
+      })
+      .catch(function(e){
+        DB.telFacturation=complet; save(); rendreFiche(); rendreCarte();
+        boite.parentNode.removeChild(boite);
+        toast('Numéro mis à jour.');
+      });
+  };
+  inp.focus();
 }
+
+/* Met à jour l'affichage du numéro prélevé dans la carte d'achat. */
+function rendreCarte(){ rendreAchatConte(); }
 
 function rendreVeillee(){
   var moi={p:(DB.compte?DB.compte.pseudo:(SAVE?SAVE.nom:'Toi')),n:nbLus(),s:SAVE?SAVE.points:0,moi:1};
@@ -10651,6 +10984,8 @@ window.__contes={
   lien:function(){return LIEN_SERVICE;},
   marche:function(){var m=marche();return {nom:m.nom,operateur:M("operateur"),tel:M("tel"),court:M("courtCode"),stop:M("motStop"),pass:passDuMarche().map(function(x){return x.id+":"+x.p;}).join(" ")};},
   marcheBrut:function(){return marche();},
+  validatePhone:function(n,pays){return validatePhone(n,pays);},
+  expectedLength:function(pays){return expectedLength(pays);},
   validerNumeroCI:function(n){return validerNumeroCI(n);},
   compatiblePF:function(n,pf){return compatiblePF(n,pf);},
   diagAchat:function(){var m=marche();return {pays:m.pays,type:m.type,prixConte:m.prixConte,

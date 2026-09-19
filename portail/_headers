@@ -1,0 +1,31 @@
+# Protection par mot de passe du back office.
+# Remplace MOTDEPASSE par ton mot de passe avant de déployer.
+# Ce fichier n'a pas d'extension et se pose à la racine, à côté d'index.html.
+
+/admin.html
+  Basic-Auth: admin:MOTDEPASSE
+  X-Robots-Tag: noindex
+
+# Le portail lui-même reste public.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# --- Cache busting ---
+# index.html ne doit jamais être servi depuis le cache navigateur :
+# il référence la bonne version du service worker.
+/index.html
+  Cache-Control: no-cache, must-revalidate
+
+# Le service worker lui-même : jamais mis en cache (il se gère seul).
+/sw.js
+  Cache-Control: no-cache, must-revalidate
+  Service-Worker-Allowed: /
+
+# Le manifest : mis en cache 24h (change rarement).
+/manifeste.json
+  Cache-Control: public, max-age=86400
+
+# Les icônes et médias : longue durée (leurs noms incluront un hash un jour).
+/icones/*
+  Cache-Control: public, max-age=604800
